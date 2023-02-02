@@ -7,6 +7,7 @@ interface CardProps {
   parentSet?: string;
   children?: React.ReactNode;
   rightSide?: any;
+  titleSet?: string
 }
 
 export const WarppingCard: FC<CardProps> = ({
@@ -16,7 +17,7 @@ export const WarppingCard: FC<CardProps> = ({
   rightSide,
 }) => {
   return (
-    <div className="m-10">
+    <div className="m-20">
       <div className="box-border w-full bg-white rounded-3xl border-sky border-2">
         <div className="flex mx-10 mt-10">
           <div className="w-1/2">
@@ -48,9 +49,19 @@ export const CardWithLogo: FC<CardProps> = ({ children }) => {
         <div className="flex justify-end">
           <img src={Logo} alt="" width={65} />
         </div>
-        <div className="p-5">
-            {children}
-        </div>
+        <div className="p-5">{children}</div>
+      </div>
+    </div>
+  );
+};
+
+export const MiniCard: FC<CardProps> = ({ children, judul, titleSet }) => {
+  return (
+    <div className="m-5">
+      <div className="box-border w-full bg-white rounded-2xl border-sky border-2 p-5">
+        <h1 className={`capitalize font-extrabold ${titleSet}`}>{judul}</h1>
+        <hr className="m-3 border-[1.5px] border-sky" />
+        {children}
       </div>
     </div>
   );
