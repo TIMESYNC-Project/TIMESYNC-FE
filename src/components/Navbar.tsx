@@ -29,7 +29,7 @@ const Navbar: FC<NavbarProps> = ({
     <div className="flex flex-col">
       <section className="navbar h-10 bg-[#0F4C75] shadow-md shadow-gray-900 sticky top-0 mb-[-5rem] z-50">
         <div className="navbar-start">
-          <Link to="/" className="btn btn-ghost normal-case text-md ml-14">
+          <Link to="/" className="btn btn-ghost normal-case text-md ml-11">
             <img src={Logo} alt="logo-app" className="w-[42px]" />
           </Link>
         </div>
