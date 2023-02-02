@@ -1,16 +1,21 @@
-import {createBrowserRouter, RouterProvider} from 'react-router-dom'
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import LandingPage from 'pages/GetMaps'
+import LoginPage from "pages/auth/Login";
+import HomePage from "pages";
 
 const router = createBrowserRouter([
-    {
-        path: '/',
-        element: <LandingPage />
-    },
-])
+  {
+    path: "/",
+    element: <HomePage />,
+  },
+  {
+    path: "/login",
+    element: <LoginPage />,
+  },
+]);
 
 const index = () => {
-  return <RouterProvider router={router} />
-}
+  return <RouterProvider router={router} />;
+};
 
-export default index
+export default index;
