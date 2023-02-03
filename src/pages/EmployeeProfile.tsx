@@ -1,16 +1,13 @@
 import React from "react";
 
 import user from "assets/user.svg";
-import Button from "components/Button";
+import { WrappingCard } from "components/Card";
 import Layout from "components/Layout";
 
 const EmployeeProfile = () => {
   return (
-    <Layout>
-      <section className="flex flex-col items-center m-12 border-2 border-sky p-10 rounded-3xl">
-        <p className="w-full font-extrabold text-4xl border-b-2 border-sky mb-14 pb-3">
-          Employee's Profile
-        </p>
+    <Layout profileSet="w-full bg-gradient-to-r from-white to-navy hover:text-white">
+      <WrappingCard judul="Employee's Profile">
         <div className="flex w-full">
           <div className="w-2/6 flex flex-col items-center gap-4">
             <img
@@ -136,7 +133,7 @@ const EmployeeProfile = () => {
             </p>
           </div>
         </div>
-      </section>
+      </WrappingCard>
     </Layout>
   );
 };

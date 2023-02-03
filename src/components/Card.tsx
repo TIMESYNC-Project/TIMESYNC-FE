@@ -7,10 +7,10 @@ interface CardProps {
   parentSet?: string;
   children?: React.ReactNode;
   rightSide?: any;
-  titleSet?: string
+  titleSet?: string;
 }
 
-export const WarppingCard: FC<CardProps> = ({
+export const WrappingCard: FC<CardProps> = ({
   judul,
   parentSet,
   children,
@@ -32,7 +32,7 @@ export const WarppingCard: FC<CardProps> = ({
   );
 };
 
-export const UsefullCard: FC<CardProps> = ({ children }) => {
+export const FlexyCard: FC<CardProps> = ({ children }) => {
   return (
     <div className="my-5 mx-24">
       <div className="box-border w-full bg-white rounded-2xl border-sky border-2 p-5">
