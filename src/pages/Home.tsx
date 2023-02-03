@@ -3,7 +3,7 @@ import { useCookies } from "react-cookie";
 import { GoLocation } from "react-icons/go";
 import { AiOutlineMessage } from "react-icons/ai";
 
-import { MiniCard, UsefullCard, WarppingCard } from "components/Card";
+import { MiniCard, FlexyCard, WrappingCard } from "components/Card";
 import Layout from "components/Layout";
 import moment from "moment";
 import Button from "components/Button";
@@ -29,7 +29,7 @@ const Home = () => {
   return (
     <Layout homeSet="w-full bg-gradient-to-r from-white to-navy hover:text-white">
       {cookie.role === "admin" ? (
-        <WarppingCard judul="Dashboard">
+        <WrappingCard judul="Dashboard">
           <div className="flex">
             <div className="w-2/3">
               <div className="grid grid-cols-2">
@@ -210,16 +210,16 @@ const Home = () => {
               {/* card inbox end */}
             </div>
           </div>
-        </WarppingCard>
+        </WrappingCard>
       ) : (
-        <WarppingCard judul="Attendance">
+        <WrappingCard judul="Attendance">
           <div className="flex justify-center">
             <p className="text-7xl font-bold">{hour}</p>
           </div>
           <div className="flex justify-center">
             <p className="text-xl">{date}</p>
           </div>
-          <UsefullCard>
+          <FlexyCard>
             <div className="flex justify-center items-center">
               <GoLocation />
               <p className="mx-2 capitalize text-black">
@@ -255,7 +255,7 @@ const Home = () => {
                 </Link>
               </div>
             </div>
-            <UsefullCard>
+            <FlexyCard>
               <div className="flex">
                 <div className="w-1/3">
                   <p className="text-lg text-black font-semibold">07.40</p>
@@ -272,8 +272,8 @@ const Home = () => {
                   </p>
                 </div>
               </div>
-            </UsefullCard>
-            <UsefullCard>
+            </FlexyCard>
+            <FlexyCard>
               <div className="flex">
                 <div className="w-1/3">
                   <p className="text-lg text-black font-semibold">17.40</p>
@@ -290,9 +290,9 @@ const Home = () => {
                   </p>
                 </div>
               </div>
-            </UsefullCard>
-          </UsefullCard>
-        </WarppingCard>
+            </FlexyCard>
+          </FlexyCard>
+        </WrappingCard>
       )}
     </Layout>
   );
