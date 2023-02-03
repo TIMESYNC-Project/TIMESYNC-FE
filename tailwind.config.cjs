@@ -7,6 +7,8 @@ module.exports = {
         navy: "#0F4C75",
         sky: "#3282B8",
         bone: "#F5F5F5",
+        lightYellow: "#FFD600",
+        darkYellow: "#FFC909",
       },
     },
   },
