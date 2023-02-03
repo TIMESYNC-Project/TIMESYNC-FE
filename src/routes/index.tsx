@@ -1,6 +1,8 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import LoginPage from "pages/auth/Login";
+import EmployeeProfile from "pages/EmployeeProfile";
+// import CompanyProfile from "pages/CompanyProfile";
 import HomePage from "pages/Home";
 
 const router = createBrowserRouter([
@@ -12,6 +14,14 @@ const router = createBrowserRouter([
     path: "/home",
     element: <HomePage />,
   },
+  {
+    path: "/employeeprofile",
+    element: <EmployeeProfile />,
+  },
+  // {
+  //   path: "/companyprofile",
+  //   element: <CompanyProfile />,
+  // },
 ]);
 
 const index = () => {
