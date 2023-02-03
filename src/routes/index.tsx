@@ -1,21 +1,23 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import LoginPage from "pages/auth/Login";
+import Login from "pages/auth/Login";
 import EmployeeProfile from "pages/EmployeeProfile";
 import CompanyProfile from "pages/CompanyProfile";
-import Employee from "pages/Employee";
-import Records from "pages/Records";
-import HomePage from "pages/Home";
 import RecordsDetail from "pages/RecordsDetail";
+import Employee from "pages/Employee";
+import Settings from "pages/Settings";
+import Records from "pages/Records";
+
+import Home from "pages/Home";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <LoginPage />,
+    element: <Login />,
   },
   {
     path: "/home",
-    element: <HomePage />,
+    element: <Home />,
   },
   {
     path: "/employeeprofile",
@@ -34,8 +36,12 @@ const router = createBrowserRouter([
     element: <Records />,
   },
   {
-    path: "/records/details/:id",
+path: "/records/details/:id",
     element: <RecordsDetail />,
+  },
+  {
+    path: "/settings",
+    element: <Settings />,    
   },
 ]);
 

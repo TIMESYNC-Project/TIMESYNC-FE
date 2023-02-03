@@ -33,7 +33,7 @@ const Navbar: FC<NavbarProps> = ({
             <img src={Logo} alt="logo-app" className="w-[42px]" />
           </Link>
         </div>
-        <div className="navbar-center">
+        <div className="navbar-center ml-60">
           <p className="uppercase text-xl font-bold text-[#FFC909]">timesync</p>
         </div>
         <div className="navbar-end mr-14">
