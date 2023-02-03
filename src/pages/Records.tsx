@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { BsSearch } from "react-icons/all";
 import { useCookies } from "react-cookie";
 
@@ -9,7 +10,12 @@ import Layout from "components/Layout";
 
 const Records = () => {
   const [cookie, setCookie] = useCookies();
+  const navigate = useNavigate()
 
+  function onClickDetail(id: number) {
+    navigate(`/records/details/${id}`);
+  }
+  
   return (
     <Layout recordsSet="w-full bg-gradient-to-r from-white to-navy hover:text-white">
       {cookie.role === "admin" ? (
@@ -27,7 +33,7 @@ const Records = () => {
           }
         >
           <FlexyCard>
-            <div className="flex justify-center items-center">
+            <div className="flex justify-center items-center" onClick={()=>onClickDetail(2)}>
               <div className="flex w-1/2">
                 <img
                   src="https://i.pinimg.com/564x/9f/8b/74/9f8b749c32edf47b1b3f098230a5584c.jpg"
@@ -85,13 +91,13 @@ const Records = () => {
                 <p className="text-black capitalize ">jan 30, 2023</p>
               </div>
               <div className="flex justify-center w-1/4">
-                <p>07.25</p>
+                <p className="text-black capitalize">07.25</p>
               </div>
               <div className="flex justify-center w-1/4">
-                <p>17.20</p>
+                <p className="text-black capitalize">17.20</p>
               </div>
               <div className="flex justify-center w-1/4">
-                <p>presence</p>
+                <p className="text-black capitalize">presence</p>
               </div>
             </div>
           </FlexyCard>

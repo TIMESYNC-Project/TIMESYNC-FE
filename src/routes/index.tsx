@@ -6,6 +6,7 @@ import CompanyProfile from "pages/CompanyProfile";
 import Employee from "pages/Employee";
 import Records from "pages/Records";
 import HomePage from "pages/Home";
+import RecordsDetail from "pages/RecordsDetail";
 
 const router = createBrowserRouter([
   {
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
   {
     path: "/records",
     element: <Records />,
+  },
+  {
+    path: "/records/details/:id",
+    element: <RecordsDetail />,
   },
 ]);
 
