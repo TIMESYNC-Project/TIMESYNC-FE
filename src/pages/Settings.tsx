@@ -6,7 +6,7 @@ import React from "react";
 
 const Settings = () => {
   return (
-    <Layout>
+    <Layout settingsSet="w-full bg-gradient-to-r from-white to-navy hover:text-white">
       <WrappingCard judul="Settings">
         <section className="flex justify-center gap-10 mb-10">
           <div className="flex flex-col items-center gap-4">
