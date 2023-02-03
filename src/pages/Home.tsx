@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { useCookies } from "react-cookie";
-import { GoLocation } from "react-icons/go";
 import { AiOutlineMessage } from "react-icons/ai";
+import { GoLocation } from "react-icons/go";
+import { useCookies } from "react-cookie";
+import { Link } from "react-router-dom";
+import moment from "moment";
 
 import { MiniCard, FlexyCard, WrappingCard } from "components/Card";
 import Layout from "components/Layout";
-import moment from "moment";
 import Button from "components/Button";
-import { Link } from "react-router-dom";
+
 
 const Home = () => {
   const [cookie, setCookie] = useCookies();
