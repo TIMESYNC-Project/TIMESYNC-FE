@@ -73,6 +73,7 @@ const Settings = () => {
         </section>
         <section className="flex justify-center">
           <Button
+            id="btn-save-settings"
             buttonSet="w-60 border-4 rounded-xl shadow-md shadow-black flex items-center"
             label="Save Settings"
           />
