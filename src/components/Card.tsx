@@ -19,11 +19,11 @@ export const WrappingCard: FC<CardProps> = ({
   return (
     <div className="m-20">
       <div className="box-border w-full bg-white rounded-3xl border-sky border-2">
-        <div className="flex mx-10 mt-10">
+        <div className="flex mx-10 mt-10 items-center">
           <div className="w-1/2">
             <h1 className="capitalize text-3xl  font-extrabold">{judul}</h1>
           </div>
-          <div className="w-1/2">{rightSide}</div>
+          <div className="w-1/2 flex justify-end">{rightSide}</div>
         </div>
         <hr className="mx-10 my-3 border-[1.5px] border-sky" />
         <div className={`${parentSet} p-10`}>{children}</div>
