@@ -1,20 +1,21 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import LoginPage from "pages/auth/Login";
+import Login from "pages/auth/Login";
 import EmployeeProfile from "pages/EmployeeProfile";
 import CompanyProfile from "pages/CompanyProfile";
 import Employee from "pages/Employee";
+import Settings from "pages/Settings";
 import Records from "pages/Records";
-import HomePage from "pages/Home";
+import Home from "pages/Home";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <LoginPage />,
+    element: <Login />,
   },
   {
     path: "/home",
-    element: <HomePage />,
+    element: <Home />,
   },
   {
     path: "/employeeprofile",
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
   {
     path: "/records",
     element: <Records />,
+  },
+  {
+    path: "/settings",
+    element: <Settings />,
   },
 ]);
 
