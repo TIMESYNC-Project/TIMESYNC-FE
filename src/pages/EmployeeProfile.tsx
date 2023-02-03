@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import React from "react";
 
 import user from "assets/user.svg";
@@ -100,9 +101,11 @@ const EmployeeProfile = () => {
             <p>00001</p>
             <p className="font-bold text-3xl">Aryo Yudhanto</p>
             <p className="text-lg">IT Support</p>
-            <p className="underline font-semibold text-2xl pt-2 pb-8">
-              Timesync Company
-            </p>
+
+            <span className="underline font-semibold text-2xl pt-2 pb-8">
+              <Link to="/companyprofile">Timesync Company</Link>
+            </span>
+
             <table className="table-auto text-xl font-bold flex flex-col gap-4">
               <tr className="flex">
                 <td className="w-2/5">Gender</td>

@@ -2,7 +2,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import LoginPage from "pages/auth/Login";
 import EmployeeProfile from "pages/EmployeeProfile";
-// import CompanyProfile from "pages/CompanyProfile";
+import CompanyProfile from "pages/CompanyProfile";
 import HomePage from "pages/Home";
 
 const router = createBrowserRouter([
@@ -18,10 +18,10 @@ const router = createBrowserRouter([
     path: "/employeeprofile",
     element: <EmployeeProfile />,
   },
-  // {
-  //   path: "/companyprofile",
-  //   element: <CompanyProfile />,
-  // },
+  {
+    path: "/companyprofile",
+    element: <CompanyProfile />,
+  },
 ]);
 
 const index = () => {
