@@ -4,6 +4,7 @@ import LoginPage from "pages/auth/Login";
 import EmployeeProfile from "pages/EmployeeProfile";
 import CompanyProfile from "pages/CompanyProfile";
 import Employee from "pages/Employee";
+import Records from "pages/Records";
 import HomePage from "pages/Home";
 
 const router = createBrowserRouter([
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
   {
     path: "/employee",
     element: <Employee />,
+  },
+  {
+    path: "/records",
+    element: <Records />,
   },
 ]);
 
