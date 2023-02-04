@@ -1,11 +1,11 @@
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
-import React, { useState, useEffect } from "react";
 
 import { CardWithLogo, WrappingCard } from "components/Card";
+import { TextArea } from "components/CustomInput";
 import Button from "components/Button";
 import Layout from "components/Layout";
-import { CustomInput, TextArea } from "components/CustomInput";
 
 const RequestApproval = () => {
   const [date, setDate] = useState<string>("");
