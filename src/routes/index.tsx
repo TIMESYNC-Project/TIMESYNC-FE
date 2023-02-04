@@ -5,6 +5,7 @@ import EmployeeProfile from "pages/EmployeeProfile";
 import CompanyProfile from "pages/CompanyProfile";
 import RecordsDetail from "pages/RecordsDetail";
 import Employee from "pages/Employee";
+import Approval from "pages/Approval";
 import Settings from "pages/Settings";
 import Login from "pages/auth/Login";
 import Records from "pages/Records";
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
   {
     path: "/records/details/:id",
     element: <RecordsDetail />,
+  },
+  {
+    path: "/approval",
+    element: <Approval />,
   },
   { 
     path: "/approval/request",
