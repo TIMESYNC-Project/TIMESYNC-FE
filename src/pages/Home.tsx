@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
 import { AiOutlineMessage } from "react-icons/ai";
+import { useState, useEffect } from "react";
 import { GoLocation } from "react-icons/go";
 import { useCookies } from "react-cookie";
 import { Link } from "react-router-dom";
@@ -34,7 +34,7 @@ const Home = () => {
             <div className="w-2/3">
               <div className="grid grid-cols-2">
                 {/* card total employees start */}
-                <Link to="/employees">
+                <Link id="card-total-employees" to="/employees">
                   <MiniCard
                     judul="total employees"
                     titleSet="text-center text-lg"
@@ -95,7 +95,7 @@ const Home = () => {
             </div>
             <div className="w-1/3">
               {/* card employees start */}
-              <Link to="/employees">
+              <Link id="card-list-employees" to="/employees">
                 <MiniCard judul="employees" titleSet="text-center text-xl">
                   <div className="flex flex-col my-3">
                     <div className="flex flex-row justify-start">
@@ -162,7 +162,7 @@ const Home = () => {
               {/* card employees end */}
 
               {/* card inbox start */}
-              <Link to="/inbox">
+              <Link id="card-list-inbox" to="/inbox">
                 <MiniCard judul="inbox" titleSet="text-center text-xl">
                   <div className="flex flex-col my-3">
                     <div className="flex flex-row justify-start">
@@ -241,11 +241,13 @@ const Home = () => {
             </p>
             <div className="flex justify-center items-center my-7">
               <Button
+                id="btn-clockin"
                 buttonSet="border-2 border-white shadow-md shadow-black rounded-full capitalize font-medium gap-2 px-3 text-md hover:bg-navy w-1/6 mx-2"
                 label="Clock In"
                 onClick={() => setCookie("role", "admin")}
               />
               <Button
+                id="btn-clockout"
                 buttonSet="border-2 border-white shadow-md shadow-black rounded-full capitalize font-medium gap-2 px-3 text-md hover:bg-navy w-1/6 mx-2"
                 label="Clock out"
                 // onClick={() => setCookie("role", "admin")}
@@ -257,7 +259,7 @@ const Home = () => {
                 <p className="text-black text-left">Logs today</p>
               </div>
               <div className="w-1/2">
-                <Link to={"/records"}>
+                <Link id="btn-see-more" to={"/records"}>
                   <p className="text-black text-right capitalize">See more..</p>
                 </Link>
               </div>
