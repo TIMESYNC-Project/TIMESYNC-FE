@@ -33,7 +33,7 @@ const Records = () => {
           }
         >
           <FlexyCard>
-            <div className="flex justify-center items-center" onClick={()=>onClickDetail(2)}>
+            <div className="flex justify-center items-center hover:cursor-pointer" onClick={()=>onClickDetail(2)}>
               <div className="flex w-1/2">
                 <img
                   src="https://i.pinimg.com/564x/9f/8b/74/9f8b749c32edf47b1b3f098230a5584c.jpg"

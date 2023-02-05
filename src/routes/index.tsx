@@ -22,15 +22,19 @@ const router = createBrowserRouter([
     element: <Home />,
   },
   {
-    path: "/employeeprofile",
+    path: "/profile",
     element: <EmployeeProfile />,
   },
   {
-    path: "/companyprofile",
+    path: "/employee/profile/:id",
+    element: <EmployeeProfile />,
+  },
+  {
+    path: "/profile/company",
     element: <CompanyProfile />,
   },
   {
-    path: "/employee",
+    path: "/employees",
     element: <Employee />,
   },
   {

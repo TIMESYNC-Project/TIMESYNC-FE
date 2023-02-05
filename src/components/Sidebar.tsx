@@ -1,3 +1,6 @@
+import { Link } from "react-router-dom";
+import React, { FC, LabelHTMLAttributes } from "react";
+import { useCookies } from "react-cookie";
 import {
   TbLogout,
   TbHome,
@@ -8,8 +11,6 @@ import {
   TbMail,
   TbSettings,
 } from "react-icons/tb";
-import React, { FC, LabelHTMLAttributes } from "react";
-import { useCookies } from "react-cookie";
 
 interface SidebarProps extends LabelHTMLAttributes<HTMLParagraphElement> {
   homeSet?: string;
@@ -38,49 +39,51 @@ const Sidebar: FC<SidebarProps> = ({
     <div className="bg-navy h-screen w-52 shadow-lg sticky top-0 z-40 flex pt-28 pb-16 flex-col justify-between items-center">
       <section className="w-full flex flex-col font-semibold text-white gap-2">
         <p className={`px-7 py-2 ${homeSet}`}>
-          <div className="flex gap-2 items-center duration-300 hover:text-black/50 hover:cursor-pointer active:scale-90">
+          <Link to='/home' className="flex gap-2 items-center duration-300 hover:text-black/50 hover:cursor-pointer active:scale-90">
             <TbHome size={25} />
             Home
-          </div>
+          </Link>
         </p>
         <p className={`px-7 py-2 ${profileSet}`}>
-          <div className="flex gap-2 items-center duration-300 hover:text-black/50 hover:cursor-pointer active:scale-90">
+          <Link to={
+            admin? ("/profile/company"):("/profile")
+          } className="flex gap-2 items-center duration-300 hover:text-black/50 hover:cursor-pointer active:scale-90">
             <TbUser size={25} />
             Profile
-          </div>
+          </Link>
         </p>
         {admin && (
           <p className={`px-7 py-2 ${employeesSet}`}>
-            <div className="flex gap-2 items-center duration-300 hover:text-black/50 hover:cursor-pointer active:scale-90">
+            <Link to='/employees' className="flex gap-2 items-center duration-300 hover:text-black/50 hover:cursor-pointer active:scale-90">
               <TbUsers size={25} />
               Employees
-            </div>
+            </Link>
           </p>
         )}
         <p className={`px-7 py-2 ${recordsSet}`}>
-          <div className="flex gap-2 items-center duration-300 hover:text-black/50 hover:cursor-pointer active:scale-90">
+          <Link to='/records' className="flex gap-2 items-center duration-300 hover:text-black/50 hover:cursor-pointer active:scale-90">
             <TbAddressBook size={25} />
             Records
-          </div>
+          </Link>
         </p>
         <p className={`px-7 py-2 ${approvalSet}`}>
-          <div className="flex gap-2 items-center duration-300 hover:text-black/50 hover:cursor-pointer active:scale-90">
+          <Link to='/approval' className="flex gap-2 items-center duration-300 hover:text-black/50 hover:cursor-pointer active:scale-90">
             <TbNotebook size={25} />
             Approval
-          </div>
+          </Link>
         </p>
         <p className={`px-7 py-2 ${inboxSet}`}>
-          <div className="flex gap-2 items-center duration-300 hover:text-black/50 hover:cursor-pointer active:scale-90">
+          <Link to='/inbox' className="flex gap-2 items-center duration-300 hover:text-black/50 hover:cursor-pointer active:scale-90">
             <TbMail size={25} />
             Inbox
-          </div>
+          </Link>
         </p>
         {admin && (
           <p className={`px-7 py-2 ${settingsSet}`}>
-            <div className="flex gap-2 items-center duration-300 hover:text-black/50 hover:cursor-pointer active:scale-90">
+            <Link to='/settings' className="flex gap-2 items-center duration-300 hover:text-black/50 hover:cursor-pointer active:scale-90">
               <TbSettings size={25} />
               Settings
-            </div>
+            </Link>
           </p>
         )}
       </section>

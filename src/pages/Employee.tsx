@@ -11,8 +11,14 @@ import { CustomInput, TextArea } from "components/CustomInput";
 import { FlexyCard, WrappingCard } from "components/Card";
 import { Modals1 } from "components/Modals";
 import Layout from "components/Layout";
+import { useNavigate } from "react-router-dom";
 
 const Employee = () => {
+  const navigate = useNavigate()
+
+  function onClickDetail(id: number) {
+    navigate(`/employee/profile/${id}`);
+  }
   return (
     <Layout employeesSet="w-full bg-gradient-to-r from-white to-navy hover:text-white">
       <WrappingCard
@@ -47,7 +53,7 @@ const Employee = () => {
         }
       >
         <FlexyCard>
-          <div className="flex justify-center items-center">
+          <div className="flex justify-center items-center" onClick={()=>onClickDetail(2)}>
             <div className="flex w-1/2">
               <img
                 src="https://i.pinimg.com/564x/9f/8b/74/9f8b749c32edf47b1b3f098230a5584c.jpg"
