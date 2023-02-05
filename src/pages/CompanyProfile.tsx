@@ -4,18 +4,21 @@ import { Link } from "react-router-dom";
 import React, { useState } from "react";
 
 import building from "assets/building.svg";
+import { CustomInput, TextArea } from "components/CustomInput";
 import { WrappingCard } from "components/Card";
 import Button from "components/Button";
 import Layout from "components/Layout";
 
 const CompanyProfile = () => {
   const [cookie, setCookie] = useCookies();
+  const admin = cookie.role === "admin";
+
   return (
     <Layout profileSet="w-full bg-gradient-to-r from-white to-navy hover:text-white">
       <WrappingCard
         judul="Company Profile"
         rightSide={
-          cookie.role === "admin" ? null : (
+          admin ? null : (
             <>
               <Link id="btn-back" to="/profile">
                 <Button
@@ -35,6 +38,102 @@ const CompanyProfile = () => {
               src={building}
               alt="photo"
             />
+            {admin && (
+              <form>
+                <label id="btn-create-inbox" htmlFor="my-modal-1">
+                  <p className="w-48 btn tracking-wider bg-[#3282B8] text-white hover:border-white font-medium rounded-2xl capitalize border-4 border-white shadow-md shadow-black">
+                    Update Profile
+                  </p>
+                </label>
+                <input
+                  type="checkbox"
+                  id="my-modal-1"
+                  className="modal-toggle"
+                />
+                <div className="modal modal-bottom sm:modal-middle">
+                  <div className="modal-box pt-80 border-2 border-sky flex flex-col justify-center text-sky">
+                    <p className="mb-5 pb-2 text-xl border-b-2 font-medium">
+                      Edit Company's Profile
+                    </p>
+                    <div className="flex justify-center gap-5">
+                      <div className="flex flex-col gap-10 pt-5">
+                        <p>Name:</p>
+                        <p>Tagline:</p>
+                        <p>Phone:</p>
+                        <p>Email:</p>
+                        <p className="w-28">Social Media:</p>
+                        <p className="pb-16">Address:</p>
+                        <p className="pb-28">Description:</p>
+                        <p>Select Picture:</p>
+                      </div>
+                      <div className="flex flex-col gap-2">
+                        <CustomInput
+                          id="input-inbox-company"
+                          type="text"
+                          placeholder="Type here"
+                          className="input input-bordered input-md w-80 max-w-xs border-2 border-sky focus:border-lightYellow"
+                        />
+                        <CustomInput
+                          id="input-inbox-title"
+                          type="text"
+                          placeholder="Type here"
+                          className="input input-bordered input-md w-80 max-w-xs border-2 border-sky focus:border-lightYellow"
+                        />
+                        <CustomInput
+                          id="input-inbox-title"
+                          type="text"
+                          placeholder="Type here"
+                          className="input input-bordered input-md w-80 max-w-xs border-2 border-sky focus:border-lightYellow"
+                        />
+                        <CustomInput
+                          id="input-inbox-title"
+                          type="text"
+                          placeholder="Type here"
+                          className="input input-bordered input-md w-80 max-w-xs border-2 border-sky focus:border-lightYellow"
+                        />
+                        <CustomInput
+                          id="input-inbox-title"
+                          type="text"
+                          placeholder="Type here"
+                          className="input input-bordered input-md w-80 max-w-xs border-2 border-sky focus:border-lightYellow"
+                        />
+                        <TextArea
+                          id="input-inbox-message"
+                          placeholder="Type here"
+                          className="input input-bordered input-sm h-28 w-80 max-w-xs border-2 border-sky focus:border-lightYellow"
+                        />
+                        <TextArea
+                          id="input-inbox-message"
+                          placeholder="Type here"
+                          className="input input-bordered input-sm h-40 w-80 max-w-xs border-2 border-sky focus:border-lightYellow"
+                        />
+                        <CustomInput
+                          id="input-photo"
+                          type="file"
+                          className="file-input file-input-bordered w-full border-2 border-sky max-w-xs focus:border-lightYellow"
+                        />
+                      </div>
+                    </div>
+                    <div className="modal-action">
+                      <button
+                        id="btn-inbox-submit"
+                        type="submit"
+                        className="w-24 text-sm text-center border-2 border-sky bg-sky rounded-xl py-1 text-gray-50 font-medium duration-300 hover:cursor-pointer  hover:bg-blue-900  active:scale-90"
+                      >
+                        Submit
+                      </button>
+                      <label
+                        id="btn-inbox-cancel"
+                        htmlFor="my-modal-1"
+                        className="w-24 text-sm text-center border-2 border-sky rounded-xl py-1 text-sky font-medium duration-300 hover:cursor-pointer hover:bg-red-600 hover:text-white  active:scale-90"
+                      >
+                        Cancel
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            )}
           </div>
           <div className="w-4/6 flex flex-col">
             <p className="font-bold text-3xl">Timesync Company</p>
