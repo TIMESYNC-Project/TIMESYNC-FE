@@ -18,7 +18,7 @@ const Login = () => {
   }
 
   return (
-    <div className="w-full flex items-center p-16">
+    <div className="w-full flex items-center px-16 py-8">
       <section className="w-1/2">
         <img src={loginart} alt="login-art" />
       </section>
@@ -33,20 +33,27 @@ const Login = () => {
           </div>
           <form>
             <CustomInput
+              id="input-nip"
               inputSet="text-center focus:border-4 focus:border-yellow-400"
               placeholder="Input NIP"
               type="text"
             />
             <CustomInput
-              inputSet="text-center focus:border-4 focus:border-yellow-400"
+              id="input-password"
+              inputSet="text-center focus:border-4 focus:border-yellow-400 my-2"
               placeholder="Input password"
               type={passType}
             />
             <div className="flex">
-              <input type="checkbox" onClick={() => tooglePass()} />
+              <input
+                id="checkbox-show-password"
+                type="checkbox"
+                onClick={() => tooglePass()}
+              />
               <label className="text-sm mx-2 capitalize">show password</label>
             </div>
             <Button
+              id="btn-login"
               buttonSet="w-full bg-lightYellow hover:bg-darkYellow text-navy border-0 mt-14"
               label="LOGIN"
               type="submit"
