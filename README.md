@@ -4,8 +4,6 @@
 
 <img align="center" src="https://github.com/TIMESYNC-Project/TIMESYNC-FE/blob/main/src/assets/logo.png?raw=true" alt="Logo" />
 
-![Vercel](http://therealsujitk-vercel-badge.vercel.app/?app=therealsujitk-vercel-badge)
-
 <p align="center">This project is an attendace management app that manage time attendance of every employees in a company, get their clock in/out location, and share newsletter for the whole company.</p>
 
 - Here is the link for the UI design: [Figma](<https://www.figma.com/file/cZpF1xOCyqD7SrkJqtjCS7/Absensi-Online-(Community)?node-id=0%3A1&t=xPenL5IMZgIAMyWG-1>)
