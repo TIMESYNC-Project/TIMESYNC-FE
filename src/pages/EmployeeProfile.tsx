@@ -1,10 +1,9 @@
+import { useCookies } from "react-cookie";
 import { Link } from "react-router-dom";
-import React from "react";
 
 import user from "assets/user.svg";
 import { WrappingCard } from "components/Card";
 import Layout from "components/Layout";
-import { useCookies } from "react-cookie";
 
 const EmployeeProfile = () => {
   const [cookie, setCookie] = useCookies();
@@ -21,7 +20,7 @@ const EmployeeProfile = () => {
             {cookie.role === "admin" ? null : (
               <>
                 <form>
-                  <label htmlFor="my-modal-1">
+                  <label id="btn-update-photo" htmlFor="my-modal-1">
                     <p className="w-48 btn tracking-wider bg-[#3282B8] text-white hover:border-white font-medium rounded-2xl capitalize border-4 border-white shadow-md shadow-black">
                       Update Photo
                     </p>
@@ -42,6 +41,7 @@ const EmployeeProfile = () => {
                         </div>
                         <div className="flex flex-col gap-5">
                           <input
+                            id="input-photo"
                             type="file"
                             className="file-input file-input-bordered w-full border-2 border-sky max-w-xs"
                           />
@@ -49,12 +49,14 @@ const EmployeeProfile = () => {
                       </div>
                       <div className="modal-action">
                         <button
+                          id="btn-photo-submit"
                           type="submit"
                           className="w-24 text-sm text-center border-2 border-sky bg-sky rounded-xl py-1 text-gray-50 font-medium duration-300 hover:cursor-pointer  hover:bg-blue-900  active:scale-90"
                         >
                           Update
                         </button>
                         <label
+                          id="btn-photo-cancel"
                           htmlFor="my-modal-1"
                           className="w-24 text-sm text-center border-2 border-sky rounded-xl py-1 text-sky font-medium duration-300 hover:cursor-pointer hover:bg-red-600 hover:text-white  active:scale-90"
                         >
@@ -65,7 +67,7 @@ const EmployeeProfile = () => {
                   </div>
                 </form>
                 <form>
-                  <label htmlFor="my-modal-2">
+                  <label id="btn-update-password" htmlFor="my-modal-2">
                     <p className="w-48 btn tracking-wider bg-[#3282B8] text-white hover:border-white font-medium rounded-2xl capitalize border-4 border-white shadow-md shadow-black">
                       Update Password
                     </p>
@@ -86,6 +88,7 @@ const EmployeeProfile = () => {
                         </div>
                         <div className="flex flex-col gap-5">
                           <input
+                            id="input-new-password"
                             type="password"
                             className="input input-bordered input-md w-full max-w-xs border-2 border-sky"
                           />
@@ -93,12 +96,14 @@ const EmployeeProfile = () => {
                       </div>
                       <div className="modal-action">
                         <button
+                          id="btn-password-submit"
                           type="submit"
                           className="w-24 text-sm text-center border-2 border-sky bg-sky rounded-xl py-1 text-gray-50 font-medium duration-300 hover:cursor-pointer  hover:bg-blue-900  active:scale-90"
                         >
                           Update
                         </button>
                         <label
+                          id="btn-password-cancel"
                           htmlFor="my-modal-2"
                           className="w-24 text-sm text-center border-2 border-sky rounded-xl py-1 text-sky font-medium duration-300 hover:cursor-pointer hover:bg-red-600 hover:text-white  active:scale-90"
                         >
@@ -117,7 +122,9 @@ const EmployeeProfile = () => {
             <p className="text-lg">IT Support</p>
 
             <span className="underline font-semibold text-2xl pt-2 pb-8">
-              <Link to="/profile/company">Timesync Company</Link>
+              <Link id="btn-company-profile" to="/profile/company">
+                Timesync Company
+              </Link>
             </span>
 
             <table className="table-auto text-xl font-bold flex flex-col gap-4">

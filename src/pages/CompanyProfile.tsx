@@ -1,4 +1,5 @@
 import { IoReturnUpBack } from "react-icons/io5";
+import { useCookies } from "react-cookie";
 import { Link } from "react-router-dom";
 import React, { useState } from "react";
 
@@ -6,7 +7,6 @@ import building from "assets/building.svg";
 import { WrappingCard } from "components/Card";
 import Button from "components/Button";
 import Layout from "components/Layout";
-import { useCookies } from "react-cookie";
 
 const CompanyProfile = () => {
   const [cookie, setCookie] = useCookies();
@@ -17,7 +17,7 @@ const CompanyProfile = () => {
         rightSide={
           cookie.role === "admin" ? null : (
             <>
-              <Link to="/profile">
+              <Link id="btn-back" to="/profile">
                 <Button
                   buttonSet="border-2 border-white shadow-md shadow-black rounded-full capitalize font-medium gap-2 px-3 text-xs hover:bg-navy"
                   icon={<IoReturnUpBack size={20} />}
