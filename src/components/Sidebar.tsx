@@ -1,3 +1,7 @@
+import { Link, useNavigate } from "react-router-dom";
+import { FC, LabelHTMLAttributes } from "react";
+import { useCookies } from "react-cookie";
+import Swal from "sweetalert2";
 import {
   TbLogout,
   TbHome,
@@ -8,9 +12,6 @@ import {
   TbMail,
   TbSettings,
 } from "react-icons/tb";
-import { FC, LabelHTMLAttributes } from "react";
-import { useCookies } from "react-cookie";
-import { Link } from "react-router-dom";
 
 interface SidebarProps extends LabelHTMLAttributes<HTMLParagraphElement> {
   homeSet?: string;
@@ -31,10 +32,41 @@ const Sidebar: FC<SidebarProps> = ({
   inboxSet,
   settingsSet,
 }) => {
-  const [cookie] = useCookies(["role"]);
+  const [cookie, setCookie, removeCookie] = useCookies();
+  const navigate = useNavigate();
   const checkRole = cookie.role;
   const admin = checkRole == "admin";
 
+  function onLogout() {
+    Swal.fire({
+      title: "Are you sure want to logout?",
+      // text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Yes",
+      cancelButtonColor: "#d33",
+      cancelButtonText: "No",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          text: "Logout successfully",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        removeCookie("token");
+        removeCookie("email");
+        removeCookie("id");
+        removeCookie("name");
+        removeCookie("nip");
+        removeCookie("position");
+        removeCookie("role");
+        navigate("/");
+      }
+    });
+  }
   return (
     <div className="bg-navy h-screen w-52 shadow-lg sticky top-0 z-40 flex pt-28 pb-16 flex-col justify-between items-center">
       <section className="w-full flex flex-col font-semibold text-white gap-2">
@@ -116,10 +148,11 @@ const Sidebar: FC<SidebarProps> = ({
       <section>
         <div
           id="btn-sidebar-logout"
+          onClick={() => onLogout()}
           className="flex justify-center items-center mx-7 px-5 py-3 border-2 border-white rounded-xl shadow-md shadow-black gap-1 font-bold text-yellow-400 duration-300 hover:cursor-pointer active:scale-90"
         >
           <p>
-            <TbLogout size={25} />
+            <TbLogout size={25}  />
           </p>
           <p>Logout</p>
         </div>
