@@ -30,7 +30,7 @@ export const Modals2: FC<modalProps> = ({ no, titleModal, children }) => {
         <div className="modal-box border-2 border-sky flex flex-col justify-center text-sky">
           <label
             htmlFor={`my-modal-${no}`}
-            className="btn btn-sm btn-circle absolute right-2 top-2"
+            className="btn btn-sm btn-circle absolute right-2 top-2 bg-white text-sky border-sky hover:bg-white hover:border-sky"
           >
             ✕
           </label>
