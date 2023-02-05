@@ -40,7 +40,7 @@ const CompanyProfile = () => {
             />
             {admin && (
               <form>
-                <label id="btn-create-inbox" htmlFor="my-modal-1">
+                <label id="btn-update-profile" htmlFor="my-modal-1">
                   <p className="w-48 btn tracking-wider bg-[#3282B8] text-white hover:border-white font-medium rounded-2xl capitalize border-4 border-white shadow-md shadow-black">
                     Update Profile
                   </p>
@@ -68,47 +68,47 @@ const CompanyProfile = () => {
                       </div>
                       <div className="flex flex-col gap-2">
                         <CustomInput
-                          id="input-inbox-company"
+                          id="input-name"
                           type="text"
-                          placeholder="Type here"
+                          placeholder="Type name"
                           className="input input-bordered input-md w-80 max-w-xs border-2 border-sky focus:border-lightYellow"
                         />
                         <CustomInput
-                          id="input-inbox-title"
+                          id="input-tagline"
                           type="text"
-                          placeholder="Type here"
+                          placeholder="Type tagline"
                           className="input input-bordered input-md w-80 max-w-xs border-2 border-sky focus:border-lightYellow"
                         />
                         <CustomInput
-                          id="input-inbox-title"
+                          id="input-phone"
                           type="text"
-                          placeholder="Type here"
+                          placeholder="Type phone here"
                           className="input input-bordered input-md w-80 max-w-xs border-2 border-sky focus:border-lightYellow"
                         />
                         <CustomInput
-                          id="input-inbox-title"
-                          type="text"
-                          placeholder="Type here"
+                          id="input-email"
+                          type="email"
+                          placeholder="Type email here"
                           className="input input-bordered input-md w-80 max-w-xs border-2 border-sky focus:border-lightYellow"
                         />
                         <CustomInput
-                          id="input-inbox-title"
+                          id="input-social-media"
                           type="text"
-                          placeholder="Type here"
+                          placeholder="Type social media here"
                           className="input input-bordered input-md w-80 max-w-xs border-2 border-sky focus:border-lightYellow"
                         />
                         <TextArea
-                          id="input-inbox-message"
-                          placeholder="Type here"
+                          id="input-address"
+                          placeholder="Type address here"
                           className="input input-bordered input-sm h-28 w-80 max-w-xs border-2 border-sky focus:border-lightYellow"
                         />
                         <TextArea
-                          id="input-inbox-message"
-                          placeholder="Type here"
+                          id="input-description"
+                          placeholder="Type description here"
                           className="input input-bordered input-sm h-40 w-80 max-w-xs border-2 border-sky focus:border-lightYellow"
                         />
                         <CustomInput
-                          id="input-photo"
+                          id="input-picture"
                           type="file"
                           className="file-input file-input-bordered w-full border-2 border-sky max-w-xs focus:border-lightYellow"
                         />
@@ -116,14 +116,14 @@ const CompanyProfile = () => {
                     </div>
                     <div className="modal-action">
                       <button
-                        id="btn-inbox-submit"
+                        id="btn-company-submit"
                         type="submit"
                         className="w-24 text-sm text-center border-2 border-sky bg-sky rounded-xl py-1 text-gray-50 font-medium duration-300 hover:cursor-pointer  hover:bg-blue-900  active:scale-90"
                       >
                         Submit
                       </button>
                       <label
-                        id="btn-inbox-cancel"
+                        id="btn-company-cancel"
                         htmlFor="my-modal-1"
                         className="w-24 text-sm text-center border-2 border-sky rounded-xl py-1 text-sky font-medium duration-300 hover:cursor-pointer hover:bg-red-600 hover:text-white  active:scale-90"
                       >
