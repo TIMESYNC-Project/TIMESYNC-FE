@@ -1,19 +1,19 @@
-import {useState} from "react";
+import { useState } from "react";
 
-import { CustomInput } from "components/CustomInput";
 import loginart from "assets/login-art.jpg";
-import Button from "components/Button";
 import logo from "assets/logo.png";
+import { CustomInput } from "components/CustomInput";
+import Button from "components/Button";
 
 const Login = () => {
-  const [passType, setPassType] = useState<string>("password")
+  const [passType, setPassType] = useState<string>("password");
 
   function tooglePass() {
     if (passType === "password") {
       setPassType("text");
     }
-    if(passType === 'text'){
-      setPassType('password')
+    if (passType === "text") {
+      setPassType("password");
     }
   }
 
@@ -43,15 +43,15 @@ const Login = () => {
               type={passType}
             />
             <div className="flex">
-              <input type="checkbox" onClick={()=>tooglePass()}/>
+              <input type="checkbox" onClick={() => tooglePass()} />
               <label className="text-sm mx-2 capitalize">show password</label>
             </div>
             <Button
-            buttonSet="w-full bg-lightYellow hover:bg-darkYellow text-navy border-0 mt-14"
-            label="LOGIN"
-            type="submit"
-          />
-          </form>          
+              buttonSet="w-full bg-lightYellow hover:bg-darkYellow text-navy border-0 mt-14"
+              label="LOGIN"
+              type="submit"
+            />
+          </form>
         </div>
       </section>
     </div>
