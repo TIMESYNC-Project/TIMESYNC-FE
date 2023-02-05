@@ -21,13 +21,13 @@ export const CustomInput: FC<PropsInput> = ({
   ...props
 }) => {
   return (
-    <div className={`mb-3 ${parentSet}`}>
+    <>
       <label className={`${labelSet}`}>{label}</label>
       <input
         className={`input input-bordered w-full bg-white ${inputSet}`}
         {...props}
       />
-    </div>
+    </>
   );
 };
 export const TextArea: FC<PropsTextArea> = ({
@@ -38,12 +38,12 @@ export const TextArea: FC<PropsTextArea> = ({
   ...props
 }) => {
   return (
-    <div className={`mb-3 ${parentSet}`}>
+    <>
       <label className={`${labelSet}`}>{label}</label>
       <textarea
         className={`textarea textarea-bordered w-full resize-none bg-white ${inputSet}`}
         {...props}
       ></textarea>
-    </div>
+    </>
   );
 };
