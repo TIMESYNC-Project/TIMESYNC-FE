@@ -1,25 +1,31 @@
 import { IoReturnUpBack } from "react-icons/io5";
 import { Link } from "react-router-dom";
-import React from "react";
+import React, { useState } from "react";
 
 import building from "assets/building.svg";
 import { WrappingCard } from "components/Card";
 import Button from "components/Button";
 import Layout from "components/Layout";
+import { useCookies } from "react-cookie";
 
 const CompanyProfile = () => {
+  const [cookie, setCookie] = useCookies();
   return (
     <Layout profileSet="w-full bg-gradient-to-r from-white to-navy hover:text-white">
       <WrappingCard
         judul="Company Profile"
         rightSide={
-          <Link to="/employeeprofile">
-            <Button
-              buttonSet="border-2 border-white shadow-md shadow-black rounded-full capitalize font-medium gap-2 px-3 text-xs"
-              icon={<IoReturnUpBack size={20} />}
-              label="Back to Employee's Profile"
-            />
-          </Link>
+          cookie.role === "admin" ? null : (
+            <>
+              <Link to="/profile">
+                <Button
+                  buttonSet="border-2 border-white shadow-md shadow-black rounded-full capitalize font-medium gap-2 px-3 text-xs hover:bg-navy"
+                  icon={<IoReturnUpBack size={20} />}
+                  label="Back to Employee's Profile"
+                />
+              </Link>
+            </>
+          )
         }
       >
         <div className="flex w-full">

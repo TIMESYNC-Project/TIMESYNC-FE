@@ -27,8 +27,8 @@ const RequestApproval = () => {
         rightSide={
           <>
             <Button
+              buttonSet="border-2 border-white shadow-md shadow-black rounded-full capitalize font-medium gap-2 px-3 text-xs hover:bg-navy w-1/4"
               label="Back"
-              buttonSet="shadow-xl rounded-xl text-white w-1/4"
               onClick={() => navigate(-1)}
             />
           </>
@@ -69,7 +69,12 @@ const RequestApproval = () => {
               className="file-input file-input-bordered w-full border-1 border-sky max-w-xs file:bg-sky file:border-none file:capitalize file:text-md text-base"
             />
             <div className="flex justify-end">
-              <Button label="Submit" type="submit" buttonSet="w-1/4 my-5 " />
+              <Button
+                buttonSet="border-2 border-white shadow-md shadow-black rounded-full capitalize font-medium gap-2 px-3 text-md hover:bg-navy w-1/4 my-5"
+                label="Submit"
+                type="submit"
+                // onClick={() => setCookie("role", "admin")}
+              />
             </div>
           </form>
         </CardWithLogo>

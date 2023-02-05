@@ -9,7 +9,6 @@ import { MiniCard, FlexyCard, WrappingCard } from "components/Card";
 import Layout from "components/Layout";
 import Button from "components/Button";
 
-
 const Home = () => {
   const [cookie, setCookie] = useCookies();
   const [hour, setHour] = useState<string>("");
@@ -35,17 +34,20 @@ const Home = () => {
             <div className="w-2/3">
               <div className="grid grid-cols-2">
                 {/* card total employees start */}
-                <MiniCard
-                  judul="total employees"
-                  titleSet="text-center text-lg"
-                >
-                  <p className="text-7xl text-black font-bold text-center">
-                    8{" "}
-                    <span className="capitalize text-xl font-normal">
-                      person
-                    </span>
-                  </p>
-                </MiniCard>
+                <Link to="/employees">
+                  <MiniCard
+                    judul="total employees"
+                    titleSet="text-center text-lg"
+                  >
+                    <p className="text-7xl text-black font-bold text-center">
+                      8{" "}
+                      <span className="capitalize text-xl font-normal">
+                        person
+                      </span>
+                    </p>
+                  </MiniCard>
+                </Link>
+
                 {/* card total employees end */}
 
                 {/* card total presence today start */}
@@ -93,121 +95,125 @@ const Home = () => {
             </div>
             <div className="w-1/3">
               {/* card employees start */}
-              <MiniCard judul="employees" titleSet="text-center text-xl">
-                <div className="flex flex-col my-3">
-                  <div className="flex flex-row justify-start">
-                    <div className="h-1/2">
-                      <img
-                        src="https://i.pinimg.com/564x/9f/8b/74/9f8b749c32edf47b1b3f098230a5584c.jpg"
-                        className="w-[40px] h-[40px]  rounded-full"
-                      />
-                    </div>
-                    <div className="flex justify-start items-center mx-2">
-                      <p className="text-xl text-black font-bold capitalize">
-                        james shelby
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex flex-col my-3">
-                  <div className="flex flex-row justify-start">
-                    <div className="h-1/2">
-                      <img
-                        src="https://i.pinimg.com/564x/9f/8b/74/9f8b749c32edf47b1b3f098230a5584c.jpg"
-                        className="w-[40px] h-[40px]  rounded-full"
-                      />
-                    </div>
-                    <div className="flex justify-start items-center mx-2">
-                      <p className="text-xl text-black font-bold capitalize">
-                        james shelby
-                      </p>
+              <Link to="/employees">
+                <MiniCard judul="employees" titleSet="text-center text-xl">
+                  <div className="flex flex-col my-3">
+                    <div className="flex flex-row justify-start">
+                      <div className="h-1/2">
+                        <img
+                          src="https://i.pinimg.com/564x/9f/8b/74/9f8b749c32edf47b1b3f098230a5584c.jpg"
+                          className="w-[40px] h-[40px]  rounded-full"
+                        />
+                      </div>
+                      <div className="flex justify-start items-center mx-2">
+                        <p className="text-xl text-black font-bold capitalize">
+                          james shelby
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="flex flex-col my-3">
-                  <div className="flex flex-row justify-start">
-                    <div className="h-1/2">
-                      <img
-                        src="https://i.pinimg.com/564x/9f/8b/74/9f8b749c32edf47b1b3f098230a5584c.jpg"
-                        className="w-[40px] h-[40px]  rounded-full"
-                      />
-                    </div>
-                    <div className="flex justify-start items-center mx-2">
-                      <p className="text-xl text-black font-bold capitalize">
-                        james shelby
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex flex-col my-3">
-                  <div className="flex flex-row justify-start">
-                    <div className="h-1/2">
-                      <img
-                        src="https://i.pinimg.com/564x/9f/8b/74/9f8b749c32edf47b1b3f098230a5584c.jpg"
-                        className="w-[40px] h-[40px]  rounded-full"
-                      />
-                    </div>
-                    <div className="flex justify-start items-center mx-2">
-                      <p className="text-xl text-black font-bold capitalize">
-                        james shelby
-                      </p>
+                  <div className="flex flex-col my-3">
+                    <div className="flex flex-row justify-start">
+                      <div className="h-1/2">
+                        <img
+                          src="https://i.pinimg.com/564x/9f/8b/74/9f8b749c32edf47b1b3f098230a5584c.jpg"
+                          className="w-[40px] h-[40px]  rounded-full"
+                        />
+                      </div>
+                      <div className="flex justify-start items-center mx-2">
+                        <p className="text-xl text-black font-bold capitalize">
+                          james shelby
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </MiniCard>
+                  <div className="flex flex-col my-3">
+                    <div className="flex flex-row justify-start">
+                      <div className="h-1/2">
+                        <img
+                          src="https://i.pinimg.com/564x/9f/8b/74/9f8b749c32edf47b1b3f098230a5584c.jpg"
+                          className="w-[40px] h-[40px]  rounded-full"
+                        />
+                      </div>
+                      <div className="flex justify-start items-center mx-2">
+                        <p className="text-xl text-black font-bold capitalize">
+                          james shelby
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex flex-col my-3">
+                    <div className="flex flex-row justify-start">
+                      <div className="h-1/2">
+                        <img
+                          src="https://i.pinimg.com/564x/9f/8b/74/9f8b749c32edf47b1b3f098230a5584c.jpg"
+                          className="w-[40px] h-[40px]  rounded-full"
+                        />
+                      </div>
+                      <div className="flex justify-start items-center mx-2">
+                        <p className="text-xl text-black font-bold capitalize">
+                          james shelby
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </MiniCard>
+              </Link>
               {/* card employees end */}
 
               {/* card inbox start */}
-              <MiniCard judul="inbox" titleSet="text-center text-xl">
-                <div className="flex flex-col my-3">
-                  <div className="flex flex-row justify-start">
-                    <div className="h-1/2">
-                      <AiOutlineMessage size={25} />
-                    </div>
-                    <div className="flex justify-start items-center mx-2">
-                      <p className="text-xl text-black font-bold capitalize">
-                        HUT RI
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex flex-col my-3">
-                  <div className="flex flex-row justify-start">
-                    <div className="h-1/2">
-                      <AiOutlineMessage size={25} />
-                    </div>
-                    <div className="flex justify-start items-center mx-2">
-                      <p className="text-xl text-black font-bold capitalize">
-                        hari raya idul fitri
-                      </p>
+              <Link to="/inbox">
+                <MiniCard judul="inbox" titleSet="text-center text-xl">
+                  <div className="flex flex-col my-3">
+                    <div className="flex flex-row justify-start">
+                      <div className="h-1/2">
+                        <AiOutlineMessage size={25} />
+                      </div>
+                      <div className="flex justify-start items-center mx-2">
+                        <p className="text-xl text-black font-bold capitalize">
+                          HUT RI
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="flex flex-col my-3">
-                  <div className="flex flex-row justify-start">
-                    <div className="h-1/2">
-                      <AiOutlineMessage size={25} />
-                    </div>
-                    <div className="flex justify-start items-center mx-2">
-                      <p className="text-xl text-black font-bold capitalize">
-                        hari raya idul adha
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex flex-col my-3">
-                  <div className="flex flex-row justify-start">
-                    <div className="h-1/2">
-                      <AiOutlineMessage size={25} />
-                    </div>
-                    <div className="flex justify-start items-center mx-2">
-                      <p className="text-xl text-black font-bold capitalize">
-                        james shelby
-                      </p>
+                  <div className="flex flex-col my-3">
+                    <div className="flex flex-row justify-start">
+                      <div className="h-1/2">
+                        <AiOutlineMessage size={25} />
+                      </div>
+                      <div className="flex justify-start items-center mx-2">
+                        <p className="text-xl text-black font-bold capitalize">
+                          hari raya idul fitri
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </MiniCard>
+                  <div className="flex flex-col my-3">
+                    <div className="flex flex-row justify-start">
+                      <div className="h-1/2">
+                        <AiOutlineMessage size={25} />
+                      </div>
+                      <div className="flex justify-start items-center mx-2">
+                        <p className="text-xl text-black font-bold capitalize">
+                          hari raya idul adha
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex flex-col my-3">
+                    <div className="flex flex-row justify-start">
+                      <div className="h-1/2">
+                        <AiOutlineMessage size={25} />
+                      </div>
+                      <div className="flex justify-start items-center mx-2">
+                        <p className="text-xl text-black font-bold capitalize">
+                          james shelby
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </MiniCard>
+              </Link>
               {/* card inbox end */}
             </div>
           </div>
@@ -235,14 +241,14 @@ const Home = () => {
             </p>
             <div className="flex justify-center items-center my-7">
               <Button
+                buttonSet="border-2 border-white shadow-md shadow-black rounded-full capitalize font-medium gap-2 px-3 text-md hover:bg-navy w-1/6 mx-2"
                 label="Clock In"
-                buttonSet="w-1/6 mx-2 hover:bg-navy"
                 onClick={() => setCookie("role", "admin")}
               />
               <Button
+                buttonSet="border-2 border-white shadow-md shadow-black rounded-full capitalize font-medium gap-2 px-3 text-md hover:bg-navy w-1/6 mx-2"
                 label="Clock out"
-                buttonSet="w-1/6 mx-2 hover:bg-navy"
-                // onClick={}
+                // onClick={() => setCookie("role", "admin")}
               />
             </div>
             <hr className="mx-7 my-3 border-[1.5px] border-sky" />
@@ -251,7 +257,7 @@ const Home = () => {
                 <p className="text-black text-left">Logs today</p>
               </div>
               <div className="w-1/2">
-                <Link to={"/"}>
+                <Link to={"/records"}>
                   <p className="text-black text-right capitalize">See more..</p>
                 </Link>
               </div>
