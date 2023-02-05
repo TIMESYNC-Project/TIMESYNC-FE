@@ -4,9 +4,9 @@ import { useParams } from "react-router-dom";
 import moment from "moment";
 
 import { WrappingCard, FlexyCard } from "components/Card";
-import Layout from "components/Layout";
 import { Modals1, Modals2 } from "components/Modals";
 import { CustomInput } from "components/CustomInput";
+import Layout from "components/Layout";
 
 const RecordsDetail = () => {
   const [date, setDate] = useState<string>("");
@@ -70,16 +70,15 @@ const RecordsDetail = () => {
                   </div>
                   <div className="flex items-center justify-center w-2/3 mx-2">
                     <select
-                      name="Month"
+                      name="attendance"
                       id=""
                       className="select select-bordered border-sky w-full text-black"
                       // onChange={()=>}
                     >
                       <option value="">Attendance</option>
-                      <option value="Presence">Presence</option>
-                      <option value="Absence">Absence</option>
                       <option value="Annual Leave">Annual Leave</option>
                       <option value="On Leave">On Leave</option>
+                      <option value="Sick Leave">Sick Leave</option>
                     </select>
                   </div>
                 </div>
