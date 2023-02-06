@@ -19,6 +19,7 @@ const Employee = () => {
   function onClickDetail(id: number) {
     navigate(`/employee/profile/${id}`);
   }
+
   return (
     <Layout employeesSet="w-full bg-gradient-to-r from-white to-navy hover:text-white">
       <WrappingCard
@@ -45,7 +46,7 @@ const Employee = () => {
                 htmlFor={`my-modal-1`}
                 className="flex justify-center items-center"
               >
-                <div className="mx-2 text-sky hover:cursor-pointer">
+                <div className="mx-2 text-sky hover:cursor-pointer hover:text-green-700">
                   <AiOutlineFileAdd size={27} />
                 </div>
               </label>
@@ -54,7 +55,7 @@ const Employee = () => {
                 htmlFor={`my-modal-2`}
                 className="flex justify-center items-center"
               >
-                <div className="mx-2 text-sky hover:cursor-pointer">
+                <div className="mx-2 text-sky hover:cursor-pointer hover:text-gray-600">
                   <AiOutlineUserAdd size={27} />
                 </div>
               </label>
@@ -63,59 +64,52 @@ const Employee = () => {
         }
       >
         {[...Array(3)].map((data, index) => (
-          <FlexyCard parentSet="duration-300 hover:cursor-pointer active:scale-95">
-            <div
-              className="flex justify-center items-center"
-            >
+          <FlexyCard>
+            <div className="flex justify-center items-center">
               <div className="flex w-1/2">
                 <img
                   src="https://i.pinimg.com/564x/9f/8b/74/9f8b749c32edf47b1b3f098230a5584c.jpg"
-                  className="w-[50px] h-[50px]  rounded-full"
+                  className="w-[50px] h-[50px] rounded-full duration-300 hover:cursor-pointer active:scale-95"
                   id={`btn-img-${index}`}
-                  onClick={() => onClickDetail(2)}
+                  onClick={() => onClickDetail(index)}
                 />
                 <div className="mx-7">
                   <p
-                    className="font-medium text-lg text-navy"
+                    className="font-medium text-lg text-navy duration-300 hover:cursor-pointer active:scale-95"
                     id={`btn-nip-${index}`}
-                    onClick={() => onClickDetail(2)}
+                    onClick={() => onClickDetail(index)}
                   >
                     0001
                   </p>
                   <p
-                    className="font-bold text-lg text-navy"
+                    className="font-bold text-lg text-navy duration-300 hover:cursor-pointer active:scale-95"
                     id={`btn-name-${index}`}
-                    onClick={() => onClickDetail(2)}
+                    onClick={() => onClickDetail(index)}
                   >
                     James Shelby
                   </p>
                 </div>
               </div>
-              <div className="flex w-1/2 justify-end">
+              <div className="flex w-1/2 justify-end items-center">
                 <div className="mx-5">
                   <p
-                    className="font-bold text-lg text-navy"
+                    className="font-bold text-lg text-navy duration-300 hover:cursor-pointer active:scale-95"
                     id={`btn-position-${index}`}
-                    onClick={() => onClickDetail(2)}
+                    onClick={() => onClickDetail(index)}
                   >
                     Product Engineer
                   </p>
                 </div>
                 <label
-                  id={`btn-edit-employee-card-${index}`}
+                  id={`btn-edit-employee-${index}`}
                   htmlFor={`my-modal-3`}
-                  className="flex justify-center items-center"
+                  className="mx-3 text-sky hover:cursor-pointer hover:text-orange-600"
                 >
-                  <div
-                    className="mx-3 text-sky hover:cursor-pointer"
-                    //   onClick={()=>console.log("hai")}
-                  >
-                    <BiEdit size={27} />
-                  </div>
+                  <BiEdit size={27} />
                 </label>
                 <button
-                  id={`btn-delete-employee-card-${index}`}
-                  className="mx-3 text-sky"
+                  id={`btn-delete-employee-${index}`}
+                  className="mx-3 text-sky hover:cursor-pointer hover:text-red-600"
                   //   onClick={()=>console.log("hai")}
                 >
                   <AiOutlineDelete size={27} />
