@@ -8,14 +8,32 @@ import moment from "moment";
 import { MiniCard, FlexyCard, WrappingCard } from "components/Card";
 import Layout from "components/Layout";
 import Button from "components/Button";
+import axios from "axios";
+
+interface DataType {
+  id: number;
+  name: string;
+  nip: string;
+  position: string;
+  profile_picture: string;
+}
+interface InboxType {
+  id: number;
+  announcement_title: string;
+  announcement_description: string;
+}
 
 const Home = () => {
-  const [cookie, setCookie] = useCookies();
+  const [data, setData] = useState<DataType[]>([]);
+  const [inbox, setInbox] = useState<InboxType[]>([]);
   const [hour, setHour] = useState<string>("");
   const [date, setDate] = useState<string>("");
+  const [cookie, setCookie] = useCookies();
 
   useEffect(() => {
     newDate();
+    getEmployee();
+    getInbox();
   }, []);
 
   function newDate() {
@@ -24,7 +42,33 @@ const Home = () => {
     setHour(jam.substring(15, 21));
     setDate(tanggal.substring(0, 27));
   }
-  console.log(date);
+
+  function getEmployee() {
+    axios
+      .get(`https://shirayuki.site/employees`, {
+        headers: {
+          Authorization: `Bearer ${cookie.token}`,
+        },
+      })
+      .then((res) => {
+        const { data } = res.data;
+        setData(data);
+      })
+      .catch((err) => {});
+  }
+  function getInbox() {
+    axios
+      .get(`https://shirayuki.site/announcements`, {
+        headers: {
+          Authorization: `Bearer ${cookie.token}`,
+        },
+      })
+      .then((res) => {
+        const { data } = res.data;
+        setInbox(data);
+      })
+      .catch((err) => {});
+  }
 
   return (
     <Layout homeSet="w-full bg-gradient-to-r from-white to-navy hover:text-white">
@@ -40,7 +84,7 @@ const Home = () => {
                     titleSet="text-center text-lg"
                   >
                     <p className="text-7xl text-black font-bold text-center">
-                      8{" "}
+                      {`${data.length}`}
                       <span className="capitalize text-xl font-normal">
                         person
                       </span>
@@ -97,66 +141,25 @@ const Home = () => {
               {/* card employees start */}
               <Link id="card-list-employees" to="/employees">
                 <MiniCard judul="employees" titleSet="text-center text-xl">
-                  <div className="flex flex-col my-3">
-                    <div className="flex flex-row justify-start">
-                      <div className="h-1/2">
-                        <img
-                          src="https://i.pinimg.com/564x/9f/8b/74/9f8b749c32edf47b1b3f098230a5584c.jpg"
-                          className="w-[40px] h-[40px]  rounded-full"
-                        />
+                  {data.slice(0, 5).map((data) => {
+                    return (
+                      <div className="flex flex-col my-3" key={data.id}>
+                        <div className="flex flex-row justify-start">
+                          <div className="h-1/2">
+                            <img
+                              src={data.profile_picture}
+                              className="w-[40px] h-[40px]  rounded-full"
+                            />
+                          </div>
+                          <div className="flex justify-start items-center mx-2">
+                            <p className="text-xl text-black font-bold capitalize">
+                              {data.name}
+                            </p>
+                          </div>
+                        </div>
                       </div>
-                      <div className="flex justify-start items-center mx-2">
-                        <p className="text-xl text-black font-bold capitalize">
-                          james shelby
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex flex-col my-3">
-                    <div className="flex flex-row justify-start">
-                      <div className="h-1/2">
-                        <img
-                          src="https://i.pinimg.com/564x/9f/8b/74/9f8b749c32edf47b1b3f098230a5584c.jpg"
-                          className="w-[40px] h-[40px]  rounded-full"
-                        />
-                      </div>
-                      <div className="flex justify-start items-center mx-2">
-                        <p className="text-xl text-black font-bold capitalize">
-                          james shelby
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex flex-col my-3">
-                    <div className="flex flex-row justify-start">
-                      <div className="h-1/2">
-                        <img
-                          src="https://i.pinimg.com/564x/9f/8b/74/9f8b749c32edf47b1b3f098230a5584c.jpg"
-                          className="w-[40px] h-[40px]  rounded-full"
-                        />
-                      </div>
-                      <div className="flex justify-start items-center mx-2">
-                        <p className="text-xl text-black font-bold capitalize">
-                          james shelby
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex flex-col my-3">
-                    <div className="flex flex-row justify-start">
-                      <div className="h-1/2">
-                        <img
-                          src="https://i.pinimg.com/564x/9f/8b/74/9f8b749c32edf47b1b3f098230a5584c.jpg"
-                          className="w-[40px] h-[40px]  rounded-full"
-                        />
-                      </div>
-                      <div className="flex justify-start items-center mx-2">
-                        <p className="text-xl text-black font-bold capitalize">
-                          james shelby
-                        </p>
-                      </div>
-                    </div>
-                  </div>
+                    );
+                  })}
                 </MiniCard>
               </Link>
               {/* card employees end */}
@@ -164,54 +167,22 @@ const Home = () => {
               {/* card inbox start */}
               <Link id="card-list-inbox" to="/inbox">
                 <MiniCard judul="inbox" titleSet="text-center text-xl">
-                  <div className="flex flex-col my-3">
-                    <div className="flex flex-row justify-start">
-                      <div className="h-1/2">
-                        <AiOutlineMessage size={25} />
+                  {inbox.slice(0, 5).map((data) => {
+                    return (
+                      <div className="flex flex-col my-3" key={data.id}>
+                        <div className="flex flex-row justify-start">
+                          <div className="h-1/2">
+                            <AiOutlineMessage size={25} />
+                          </div>
+                          <div className="flex justify-start items-center mx-2">
+                            <p className="text-xl text-black font-bold capitalize">
+                              {data.announcement_title}
+                            </p>
+                          </div>
+                        </div>
                       </div>
-                      <div className="flex justify-start items-center mx-2">
-                        <p className="text-xl text-black font-bold capitalize">
-                          HUT RI
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex flex-col my-3">
-                    <div className="flex flex-row justify-start">
-                      <div className="h-1/2">
-                        <AiOutlineMessage size={25} />
-                      </div>
-                      <div className="flex justify-start items-center mx-2">
-                        <p className="text-xl text-black font-bold capitalize">
-                          hari raya idul fitri
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex flex-col my-3">
-                    <div className="flex flex-row justify-start">
-                      <div className="h-1/2">
-                        <AiOutlineMessage size={25} />
-                      </div>
-                      <div className="flex justify-start items-center mx-2">
-                        <p className="text-xl text-black font-bold capitalize">
-                          hari raya idul adha
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex flex-col my-3">
-                    <div className="flex flex-row justify-start">
-                      <div className="h-1/2">
-                        <AiOutlineMessage size={25} />
-                      </div>
-                      <div className="flex justify-start items-center mx-2">
-                        <p className="text-xl text-black font-bold capitalize">
-                          james shelby
-                        </p>
-                      </div>
-                    </div>
-                  </div>
+                    );
+                  })}
                 </MiniCard>
               </Link>
               {/* card inbox end */}
