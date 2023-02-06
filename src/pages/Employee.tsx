@@ -65,24 +65,26 @@ const Employee = () => {
         {[...Array(3)].map((data, index) => (
           <FlexyCard parentSet="duration-300 hover:cursor-pointer active:scale-95">
             <div
-              id={`btn-employee-${index}`}
               className="flex justify-center items-center"
             >
               <div className="flex w-1/2">
                 <img
                   src="https://i.pinimg.com/564x/9f/8b/74/9f8b749c32edf47b1b3f098230a5584c.jpg"
                   className="w-[50px] h-[50px]  rounded-full"
+                  id={`btn-img-${index}`}
                   onClick={() => onClickDetail(2)}
                 />
                 <div className="mx-7">
                   <p
                     className="font-medium text-lg text-navy"
+                    id={`btn-nip-${index}`}
                     onClick={() => onClickDetail(2)}
                   >
                     0001
                   </p>
                   <p
                     className="font-bold text-lg text-navy"
+                    id={`btn-name-${index}`}
                     onClick={() => onClickDetail(2)}
                   >
                     James Shelby
@@ -93,13 +95,14 @@ const Employee = () => {
                 <div className="mx-5">
                   <p
                     className="font-bold text-lg text-navy"
+                    id={`btn-position-${index}`}
                     onClick={() => onClickDetail(2)}
                   >
                     Product Engineer
                   </p>
                 </div>
                 <label
-                  id="btn-edit-employee-card"
+                  id={`btn-edit-employee-card-${index}`}
                   htmlFor={`my-modal-3`}
                   className="flex justify-center items-center"
                 >
@@ -111,7 +114,7 @@ const Employee = () => {
                   </div>
                 </label>
                 <button
-                  id="btn-delete-employee-card"
+                  id={`btn-delete-employee-card-${index}`}
                   className="mx-3 text-sky"
                   //   onClick={()=>console.log("hai")}
                 >
