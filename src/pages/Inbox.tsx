@@ -4,13 +4,15 @@ import React from "react";
 
 import { CustomInput, TextArea } from "components/CustomInput";
 import { FlexyCard, WrappingCard } from "components/Card";
-import TextLimit from "components/TextLimit";
 import Layout from "components/Layout";
 
 const Inbox = () => {
   const [cookie] = useCookies(["role"]);
   const checkRole = cookie.role;
   const admin = checkRole == "admin";
+  const dummytext =
+    "Dalam rangka memperingati Hari Ulang Tahun Republik Indonesia yang ke 1000 tahun, kita semua libur setahun. Dalam rangka memperingati Hari Ulang Tahun Republik Indonesia yang ke 1000 tahun, kita semua libur setahun. Dalam rangka memperingati Hari Ulang Tahun Republik Indonesia yang ke 1000 tahun, kita semua libur setahun!";
+  const message = dummytext.substring(0, 60) + "...";
 
   return (
     <Layout inboxSet="w-full bg-gradient-to-r from-white to-navy hover:text-white">
@@ -80,10 +82,10 @@ const Inbox = () => {
       >
         {[...Array(5)].map((data, index) => (
           <div className="flex justify-center gap-4">
-            <form>
-              <label id={`btn-detail-${index}`} htmlFor="my-modal-3">
-                <FlexyCard parentSet="w-[45rem] mx-0 duration-300 hover:cursor-pointer active:scale-95">
-                  <div className="flex justify-center w-full gap-5">
+            <FlexyCard parentSet="w-fit mx-0">
+              <div className="flex items-center">
+                <label id={`btn-detail-${index}`} htmlFor="my-modal-3">
+                  <div className="flex justify-center w-full gap-5 duration-300 hover:cursor-pointer active:scale-95">
                     <div className="flex justify-center w-1/5">
                       <p className="text-black capitalize">jan 30, 2023</p>
                     </div>
@@ -91,16 +93,21 @@ const Inbox = () => {
                       <p className="text-black capitalize font-extrabold">
                         HUT RI
                       </p>
-                      <TextLimit
-                        content="Dalam rangka memperingati Hari Ulang Tahun Republik Indonesia yang ke 1000 tahun, kita semua libur setahun!
-                  Dalam rangka memperingati Hari Ulang Tahun Republik Indonesia yang ke 1000 tahun, kita semua libur setahun!
-                  Dalam rangka memperingati Hari Ulang Tahun Republik Indonesia yang ke 1000 tahun, kita semua libur setahun!"
-                        limit={60}
-                      />
+                      <p className="w-[35rem]">{message}</p>
                     </div>
                   </div>
-                </FlexyCard>
-              </label>
+                </label>
+                {admin && (
+                  <label id={`btn-delete-${index}`} htmlFor="my-modal-2">
+                    <p className="text-red-600 duration-300 hover:cursor-pointer active:scale-90">
+                      <BsTrash size={30} />
+                    </p>
+                  </label>
+                )}
+              </div>
+            </FlexyCard>
+
+            <form>
               <input type="checkbox" id="my-modal-3" className="modal-toggle" />
               <div className="modal modal-bottom sm:modal-middle">
                 <div className="modal-box border-2 border-sky flex flex-col justify-center ">
@@ -131,48 +138,36 @@ const Inbox = () => {
                 </div>
               </div>
             </form>
-            {admin && (
-              <div className="flex justify-center items-center">
-                <form>
-                  <label id={`btn-delete-${index}`} htmlFor="my-modal-2">
-                    <p className="text-red-600 duration-300 hover:cursor-pointer active:scale-90">
-                      <BsTrash size={30} />
-                    </p>
-                  </label>
-                  <input
-                    type="checkbox"
-                    id="my-modal-2"
-                    className="modal-toggle"
-                  />
-                  <div className="modal modal-bottom sm:modal-middle">
-                    <div className="modal-box border-2 border-sky flex flex-col justify-center text-sky">
-                      <p className="mb-5 pb-2 text-xl border-b-2 font-medium">
-                        Delete Message
-                      </p>
-                      <div className="flex justify-center gap-5">
-                        <p>Are you sure?</p>
-                      </div>
-                      <div className="modal-action">
-                        <button
-                          id={`btn-delete-confirm-${index}`}
-                          type="submit"
-                          className="w-28 text-sm text-center border-2 border-sky bg-sky rounded-xl py-1 text-gray-50 font-medium duration-300 hover:cursor-pointer  hover:bg-blue-900  active:scale-90"
-                        >
-                          Yes, delete it.
-                        </button>
-                        <label
-                          id={`btn-delete-cancel-${index}`}
-                          htmlFor="my-modal-2"
-                          className="w-28 text-sm text-center border-2 border-sky rounded-xl py-1 text-sky font-medium duration-300 hover:cursor-pointer hover:bg-red-600 hover:text-white  active:scale-90"
-                        >
-                          No, cancel it.
-                        </label>
-                      </div>
-                    </div>
+
+            <form>
+              <input type="checkbox" id="my-modal-2" className="modal-toggle" />
+              <div className="modal modal-bottom sm:modal-middle">
+                <div className="modal-box border-2 border-sky flex flex-col justify-center text-sky">
+                  <p className="mb-5 pb-2 text-xl border-b-2 font-medium">
+                    Delete Message
+                  </p>
+                  <div className="flex justify-center gap-5">
+                    <p>Are you sure?</p>
                   </div>
-                </form>
+                  <div className="modal-action">
+                    <button
+                      id={`btn-delete-confirm-${index}`}
+                      type="submit"
+                      className="w-28 text-sm text-center border-2 border-sky bg-sky rounded-xl py-1 text-gray-50 font-medium duration-300 hover:cursor-pointer  hover:bg-blue-900  active:scale-90"
+                    >
+                      Yes, delete it.
+                    </button>
+                    <label
+                      id={`btn-delete-cancel-${index}`}
+                      htmlFor="my-modal-2"
+                      className="w-28 text-sm text-center border-2 border-sky rounded-xl py-1 text-sky font-medium duration-300 hover:cursor-pointer hover:bg-red-600 hover:text-white  active:scale-90"
+                    >
+                      No, cancel it.
+                    </label>
+                  </div>
+                </div>
               </div>
-            )}
+            </form>
           </div>
         ))}
       </WrappingCard>
