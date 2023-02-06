@@ -24,7 +24,11 @@ interface InboxIdType {
 
 const Inbox = () => {
   const [inboxId, setInboxId] = useState<InboxIdType>({});
+  const [addTitle, setAddtitle] = useState<string>("");
   const [inbox, setInbox] = useState<InboxType[]>([]);
+  const [addDesc, setAddDesc] = useState<string>("");
+  const [addTo, setAddTo] = useState<string>("");
+  const [loading, setLoading] = useState(false);
   const [cookie, setCookie] = useCookies();
   const checkRole = cookie.role;
   const admin = checkRole == "admin";
@@ -46,6 +50,7 @@ const Inbox = () => {
       })
       .catch((err) => {});
   }
+
   function getInboxId(id: number) {
     axios
       .get(`announcements/${id}`, {
@@ -59,6 +64,31 @@ const Inbox = () => {
       })
       .catch((err) => {});
   }
+
+  function addInbox() {
+    setLoading(true)
+    axios
+      .post(
+        `announcements`,
+        {
+          to: addTo,
+          announcement_title: addTitle,
+          announcement_description: addDesc,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${cookie.token}`,
+          },
+        }
+      )
+      .then((res) => {
+        getInbox();
+      })
+      .catch((err) => {
+      })
+      .finally(()=>setLoading(false))
+  }
+
   function onDelete(id: number) {
     Swal.fire({
       title: "Are you sure want to delete inbox?",
@@ -87,9 +117,7 @@ const Inbox = () => {
             });
             getInbox();
           })
-          .catch((err) => {
-            console.log(err);
-          });
+          .catch((err) => {});
       }
     });
   }
@@ -100,7 +128,7 @@ const Inbox = () => {
         judul="Inbox"
         rightSide={
           admin && (
-            <form>
+            <form onSubmit={addInbox}>
               <label id="btn-create-inbox" htmlFor="my-modal-1">
                 <p className="text-sky font-medium duration-300 hover:cursor-pointer active:scale-90">
                   <BsPlusSquare size={35} />
@@ -123,18 +151,21 @@ const Inbox = () => {
                         id="input-inbox-receiver"
                         type="text"
                         placeholder="Type receiver's NIP"
-                        className="input input-bordered input-md w-80 max-w-xs border-2 border-sky"
+                        className="input input-bordered input-md w-80 max-w-xs border-2 border-sky text-black"
+                        onChange={(e) => setAddTo(e.target.value)}
                       />
                       <CustomInput
                         id="input-inbox-title"
                         type="text"
                         placeholder="Type message title"
-                        className="input input-bordered input-md w-80 max-w-xs border-2 border-sky"
+                        className="input input-bordered input-md w-80 max-w-xs border-2 border-sky text-black"
+                        onChange={(e) => setAddtitle(e.target.value)}
                       />
                       <TextArea
                         id="input-inbox-message"
                         placeholder="Type broadcast message"
-                        className="input input-bordered input-sm h-40 w-80 max-w-xs border-2 border-sky"
+                        className="input input-bordered input-sm h-40 w-80 max-w-xs border-2 border-sky text-black"
+                        onChange={(e) => setAddDesc(e.target.value)}
                       />
                     </div>
                   </div>
@@ -163,7 +194,7 @@ const Inbox = () => {
         {inbox.map((data) => (
           <div className="flex justify-center gap-4" key={data.id}>
             <FlexyCard parentSet="w-fit mx-0">
-              <div className="flex items-center" >
+              <div className="flex items-center">
                 <label
                   id={`btn-detail-${data.id}`}
                   htmlFor="my-modal-3"
