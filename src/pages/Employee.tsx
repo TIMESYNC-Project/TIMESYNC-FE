@@ -16,12 +16,22 @@ import { FlexyCard, WrappingCard } from "components/Card";
 import { Modals1 } from "components/Modals";
 import Layout from "components/Layout";
 
+interface EmployeesType {
+  id: number;
+  name: string;
+  nip: string;
+  position: string;
+  profile_picture: string;
+}
+
 const Employee = () => {
   const navigate = useNavigate();
   const [cookie] = useCookies(["token"]);
 
   const [disabled, setDisabled] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
+
+  const [employees, setEmployees] = useState<EmployeesType[]>([]);
 
   const [name, setName] = useState<string>("");
   const [birth_of_date, setBirthOfDate] = useState<string>("");
@@ -35,6 +45,10 @@ const Employee = () => {
   function onClickDetail(id: number) {
     navigate(`/employee/profile/${id}`);
   }
+
+  useEffect(() => {
+    getEmployees();
+  }, []);
 
   useEffect(() => {
     if (
@@ -53,7 +67,21 @@ const Employee = () => {
     }
   }, [name, birth_of_date, email, gender, position, phone, address, password]);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  function getEmployees() {
+    axios
+      .get(`employees`, {
+        headers: {
+          Authorization: `Bearer ${cookie.token}`,
+        },
+      })
+      .then((res) => {
+        const { data } = res.data;
+        setEmployees(data);
+      })
+      .catch((err) => {});
+  }
+
+  const handleCreateEmployee = async (e: React.FormEvent<HTMLFormElement>) => {
     setLoading(true);
     e.preventDefault();
     const body = new FormData();
@@ -95,6 +123,13 @@ const Employee = () => {
         });
       })
       .finally(() => setLoading(false));
+  };
+
+  const handleDeleteEmployee = async (
+    e: React.FormEvent<HTMLButtonElement>
+  ) => {
+    e.preventDefault();
+    await axios;
   };
 
   return (
@@ -140,30 +175,30 @@ const Employee = () => {
           </>
         }
       >
-        {[...Array(3)].map((data, index) => (
+        {employees.map((data) => (
           <FlexyCard>
             <div className="flex justify-center items-center">
               <div className="flex w-1/2">
                 <img
-                  src="https://i.pinimg.com/564x/9f/8b/74/9f8b749c32edf47b1b3f098230a5584c.jpg"
+                  src={data.profile_picture}
                   className="w-[50px] h-[50px] rounded-full duration-300 hover:cursor-pointer active:scale-95"
-                  id={`btn-img-${index}`}
-                  onClick={() => onClickDetail(index)}
+                  id={`btn-img-${data.id}`}
+                  onClick={() => onClickDetail(data.id)}
                 />
                 <div className="mx-7">
                   <p
                     className="font-medium text-lg text-navy duration-300 hover:cursor-pointer active:scale-95"
-                    id={`btn-nip-${index}`}
-                    onClick={() => onClickDetail(index)}
+                    id={`btn-nip-${data.id}`}
+                    onClick={() => onClickDetail(data.id)}
                   >
-                    0001
+                    {data.nip}
                   </p>
                   <p
                     className="font-bold text-lg text-navy duration-300 hover:cursor-pointer active:scale-95"
-                    id={`btn-name-${index}`}
-                    onClick={() => onClickDetail(index)}
+                    id={`btn-name-${data.id}`}
+                    onClick={() => onClickDetail(data.id)}
                   >
-                    James Shelby
+                    {data.name}
                   </p>
                 </div>
               </div>
@@ -171,21 +206,21 @@ const Employee = () => {
                 <div className="mx-5">
                   <p
                     className="font-bold text-lg text-navy duration-300 hover:cursor-pointer active:scale-95"
-                    id={`btn-position-${index}`}
-                    onClick={() => onClickDetail(index)}
+                    id={`btn-position-${data.id}`}
+                    onClick={() => onClickDetail(data.id)}
                   >
-                    Product Engineer
+                    {data.position}
                   </p>
                 </div>
                 <label
-                  id={`btn-edit-employee-${index}`}
+                  id={`btn-edit-employee-${data.id}`}
                   htmlFor={`my-modal-3`}
                   className="mx-3 text-sky hover:cursor-pointer hover:text-orange-600"
                 >
                   <BiEdit size={27} />
                 </label>
                 <button
-                  id={`btn-delete-employee-${index}`}
+                  id={`btn-delete-employee-${data.id}`}
                   className="mx-3 text-sky hover:cursor-pointer hover:text-red-600"
                   //   onClick={()=>console.log("hai")}
                 >
@@ -236,7 +271,7 @@ const Employee = () => {
 
       {/* Modal create employee manual start */}
       <Modals1 no={2} parentSet="pt-48" titleModal="Create Employee">
-        <form onSubmit={(e) => handleSubmit(e)}>
+        <form onSubmit={(e) => handleCreateEmployee(e)}>
           <div className="flex py-2 w-full">
             <div className="flex items-center w-1/4 mx-5">
               <p className="font-semibold text-black text-center">Name</p>
