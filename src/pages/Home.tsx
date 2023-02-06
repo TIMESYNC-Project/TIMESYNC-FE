@@ -53,7 +53,7 @@ const Home = () => {
 
   function getEmployee() {
     axios
-      .get(`https://shirayuki.site/employees`, {
+      .get(`employees`, {
         headers: {
           Authorization: `Bearer ${cookie.token}`,
         },
@@ -67,7 +67,7 @@ const Home = () => {
 
   function getPresences() {
     axios
-      .get(`https://shirayuki.site/presences`, {
+      .get(`presences`, {
         headers: {
           Authorization: `Bearer ${cookie.token}`,
         },
@@ -81,7 +81,7 @@ const Home = () => {
 
   function getInbox() {
     axios
-      .get(`https://shirayuki.site/announcements`, {
+      .get(`announcements`, {
         headers: {
           Authorization: `Bearer ${cookie.token}`,
         },
