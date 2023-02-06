@@ -1,7 +1,10 @@
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { BsSearch } from "react-icons/bs";
+import { useCookies } from "react-cookie";
 import { BiEdit } from "react-icons/bi";
-import React from "react";
+import Swal from "sweetalert2";
+import axios from "axios";
 import {
   AiOutlineFileAdd,
   AiOutlineUserAdd,
@@ -15,10 +18,84 @@ import Layout from "components/Layout";
 
 const Employee = () => {
   const navigate = useNavigate();
+  const [cookie] = useCookies(["token"]);
+
+  const [disabled, setDisabled] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const [name, setName] = useState<string>("");
+  const [birth_of_date, setBirthOfDate] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [gender, setGender] = useState<string>("");
+  const [position, setPosition] = useState<string>("");
+  const [phone, setPhone] = useState<string>("");
+  const [address, setAddress] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
 
   function onClickDetail(id: number) {
     navigate(`/employee/profile/${id}`);
   }
+
+  useEffect(() => {
+    if (
+      name &&
+      birth_of_date &&
+      email &&
+      gender &&
+      position &&
+      phone &&
+      address &&
+      password
+    ) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
+    }
+  }, [name, birth_of_date, email, gender, position, phone, address, password]);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    setLoading(true);
+    e.preventDefault();
+    const body = new FormData();
+    body.append("name", name);
+    body.append("birth_of_date", birth_of_date);
+    body.append("email", email);
+    body.append("gender", gender);
+    body.append("position", position);
+    body.append("phone", phone);
+    body.append("address", address);
+    body.append("password", password);
+    await axios
+      .post(`register`, body, {
+        headers: {
+          Authorization: `Bearer ${cookie.token}`,
+        },
+      })
+      .then((res) => {
+        const { message } = res.data;
+        console.log(res);
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Success",
+          text: message,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        navigate(0);
+      })
+      .catch((err) => {
+        console.log(err);
+        const { data } = err.response;
+        const { message } = data;
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: message,
+        });
+      })
+      .finally(() => setLoading(false));
+  };
 
   return (
     <Layout employeesSet="w-full bg-gradient-to-r from-white to-navy hover:text-white">
@@ -159,7 +236,7 @@ const Employee = () => {
 
       {/* Modal create employee manual start */}
       <Modals1 no={2} parentSet="pt-48" titleModal="Create Employee">
-        <form>
+        <form onSubmit={(e) => handleSubmit(e)}>
           <div className="flex py-2 w-full">
             <div className="flex items-center w-1/4 mx-5">
               <p className="font-semibold text-black text-center">Name</p>
@@ -169,6 +246,7 @@ const Employee = () => {
                 id="input-add-name"
                 type="text"
                 inputSet="border-sky text-black"
+                onChange={(e) => setName(e.target.value)}
               />
             </div>
           </div>
@@ -181,6 +259,7 @@ const Employee = () => {
                 id="input-add-email"
                 type="email"
                 inputSet="border-sky text-black"
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
           </div>
@@ -193,6 +272,7 @@ const Employee = () => {
                 id="input-add-password"
                 type="text"
                 inputSet="border-sky text-black"
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
           </div>
@@ -205,6 +285,7 @@ const Employee = () => {
                 id="input-add-phone"
                 type="text"
                 inputSet="border-sky text-black"
+                onChange={(e) => setPhone(e.target.value)}
               />
             </div>
           </div>
@@ -217,18 +298,34 @@ const Employee = () => {
                 id="select-add-position"
                 name="position"
                 className="select select-bordered border-sky w-full text-black font-normal"
-                // onChange={()=>}
+                onChange={(e) => setPosition(e.target.value)}
               >
-                <option id="option-add-position" value="">
+                <option
+                  key="option-add-option"
+                  id="option-add-position"
+                  value=""
+                >
                   Position
                 </option>
-                <option id="option-add-frontend" value="Frontend Engineer">
+                <option
+                  key="option-add-frontend"
+                  id="option-add-frontend"
+                  value="Frontend Engineer"
+                >
                   Frontend Engineer
                 </option>
-                <option id="option-add-backend" value="Backend Engineeer">
+                <option
+                  key="option-add-backend"
+                  id="option-add-backend"
+                  value="Backend Engineeer"
+                >
                   Backend Engineeer
                 </option>
-                <option id="option-add-quality" value="Quality Engineer">
+                <option
+                  key="option-add-quality"
+                  id="option-add-quality"
+                  value="Quality Engineer"
+                >
                   Quality Engineer
                 </option>
               </select>
@@ -243,15 +340,15 @@ const Employee = () => {
                 id="select-add-gender"
                 name="gender"
                 className="select select-bordered border-sky w-full text-black font-normal"
-                // onChange={()=>}
+                onChange={(e) => setGender(e.target.value)}
               >
-                <option id="option-add-gender" value="">
+                <option key="option-add-gender" id="option-add-gender" value="">
                   Gender
                 </option>
-                <option id="option-add-male" value="Male">
+                <option key="option-add-male" id="option-add-male" value="Male">
                   Male
                 </option>
-                <option id="option-female" value="Male">
+                <option key="option-female" id="option-female" value="Male">
                   Female
                 </option>
               </select>
@@ -266,6 +363,7 @@ const Employee = () => {
                 id="input-add-birthdate"
                 type="date"
                 inputSet="border-sky text-black"
+                onChange={(e) => setBirthOfDate(e.target.value)}
               />
             </div>
           </div>
@@ -277,6 +375,7 @@ const Employee = () => {
               <TextArea
                 id="input-add-address"
                 inputSet="h-24 border-sky text-black"
+                onChange={(e) => setAddress(e.target.value)}
               />
             </div>
           </div>
@@ -284,7 +383,8 @@ const Employee = () => {
             <button
               id="btn-add-submit"
               type="submit"
-              className="w-24 text-sm text-center border-2 border-sky bg-sky rounded-xl py-1 text-gray-50 font-medium duration-300 hover:cursor-pointer  hover:bg-blue-900  active:scale-90"
+              className="w-24 text-sm text-center border-2 border-sky bg-sky rounded-xl py-1 text-gray-50 font-medium duration-300 hover:cursor-pointer  hover:bg-blue-900  active:scale-90 disabled:bg-gray-300 disabled:text-gray-400 disabled:border-gray-300 disabled:cursor-not-allowed disabled:active:scale-100"
+              disabled={loading || disabled}
             >
               Submit
             </button>
@@ -368,7 +468,11 @@ const Employee = () => {
                 <option id="option-edit-position" value="">
                   Position
                 </option>
-                <option id="option-edit-frontend" value="Frontend Engineer">
+                <option
+                  key="option-edit-frontend"
+                  id="option-edit-frontend"
+                  value="Frontend Engineer"
+                >
                   Frontend Engineer
                 </option>
                 <option id="option-edit-backend" value="Backend Engineeer">
