@@ -1,14 +1,75 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
+import axios from "axios";
 
 import { WrappingCard } from "components/Card";
 import Button from "components/Button";
 import Layout from "components/Layout";
 import user from "assets/user.svg";
 
+interface ProfileType {
+  id?: number;
+  profile_picture?: string;
+  name?: string;
+  birth_of_date?: string;
+  nip?: string;
+  email?: string;
+  gender?: string;
+  position?: string;
+  phone?: string;
+  address?: string;
+  annual_leave?: number;
+}
+interface CompanyData {
+  company_name?: string;
+}
+
 const EmployeeProfile = () => {
   const [cookie, setCookie] = useCookies();
+  const [data, setData] = useState<ProfileType>({});
+  const [company, setCompany] = useState<CompanyData>({});
   const navigate = useNavigate();
+  const { id } = useParams();
+
+  useEffect(() => {
+    profileData();
+    companyData();
+  }, []);
+
+  function profileData() {
+    cookie.role === "admin"
+      ? axios.get(`employees/${id}`, {
+          headers: {
+            Authorization: `Bearer ${cookie.token}`,
+          },
+        })
+      : axios
+          .get(`employees/profile`, {
+            headers: {
+              Authorization: `Bearer ${cookie.token}`,
+            },
+          })
+          .then((res) => {
+            const { data } = res.data;
+            setData(data);
+          })
+          .catch((err) => {});
+  }
+
+  function companyData() {
+    axios
+      .get(`companies`, {
+        headers: {
+          Authorization: `Bearer ${cookie.token}`,
+        },
+      })
+      .then((res) => {
+        const { data } = res.data;
+        setCompany(data);
+      })
+      .catch((err) => {});
+  }
 
   return (
     <Layout
@@ -40,7 +101,7 @@ const EmployeeProfile = () => {
           <div className="w-2/6 flex flex-col items-center gap-4">
             <img
               className="w-60 border-2 border-sky rounded-xl "
-              src={user}
+              src={data.profile_picture}
               alt="photo"
             />
             {cookie.role === "admin" ? null : (
@@ -143,16 +204,16 @@ const EmployeeProfile = () => {
             )}
           </div>
           <div className="w-4/6 flex flex-col">
-            <p>00001</p>
-            <p className="font-bold text-3xl">Aryo Yudhanto</p>
-            <p className="text-lg">IT Support</p>
+            <p>{data.nip}</p>
+            <p className="font-bold text-3xl">{data.name}</p>
+            <p className="text-lg">{data.position}</p>
 
             <span className="underline font-semibold text-2xl pt-2 pb-8">
               {cookie.role === "admin" ? (
-                <p>Timesync Company</p>
+                <p>{company.company_name}</p>
               ) : (
                 <Link id="btn-company-profile" to="/profile/company">
-                  Timesync Company
+                  {company.company_name}
                 </Link>
               )}
             </span>
@@ -160,30 +221,27 @@ const EmployeeProfile = () => {
             <table className="table-auto text-xl font-bold flex flex-col gap-4">
               <tr className="flex">
                 <td className="w-2/5">Gender</td>
-                <td className="w-full">Male</td>
+                <td className="w-full">{data.gender}</td>
               </tr>
               <tr className="flex">
                 <td className="w-2/5">Birthdate</td>
-                <td className="w-full">Feb 26, 2002</td>
+                <td className="w-full">{data.birth_of_date}</td>
               </tr>
               <tr className="flex">
                 <td className="w-2/5">Phone</td>
-                <td className="w-full">081299998888</td>
+                <td className="w-full">{data.phone}</td>
               </tr>
               <tr className="flex">
                 <td className="w-2/5">Email</td>
-                <td className="w-full">aryoyudhanto@gmail.com</td>
+                <td className="w-full">{data.email}</td>
               </tr>
               <tr className="flex">
                 <td className="w-2/5">Address</td>
-                <td className="w-full">
-                  Jl. Jalandikuburan No.13, Kec. Mangga Dua, Kel.Cimanggis,
-                  Duren Sawit, Jakarta Timur
-                </td>
+                <td className="w-full">{data.address}</td>
               </tr>
             </table>
             <p className="text-xl font-bold pt-8">
-              Annual Leaves Available : 14 Days
+              Annual Leaves Available : {data.annual_leave}
             </p>
           </div>
         </div>
