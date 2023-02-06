@@ -23,17 +23,17 @@ const Records = () => {
           judul="Records"
           rightSide={
             <div className="flex justify-end">
-              <form className="flex justify-end">
-                <CustomInput inputSet="border-sky" placeholder="Search" />
-                <button className="btn btn-ghost mx-1 text-sky" type="submit">
+              <form className="flex justify-end" id="form-search">
+                <CustomInput inputSet="border-sky" placeholder="Search" id="input-search"/>
+                <button className="btn btn-ghost mx-1 text-sky" type="submit" id="btn-search"> 
                   <BsSearch size={27} />
                 </button>
               </form>
             </div>
           }
         >
-          <FlexyCard>
-            <div className="flex justify-center items-center hover:cursor-pointer" onClick={()=>onClickDetail(2)}>
+          <FlexyCard parentSet="active:scale-95">
+            <div className="flex justify-center items-center hover:cursor-pointer " onClick={()=>onClickDetail(2)} id="btn-detail-records">
               <div className="flex w-1/2">
                 <img
                   src="https://i.pinimg.com/564x/9f/8b/74/9f8b749c32edf47b1b3f098230a5584c.jpg"
@@ -61,6 +61,7 @@ const Records = () => {
             <>
               <div className="flex justify-center items-center">
                 <CustomInput
+                id="input-date"
                   type="date"
                   inputSet="border-sky"
                   // onChange={}
