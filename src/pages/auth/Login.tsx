@@ -11,10 +11,10 @@ import logo from "assets/logo.png";
 
 const Login = () => {
   const [passType, setPassType] = useState<string>("password");
-  const [password, setPassword] = useState<string>("");  
+  const [password, setPassword] = useState<string>("");
   const [nip, setNip] = useState<string>("");
   const [cookie, setCookie] = useCookies();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   function tooglePass() {
     if (passType === "password") {
@@ -28,7 +28,7 @@ const Login = () => {
   function authLogin(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     axios
-      .post(`https://shirayuki.site/login`, {
+      .post(`login`, {
         nip: nip,
         password: password,
       })
@@ -49,12 +49,12 @@ const Login = () => {
         setCookie("nip", nip);
         setCookie("position", position);
         setCookie("role", role);
-        navigate('/home')
+        navigate("/home");
       })
       .catch((err) => {
         console.log(err.response);
-        const {data} = err.response
-        const {message} = data
+        const { data } = err.response;
+        const { message } = data;
         Swal.fire({
           icon: "error",
           title: "Oops...",

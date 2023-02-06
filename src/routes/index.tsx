@@ -1,4 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import axios from "axios";
 
 import RequestApproval from "pages/RequestApproval";
 import EmployeeProfile from "pages/EmployeeProfile";
@@ -11,6 +12,8 @@ import Login from "pages/auth/Login";
 import Records from "pages/Records";
 import Inbox from "pages/Inbox";
 import Home from "pages/Home";
+
+axios.defaults.baseURL = "https://shirayuki.site/";
 
 const router = createBrowserRouter([
   {
@@ -49,11 +52,11 @@ const router = createBrowserRouter([
     path: "/approval",
     element: <Approval />,
   },
-  { 
+  {
     path: "/approval/request",
     element: <RequestApproval />,
   },
-  { 
+  {
     path: "/inbox",
     element: <Inbox />,
   },
