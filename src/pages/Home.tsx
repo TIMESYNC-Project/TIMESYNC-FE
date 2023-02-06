@@ -4,13 +4,20 @@ import { GoLocation } from "react-icons/go";
 import { useCookies } from "react-cookie";
 import { Link } from "react-router-dom";
 import moment from "moment";
+import axios from "axios";
 
 import { MiniCard, FlexyCard, WrappingCard } from "components/Card";
 import Layout from "components/Layout";
 import Button from "components/Button";
-import axios from "axios";
 
 interface DataType {
+  id: number;
+  name: string;
+  nip: string;
+  position: string;
+  profile_picture: string;
+}
+interface PresenceType {
   id: number;
   name: string;
   nip: string;
@@ -25,6 +32,7 @@ interface InboxType {
 
 const Home = () => {
   const [data, setData] = useState<DataType[]>([]);
+  const [presences, setPresences] = useState<PresenceType[]>([]);
   const [inbox, setInbox] = useState<InboxType[]>([]);
   const [hour, setHour] = useState<string>("");
   const [date, setDate] = useState<string>("");
@@ -56,6 +64,21 @@ const Home = () => {
       })
       .catch((err) => {});
   }
+
+  function getPresences() {
+    axios
+      .get(`https://shirayuki.site/presences`, {
+        headers: {
+          Authorization: `Bearer ${cookie.token}`,
+        },
+      })
+      .then((res) => {
+        const { data } = res.data;
+        setPresences(data);
+      })
+      .catch((err) => {});
+  }
+
   function getInbox() {
     axios
       .get(`https://shirayuki.site/announcements`, {
@@ -100,7 +123,7 @@ const Home = () => {
                   titleSet="text-center text-lg"
                 >
                   <p className="text-7xl text-black font-bold text-center">
-                    8{" "}
+                    {`${presences.length}`}
                     <span className="capitalize text-xl font-normal">
                       person
                     </span>
