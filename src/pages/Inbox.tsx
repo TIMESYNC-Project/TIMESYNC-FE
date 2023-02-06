@@ -1,18 +1,43 @@
 import { BsPlusSquare, BsTrash } from "react-icons/bs";
+import React, {useState, useEffect} from "react";
 import { useCookies } from "react-cookie";
-import React from "react";
+import moment from "moment";
+import axios from "axios";
 
 import { CustomInput, TextArea } from "components/CustomInput";
 import { FlexyCard, WrappingCard } from "components/Card";
 import Layout from "components/Layout";
 
+interface InboxType {
+  id: number;
+  announcement_title: string;
+  announcement_description: string;
+  created_at: string
+}
+
 const Inbox = () => {
-  const [cookie] = useCookies(["role"]);
+  const [inbox, setInbox] = useState<InboxType[]>([])
+  const [cookie, setCookie] = useCookies();
   const checkRole = cookie.role;
   const admin = checkRole == "admin";
-  const dummytext =
-    "Dalam rangka memperingati Hari Ulang Tahun Republik Indonesia yang ke 1000 tahun, kita semua libur setahun. Dalam rangka memperingati Hari Ulang Tahun Republik Indonesia yang ke 1000 tahun, kita semua libur setahun. Dalam rangka memperingati Hari Ulang Tahun Republik Indonesia yang ke 1000 tahun, kita semua libur setahun!";
-  const message = dummytext.substring(0, 60) + "...";
+
+  useEffect(() => {
+    getInbox()
+  }, [])
+  
+  function getInbox() {
+    axios
+      .get(`announcements`, {
+        headers: {
+          Authorization: `Bearer ${cookie.token}`,
+        },
+      })
+      .then((res) => {
+        const { data } = res.data;
+        setInbox(data);
+      })
+      .catch((err) => {});
+  }
 
   return (
     <Layout inboxSet="w-full bg-gradient-to-r from-white to-navy hover:text-white">
@@ -80,25 +105,25 @@ const Inbox = () => {
           )
         }
       >
-        {[...Array(5)].map((data, index) => (
-          <div className="flex justify-center gap-4">
+        {inbox.map((data) => (
+          <div className="flex justify-center gap-4" >
             <FlexyCard parentSet="w-fit mx-0">
               <div className="flex items-center">
-                <label id={`btn-detail-${index}`} htmlFor="my-modal-3">
+                <label id={`btn-detail-${data.id}`} htmlFor="my-modal-3">
                   <div className="flex justify-center w-full gap-5 duration-300 hover:cursor-pointer active:scale-95">
                     <div className="flex justify-center w-1/5">
-                      <p className="text-black capitalize">jan 30, 2023</p>
+                      <p className="text-black capitalize">{moment(`${data.created_at}`).format('LL')}</p>
                     </div>
                     <div className="flex flex-col w-full">
                       <p className="text-black capitalize font-extrabold">
-                        HUT RI
+                        {data.announcement_title}
                       </p>
-                      <p className="w-[35rem]">{message}</p>
+                      <p className="w-[35rem]">{data.announcement_description.substring(0, 75)+"..."}</p>
                     </div>
                   </div>
                 </label>
                 {admin && (
-                  <label id={`btn-delete-${index}`} htmlFor="my-modal-2">
+                  <label id={`btn-delete-${data.id}`} htmlFor="my-modal-2">
                     <p className="text-red-600 duration-300 hover:cursor-pointer active:scale-90">
                       <BsTrash size={30} />
                     </p>
@@ -111,8 +136,8 @@ const Inbox = () => {
               <input type="checkbox" id="my-modal-3" className="modal-toggle" />
               <div className="modal modal-bottom sm:modal-middle">
                 <div className="modal-box border-2 border-sky flex flex-col justify-center ">
-                  <p className="mb-5 pb-2 text-xl border-b-2 font-medium text-sky">
-                    Message Detail
+                  <p className="mb-5 pb-2 text-2xl border-b-2 font-bold text-black">
+                    Detail Inbox
                   </p>
                   <div className="flex flex-col justify-center gap-5">
                     <p>Jan 23, 2023</p>
@@ -128,7 +153,7 @@ const Inbox = () => {
                   </div>
                   <div className="modal-action">
                     <label
-                      id={`btn-close-${index}`}
+                      id={`btn-close-${data.id}`}
                       htmlFor="my-modal-3"
                       className="w-28 text-sm text-center border-2 border-sky rounded-xl py-1 text-sky font-medium duration-300 hover:cursor-pointer hover:bg-red-600 hover:text-white  active:scale-90"
                     >
@@ -151,14 +176,14 @@ const Inbox = () => {
                   </div>
                   <div className="modal-action">
                     <button
-                      id={`btn-delete-confirm-${index}`}
+                      id={`btn-delete-confirm-${data.id}`}
                       type="submit"
                       className="w-28 text-sm text-center border-2 border-sky bg-sky rounded-xl py-1 text-gray-50 font-medium duration-300 hover:cursor-pointer  hover:bg-blue-900  active:scale-90"
                     >
                       Yes, delete it.
                     </button>
                     <label
-                      id={`btn-delete-cancel-${index}`}
+                      id={`btn-delete-cancel-${data.id}`}
                       htmlFor="my-modal-2"
                       className="w-28 text-sm text-center border-2 border-sky rounded-xl py-1 text-sky font-medium duration-300 hover:cursor-pointer hover:bg-red-600 hover:text-white  active:scale-90"
                     >
