@@ -63,68 +63,63 @@ const Employee = () => {
         }
       >
         {[...Array(3)].map((data, index) => (
-          <div className="flex justify-center items-center gap-4">
-            <FlexyCard parentSet="w-[45rem] mx-0 duration-300 hover:cursor-pointer active:scale-95">
-              <div
-                id={`btn-employee-${index}`}
-                className="flex justify-center items-center"
-                onClick={() => onClickDetail(2)}
-              >
-                <div className="flex w-1/2">
-                  <img
-                    src="https://i.pinimg.com/564x/9f/8b/74/9f8b749c32edf47b1b3f098230a5584c.jpg"
-                    className="w-[50px] h-[50px]  rounded-full"
-                  />
-                  <div className="mx-7">
-                    <p className="font-medium text-lg text-navy">0001</p>
-                    <p className="font-bold text-lg text-navy">James Shelby</p>
-                  </div>
-                </div>
-                <div className="flex w-1/2 justify-end">
-                  <div className="mx-5">
-                    <p className="font-bold text-lg text-navy">
-                      Product Engineer
-                    </p>
-                  </div>
-                  <label
-                    id="btn-edit-employee-card"
-                    htmlFor={`my-modal-3`}
-                    className="flex justify-center items-center"
+          <FlexyCard parentSet="duration-300 hover:cursor-pointer active:scale-95">
+            <div
+              id={`btn-employee-${index}`}
+              className="flex justify-center items-center"
+            >
+              <div className="flex w-1/2">
+                <img
+                  src="https://i.pinimg.com/564x/9f/8b/74/9f8b749c32edf47b1b3f098230a5584c.jpg"
+                  className="w-[50px] h-[50px]  rounded-full"
+                  onClick={() => onClickDetail(2)}
+                />
+                <div className="mx-7">
+                  <p
+                    className="font-medium text-lg text-navy"
+                    onClick={() => onClickDetail(2)}
                   >
-                    <div
-                      className="mx-3 text-sky hover:cursor-pointer"
-                      //   onClick={()=>console.log("hai")}
-                    >
-                      <BiEdit size={27} />
-                    </div>
-                  </label>
-                  <button
-                    id="btn-delete-employee-card"
-                    className="mx-3 text-sky"
+                    0001
+                  </p>
+                  <p
+                    className="font-bold text-lg text-navy"
+                    onClick={() => onClickDetail(2)}
+                  >
+                    James Shelby
+                  </p>
+                </div>
+              </div>
+              <div className="flex w-1/2 justify-end">
+                <div className="mx-5">
+                  <p
+                    className="font-bold text-lg text-navy"
+                    onClick={() => onClickDetail(2)}
+                  >
+                    Product Engineer
+                  </p>
+                </div>
+                <label
+                  id="btn-edit-employee-card"
+                  htmlFor={`my-modal-3`}
+                  className="flex justify-center items-center"
+                >
+                  <div
+                    className="mx-3 text-sky hover:cursor-pointer"
                     //   onClick={()=>console.log("hai")}
                   >
-                    <AiOutlineDelete size={27} />
-                  </button>
-                </div>
+                    <BiEdit size={27} />
+                  </div>
+                </label>
+                <button
+                  id="btn-delete-employee-card"
+                  className="mx-3 text-sky"
+                  //   onClick={()=>console.log("hai")}
+                >
+                  <AiOutlineDelete size={27} />
+                </button>
               </div>
-            </FlexyCard>
-            <label id={`btn-edit-employee-${index}`} htmlFor={`my-modal-3`}>
-              <div
-                className="px-0 mx-0 text-sky hover:cursor-pointer"
-                //   onClick={()=>console.log("hai")}
-              >
-                <BiEdit size={27} />
-              </div>
-            </label>
-            <label id={`btn-delete-employee-${index}`} htmlFor={`my-modal-4`}>
-              <div
-                className="px-0 mx-0 text-sky hover:cursor-pointer"
-                //   onClick={()=>console.log("hai")}
-              >
-                <AiOutlineDelete size={27} />
-              </div>
-            </label>
-          </div>
+            </div>
+          </FlexyCard>
         ))}
       </WrappingCard>
 
