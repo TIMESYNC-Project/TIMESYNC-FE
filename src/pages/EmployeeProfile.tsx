@@ -6,7 +6,6 @@ import axios from "axios";
 import { WrappingCard } from "components/Card";
 import Button from "components/Button";
 import Layout from "components/Layout";
-import user from "assets/user.svg";
 
 interface ProfileType {
   id?: number;
@@ -33,30 +32,41 @@ const EmployeeProfile = () => {
   const { id } = useParams();
 
   useEffect(() => {
-    profileData();
     companyData();
+    profileData();
   }, []);
 
   function profileData() {
-    cookie.role === "admin"
-      ? axios.get(`employees/${id}`, {
-          headers: {
-            Authorization: `Bearer ${cookie.token}`,
-          },
-        })
-      : axios
-          .get(`employees/profile`, {
-            headers: {
-              Authorization: `Bearer ${cookie.token}`,
-            },
-          })
-          .then((res) => {
-            const { data } = res.data;
-            setData(data);
-          })
-          .catch((err) => {});
+    if(cookie.role === "admin"){
+      axios
+      .get(`employees/${id}`, {
+        headers: {
+          Authorization: `Bearer ${cookie.token}`,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        const { data } = res.data;
+        setData(data);
+      })
+      .catch((err) => {});
   }
-
+  else if(cookie.role === "employee"){
+    axios
+      .get(`employees/profile`, {
+        headers: {
+          Authorization: `Bearer ${cookie.token}`,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        const { data } = res.data;
+        setData(data);
+      })
+      .catch((err) => {});
+  }
+    }
+    
   function companyData() {
     axios
       .get(`companies`, {
