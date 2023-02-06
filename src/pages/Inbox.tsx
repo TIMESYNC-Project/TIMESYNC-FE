@@ -14,8 +14,15 @@ interface InboxType {
   announcement_description: string;
   created_at: string
 }
+interface InboxIdType {
+  id?: number;
+  announcement_title?: string;
+  announcement_description?: string;
+  created_at?: string
+}
 
 const Inbox = () => {
+  const [inboxId, setInboxId] = useState<InboxIdType>({})
   const [inbox, setInbox] = useState<InboxType[]>([])
   const [cookie, setCookie] = useCookies();
   const checkRole = cookie.role;
@@ -35,6 +42,20 @@ const Inbox = () => {
       .then((res) => {
         const { data } = res.data;
         setInbox(data);
+      })
+      .catch((err) => {});
+  }
+  function getInboxId(id: number) {
+    axios
+      .get(`announcements/${id}`, {
+        headers: {
+          Authorization: `Bearer ${cookie.token}`,
+        },
+      })
+      .then((res) => {
+        console.log("detail: ", res.data);
+        const { data } = res.data;
+        setInboxId(data);
       })
       .catch((err) => {});
   }
@@ -109,7 +130,7 @@ const Inbox = () => {
           <div className="flex justify-center gap-4" >
             <FlexyCard parentSet="w-fit mx-0">
               <div className="flex items-center">
-                <label id={`btn-detail-${data.id}`} htmlFor="my-modal-3">
+                <label id={`btn-detail-${data.id}`} htmlFor="my-modal-3" onClick={()=>getInboxId(data.id)}>
                   <div className="flex justify-center w-full gap-5 duration-300 hover:cursor-pointer active:scale-95">
                     <div className="flex justify-center w-1/5">
                       <p className="text-black capitalize">{moment(`${data.created_at}`).format('LL')}</p>
@@ -140,15 +161,14 @@ const Inbox = () => {
                     Detail Inbox
                   </p>
                   <div className="flex flex-col justify-center gap-5">
-                    <p>Jan 23, 2023</p>
-                    <p className="font-extrabold">HUT RI</p>
+                    <div className="flex">
+                      <p>{moment(inboxId.created_at?.substring(0,10)).format('LL')}</p>
+                    </div>
+                    <p className="font-extrabold">
+                      {inboxId.announcement_title}
+                    </p>
                     <p className="text-justify">
-                      Dalam rangka memperingati Hari Ulang Tahun Republik
-                      Indonesia yang ke 1000 tahun, kita semua libur setahun!
-                      Dalam rangka memperingati Hari Ulang Tahun Republik
-                      Indonesia yang ke 1000 tahun, kita semua libur setahun!
-                      Dalam rangka memperingati Hari Ulang Tahun Republik
-                      Indonesia yang ke 1000 tahun, kita semua libur setahun!
+                      {inboxId.announcement_description}
                     </p>
                   </div>
                   <div className="modal-action">
