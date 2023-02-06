@@ -1,5 +1,6 @@
 import { BsPlusSquare, BsTrash } from "react-icons/bs";
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import Swal from "sweetalert2";
 import moment from "moment";
@@ -28,8 +29,8 @@ const Inbox = () => {
   const [inbox, setInbox] = useState<InboxType[]>([]);
   const [addDesc, setAddDesc] = useState<string>("");
   const [addTo, setAddTo] = useState<string>("");
-  const [loading, setLoading] = useState(false);
   const [cookie, setCookie] = useCookies();
+  const navigate = useNavigate();
   const checkRole = cookie.role;
   const admin = checkRole == "admin";
 
@@ -66,7 +67,6 @@ const Inbox = () => {
   }
 
   function addInbox() {
-    setLoading(true)
     axios
       .post(
         `announcements`,
@@ -82,11 +82,19 @@ const Inbox = () => {
         }
       )
       .then((res) => {
-        getInbox();
+        Swal.fire({
+          title: "Success",
+          text: "Success add inbox",
+          showCancelButton: false,
+          confirmButtonText: "Ok",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            navigate(0);
+            getInbox();
+          }
+        });
       })
-      .catch((err) => {
-      })
-      .finally(()=>setLoading(false))
+      .catch((err) => {});
   }
 
   function onDelete(id: number) {
@@ -203,7 +211,9 @@ const Inbox = () => {
                   <div className="flex justify-center w-full gap-5 duration-300 hover:cursor-pointer active:scale-95">
                     <div className="flex justify-center w-1/5">
                       <p className="text-black capitalize">
-                        {moment(`${data.created_at}`).format("LL")}
+                        {moment(inboxId.created_at?.substring(0, 10)).format(
+                          "LL"
+                        )}
                       </p>
                     </div>
                     <div className="flex flex-col w-full">
