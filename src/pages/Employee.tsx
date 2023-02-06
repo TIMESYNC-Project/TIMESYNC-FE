@@ -125,12 +125,38 @@ const Employee = () => {
       .finally(() => setLoading(false));
   };
 
-  const handleDeleteEmployee = async (
-    e: React.FormEvent<HTMLButtonElement>
-  ) => {
-    e.preventDefault();
-    await axios;
-  };
+  function handleDeleteEmployee(id: number) {
+    Swal.fire({
+      title: "Are you sure want to delete this employee?",
+      // text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Yes",
+      cancelButtonColor: "#d33",
+      cancelButtonText: "No",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(`employees/${id}`, {
+            headers: {
+              Authorization: `Bearer ${cookie.token}`,
+            },
+          })
+          .then((res) => {
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              text: "Delete successfully",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            getEmployees();
+          })
+          .catch((err) => {});
+      }
+    });
+  }
 
   return (
     <Layout employeesSet="w-full bg-gradient-to-r from-white to-navy hover:text-white">
@@ -176,7 +202,7 @@ const Employee = () => {
         }
       >
         {employees.map((data) => (
-          <FlexyCard>
+          <FlexyCard key={data.id}>
             <div className="flex justify-center items-center">
               <div className="flex w-1/2">
                 <img
@@ -222,7 +248,7 @@ const Employee = () => {
                 <button
                   id={`btn-delete-employee-${data.id}`}
                   className="mx-3 text-sky hover:cursor-pointer hover:text-red-600"
-                  //   onClick={()=>console.log("hai")}
+                  onClick={() => handleDeleteEmployee(data.id)}
                 >
                   <AiOutlineDelete size={27} />
                 </button>
@@ -586,32 +612,6 @@ const Employee = () => {
         </form>
       </Modals1>
       {/* Modal update employee end */}
-
-      {/* Modal delete employee start */}
-      <Modals1 no={4} titleModal="Delete Employee">
-        <form>
-          <div className="flex justify-center gap-5">
-            <p>Are you sure want to delete this employee?</p>
-          </div>
-          <div className="modal-action">
-            <button
-              id="btn-delete-confirm"
-              type="submit"
-              className="w-28 text-sm text-center border-2 border-sky bg-sky rounded-xl py-1 text-gray-50 font-medium duration-300 hover:cursor-pointer  hover:bg-blue-900  active:scale-90"
-            >
-              Yes, delete it.
-            </button>
-            <label
-              id="btn-delete-cancel"
-              htmlFor="my-modal-4"
-              className="w-28 text-sm text-center border-2 border-sky rounded-xl py-1 text-sky font-medium duration-300 hover:cursor-pointer hover:bg-red-600 hover:text-white  active:scale-90"
-            >
-              No, cancel it.
-            </label>
-          </div>
-        </form>
-      </Modals1>
-      {/* Modal delete employee end */}
     </Layout>
   );
 };
