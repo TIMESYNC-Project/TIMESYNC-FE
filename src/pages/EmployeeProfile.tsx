@@ -1,15 +1,41 @@
+import { Link, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
-import { Link } from "react-router-dom";
 
-import user from "assets/user.svg";
 import { WrappingCard } from "components/Card";
+import Button from "components/Button";
 import Layout from "components/Layout";
+import user from "assets/user.svg";
 
 const EmployeeProfile = () => {
   const [cookie, setCookie] = useCookies();
+  const navigate = useNavigate();
+
   return (
-    <Layout profileSet="w-full bg-gradient-to-r from-white to-navy hover:text-white">
-      <WrappingCard judul="Employee's Profile">
+    <Layout
+      profileSet={`${
+        cookie.role === "admin"
+          ? null
+          : "w-full bg-gradient-to-r from-white to-navy hover:text-white"
+      }`}
+      employeesSet={`${
+        cookie.role === "admin"
+          ? "w-full bg-gradient-to-r from-white to-navy hover:text-white"
+          : null
+      }`}
+    >
+      <WrappingCard
+        judul="Employee's Profile"
+        rightSide={
+          cookie.role === "admin" ? (
+            <Button
+              id="btn-back"
+              buttonSet="border-2 border-white shadow-md shadow-black rounded-full capitalize font-medium gap-2 px-3 text-xs hover:bg-navy w-1/4"
+              label="Back"
+              onClick={() => navigate(-1)}
+            />
+          ) : null
+        }
+      >
         <div className="flex w-full">
           <div className="w-2/6 flex flex-col items-center gap-4">
             <img
@@ -122,9 +148,13 @@ const EmployeeProfile = () => {
             <p className="text-lg">IT Support</p>
 
             <span className="underline font-semibold text-2xl pt-2 pb-8">
-              <Link id="btn-company-profile" to="/profile/company">
-                Timesync Company
-              </Link>
+              {cookie.role === "admin" ? (
+                <p>Timesync Company</p>
+              ) : (
+                <Link id="btn-company-profile" to="/profile/company">
+                  Timesync Company
+                </Link>
+              )}
             </span>
 
             <table className="table-auto text-xl font-bold flex flex-col gap-4">
