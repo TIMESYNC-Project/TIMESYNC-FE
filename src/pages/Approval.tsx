@@ -27,8 +27,8 @@ const Approval = () => {
     <Layout approvalSet="w-full bg-gradient-to-r from-white to-navy hover:text-white ">
       {cookie.role === "admin" ? (
         <WrappingCard judul="Approval Requests">
-          <label htmlFor="my-modal-1">
-            <FlexyCard>
+          <label htmlFor="my-modal-1" id={`btn-approval-detail-${"data.id"}`}>
+            <FlexyCard parentSet="active:scale-95">
               <div className="flex justify-center items-center w-full hover:cursor-pointer">
                 <div className="text-center w-1/4">
                   <p className="text-black capitalize font-semibold">
@@ -89,12 +89,14 @@ const Approval = () => {
               </div>
               <div className="modal-action">
                 <button
+                  id={`btn-reject-${"data.id"}`}
                   type="submit"
                   className="w-24 text-sm text-center border-sky bg-sky rounded-xl py-1 text-white font-medium duration-300 hover:cursor-pointer hover:bg-red-600 hover:text-white  active:scale-90"
                 >
                   Reject
                 </button>
                 <button
+                  id={`btn-approve-${"data.id"}`}
                   type="submit"
                   className="w-24 text-sm text-center border-sky bg-sky rounded-xl py-1 text-gray-50 font-medium duration-300 hover:cursor-pointer  hover:bg-blue-900  active:scale-90"
                 >
@@ -110,6 +112,7 @@ const Approval = () => {
           rightSide={
             <>
               <Button
+                id="btn-request-approval"
                 buttonSet="border-2 border-white shadow-md shadow-black rounded-full capitalize font-medium gap-2 px-3 text-xs hover:bg-navy w-1/3"
                 label="Request Approval"
                 onClick={() => navigate("/approval/request")}
@@ -117,7 +120,7 @@ const Approval = () => {
             </>
           }
         >
-          <label htmlFor="my-modal-2">
+          <label htmlFor="my-modal-2" id={`btn-detail-approval-${"data.id"}`}>
             <FlexyCard>
               <div className="flex justify-center items-center w-full">
                 <div className="text-start w-1/3 mx-5">
@@ -172,6 +175,7 @@ const Approval = () => {
             </div>
             <div className="modal-action">
               <label
+                id={`btn-close-${"data.id"}`}
                 htmlFor="my-modal-2"
                 className="w-24 text-sm text-center border-sky bg-sky rounded-xl py-1 text-gray-50 font-medium duration-300 hover:cursor-pointer  hover:bg-navy  active:scale-90"
               >
