@@ -31,6 +31,7 @@ const Employee = () => {
   const [disabled, setDisabled] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
 
+  const [search, setSearch] = useState<string>("");
   const [employees, setEmployees] = useState<EmployeesType[]>([]);
 
   const [employeeId, setEmployeeId] = useState<number>();
@@ -67,7 +68,7 @@ const Employee = () => {
 
   useEffect(() => {
     getEmployees();
-  }, []);
+  }, [search]);
 
   useEffect(() => {
     if (
@@ -117,6 +118,21 @@ const Employee = () => {
         setEmployeePosition(data.position);
         setEmployeePhone(data.phone);
         setEmployeeAddress(data.address);
+      })
+      .catch((err) => {});
+  }
+
+  function searchEmployees(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    axios
+      .get(`search?q=${search}`, {
+        headers: {
+          Authorization: `Bearer ${cookie.token}`,
+        },
+      })
+      .then((res) => {
+        const { data } = res.data;
+        setEmployees(data);
       })
       .catch((err) => {});
   }
@@ -275,11 +291,12 @@ const Employee = () => {
         rightSide={
           <>
             <div className="flex justify-end">
-              <form className="flex justify-end">
+              <form className="flex justify-end" onSubmit={searchEmployees}>
                 <CustomInput
                   id="input-search"
                   inputSet="border-sky"
                   placeholder="Search"
+                  onChange={(e) => setSearch(e.target.value)}
                 />
                 <button
                   id="btn-search-submit"
