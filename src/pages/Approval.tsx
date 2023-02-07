@@ -1,59 +1,111 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
+import axios from "axios";
 
-import { CardWithLogo, FlexyCard, WrappingCard } from "components/Card";
+import { FlexyCard, WrappingCard } from "components/Card";
 import { Modals1, Modals2 } from "components/Modals";
 import Button from "components/Button";
 import Layout from "components/Layout";
 import Logo from "assets/logo.png";
+import index from "routes";
+
+interface ApprovalType {
+  approval_end_date: string;
+  approval_start_date: string;
+  approval_title: string;
+  approval_status: string;
+  id: number;
+}
 
 const Approval = () => {
-  const [attendance, setAttendance] = useState<string>("approved");
+  const [attendance, setAttendance] = useState<string[]>([]);
+  const [appData, setAppData] = useState<ApprovalType[]>([]);
   const [color, setColor] = useState<string>("");
   const [cookie, setCookie] = useCookies();
   const navigate = useNavigate();
 
   useEffect(() => {
     textColor();
+    getApproval();
   }, []);
 
   function textColor() {
-    if (attendance === "pending") setColor("text-orange-500");
-    if (attendance === "rejected") setColor("text-red-500");
-    if (attendance === "approved") setColor("text-green-500");
+    const status = appData.map((data) => data.approval_status);
+    console.log("status", status);
+    setAttendance(status);
+    // if (attendance === "pending") setColor("text-orange-500");
+    // if (attendance === "rejected") setColor("text-red-500");
+    // if (attendance === "approved") setColor("text-green-500");
   }
+
+  function getApproval() {
+    axios
+      .get(`approvals`, {
+        headers: {
+          Authorization: `Bearer ${cookie.token}`,
+        },
+      })
+      .then((res) => {
+        const { data } = res.data;
+        // const { approval_status } = data.data;
+        setAppData(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   return (
     <Layout approvalSet="w-full bg-gradient-to-r from-white to-navy hover:text-white ">
       {cookie.role === "admin" ? (
         <WrappingCard judul="Approval Requests">
-          <label htmlFor="my-modal-1" id={`btn-approval-detail-${"data.id"}`}>
-            <FlexyCard parentSet="active:scale-95">
-              <div className="flex justify-center items-center w-full hover:cursor-pointer">
-                <div className="text-center w-1/4">
-                  <p className="text-black capitalize font-semibold">
-                    jan 30, 2023
-                  </p>
-                </div>
-                <div className="text-center w-1/4">
-                  <p className="text-black capitalize font-medium">
-                    James Shelby
-                  </p>
-                </div>
-                <div className="text-center w-1/4">
-                  <p className="text-black capitalize font-medium">1 day</p>
-                  <p className="text-black capitalize font-medium">
-                    sick leave
-                  </p>
-                </div>
-                <div className="text-center w-1/4">
-                  <p className={`${color} capitalize font-bold`}>
-                    {attendance}
-                  </p>
-                </div>
-              </div>
-            </FlexyCard>
-          </label>
+          {appData.map((data) => {
+            return (
+              <FlexyCard parentSet="active:scale-95" key={data.id}>
+                <label
+                  htmlFor="my-modal-1"
+                  // modals klo approve or reject button ganti cancel
+                  // data.approval_status === "rejected" || data.approval_status === "approved"? undefined : "my-modal-1"
+                  id={`btn-approval-detail-${"data.id"}`}
+                >
+                  <div className="flex justify-center items-center w-full hover:cursor-pointer">
+                    <div className="text-center w-1/4">
+                      <p className="text-black capitalize font-semibold">
+                        {data.approval_end_date}
+                      </p>
+                    </div>
+                    <div className="text-center w-1/4">
+                      <p className="text-black capitalize font-medium">
+                        James Shelby
+                      </p>
+                    </div>
+                    <div className="text-center w-1/4">
+                      <p className="text-black capitalize font-medium">1 day</p>
+                      <p className="text-black capitalize font-medium">
+                        {data.approval_title}
+                      </p>
+                    </div>
+                    <div className="text-center w-1/4">
+                      <p
+                        className={`${
+                          data.approval_status === "rejected"
+                            ? "text-red-500"
+                            : "text-orange-500" &&
+                              data.approval_status === "approved"
+                            ? "text-green-500"
+                            : "text-orange-500"
+                        } capitalize font-bold`}
+                      >
+                        {data.approval_status}
+                      </p>
+                    </div>
+                  </div>
+                </label>
+              </FlexyCard>
+            );
+          })}
+
           {/* modal detail approval start*/}
           <Modals2 no={1} titleModal="Detail Approval">
             <form>
