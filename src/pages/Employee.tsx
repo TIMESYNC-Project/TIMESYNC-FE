@@ -109,7 +109,6 @@ const Employee = () => {
       })
       .then((res) => {
         const { data } = res.data;
-        console.log(data);
         setEmployeeId(data.id);
         setEmployeeName(data.name);
         setEmployeeBirthdate(data.birth_of_date);
@@ -142,7 +141,6 @@ const Employee = () => {
       })
       .then((res) => {
         const { message } = res.data;
-        console.log(res);
         Swal.fire({
           position: "center",
           icon: "success",
@@ -154,7 +152,6 @@ const Employee = () => {
         navigate(0);
       })
       .catch((err) => {
-        console.log(err);
         const { data } = err.response;
         const { message } = data;
         Swal.fire({
@@ -189,7 +186,6 @@ const Employee = () => {
         navigate(0);
       })
       .catch((err) => {
-        console.log(err);
         const { data } = err.response;
         const { message } = data;
         Swal.fire({
@@ -230,7 +226,6 @@ const Employee = () => {
         navigate(0);
       })
       .catch((err) => {
-        console.log(err);
         const { data } = err.response;
         const { message } = data;
         Swal.fire({
@@ -421,7 +416,7 @@ const Employee = () => {
                   id="input-edit-password"
                   type="text"
                   inputSet="border-sky text-black"
-                  defaultValue={`****************`}
+                  placeholder="****************"
                   onChange={(e) => setEditPassword(e.target.value)}
                 />
               </div>
@@ -751,158 +746,6 @@ const Employee = () => {
         </form>
       </Modals1>
       {/* Modal create employee manual end */}
-
-      {/* Modal update employee start */}
-      {/* <Modals1 no={3} parentSet="pt-48" titleModal="Edit Employee Profile">
-        <form>
-          <div className="flex py-2 w-full">
-            <div className="flex items-center w-1/4 mx-5">
-              <p className="font-semibold text-black text-center">Name</p>
-            </div>
-            <div className="flex items-center justify-center w-full mx-2">
-              <CustomInput
-                id="input-edit-name"
-                type="text"
-                inputSet="border-sky text-black"
-                defaultValue={"ss"}
-              />
-            </div>
-          </div>
-          <div className="flex py-2 w-full">
-            <div className="flex items-center  w-1/4 mx-5">
-              <p className="font-semibold text-black text-center">Email</p>
-            </div>
-            <div className="flex items-center justify-center w-full mx-2">
-              <CustomInput
-                id="input-edit-email"
-                type="email"
-                inputSet="border-sky text-black"
-                defaultValue={"ss"}
-              />
-            </div>
-          </div>
-          <div className="flex py-2 w-full">
-            <div className="flex items-center w-1/4 mx-5">
-              <p className="font-semibold text-black text-center">Password</p>
-            </div>
-            <div className="flex items-center justify-center w-full mx-2">
-              <CustomInput
-                id="input-edit-password"
-                type="text"
-                inputSet="border-sky text-black"
-              />
-            </div>
-          </div>
-          <div className="flex py-2 w-full">
-            <div className="flex items-center w-1/4 mx-5">
-              <p className="font-semibold text-black text-center">Phone</p>
-            </div>
-            <div className="flex items-center justify-center w-full mx-2">
-              <CustomInput
-                id="input-edit-phone"
-                type="text"
-                inputSet="border-sky text-black"
-                defaultValue={"ss"}
-              />
-            </div>
-          </div>
-          <div className="flex py-2 w-full">
-            <div className="flex items-center w-1/4 mx-5">
-              <p className="font-semibold text-black text-center">Position</p>
-            </div>
-            <div className="flex items-center justify-center w-full mx-2">
-              <select
-                id="select-edit-position"
-                name="position"
-                className="select select-bordered border-sky w-full text-black font-normal"
-                // onChange={()=>}
-              >
-                <option id="option-edit-position" value="">
-                  Position
-                </option>
-                <option
-                  key="option-edit-frontend"
-                  id="option-edit-frontend"
-                  value="Frontend Engineer"
-                >
-                  Frontend Engineer
-                </option>
-                <option id="option-edit-backend" value="Backend Engineeer">
-                  Backend Engineeer
-                </option>
-                <option id="option-edit-quality" value="Quality Engineer">
-                  Quality Engineer
-                </option>
-              </select>
-            </div>
-          </div>
-          <div className="flex py-2 w-full">
-            <div className="flex items-center w-1/4 mx-5">
-              <p className="font-semibold text-black text-center">Gender</p>
-            </div>
-            <div className="flex items-center justify-center w-full mx-2">
-              <select
-                id="select-edit-gender"
-                name="gender"
-                className="select select-bordered border-sky w-full text-black font-normal"
-                // onChange={()=>}
-              >
-                <option id="option-edit-gender" value="">
-                  Gender
-                </option>
-                <option id="option-edit-male" value="Male">
-                  Male
-                </option>
-                <option id="option-edit-female" value="Male">
-                  Female
-                </option>
-              </select>
-            </div>
-          </div>
-          <div className="flex py-2 w-full">
-            <div className="flex items-center w-1/4 mx-5">
-              <p className="font-semibold text-black text-center">Birthdate</p>
-            </div>
-            <div className="flex items-center justify-center w-full mx-2">
-              <CustomInput
-                id="input-edit-birthdate"
-                type="date"
-                inputSet="border-sky text-black"
-                defaultValue={"ss"}
-              />
-            </div>
-          </div>
-          <div className="flex py-2 w-full">
-            <div className="flex items-center w-1/4 mx-5">
-              <p className="font-semibold text-black text-center">Addres</p>
-            </div>
-            <div className="flex items-center justify-center w-full mx-2">
-              <TextArea
-                id="input-edit-address"
-                inputSet="h-24 border-sky text-black"
-                defaultValue={"ss"}
-              />
-            </div>
-          </div>
-          <div className="modal-action">
-            <button
-              id="btn-edit-submit"
-              type="submit"
-              className="w-24 text-sm text-center border-2 border-sky bg-sky rounded-xl py-1 text-gray-50 font-medium duration-300 hover:cursor-pointer  hover:bg-blue-900  active:scale-90"
-            >
-              Submit
-            </button>
-            <label
-              id="btn-edit-cancel"
-              htmlFor="my-modal-3"
-              className="w-24 text-sm text-center border-2 border-sky rounded-xl py-1 text-sky font-medium duration-300 hover:cursor-pointer hover:bg-red-600 hover:text-white  active:scale-90"
-            >
-              Cancel
-            </label>
-          </div>
-        </form>
-      </Modals1> */}
-      {/* Modal update employee end */}
     </Layout>
   );
 };
