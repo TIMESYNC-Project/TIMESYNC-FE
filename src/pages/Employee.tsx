@@ -1,5 +1,6 @@
+import { Dialog, Transition } from "@headlessui/react";
+import { useEffect, useState, Fragment } from "react";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
 import { BsSearch } from "react-icons/bs";
 import { useCookies } from "react-cookie";
 import { BiEdit } from "react-icons/bi";
@@ -24,14 +25,46 @@ interface EmployeesType {
   profile_picture: string;
 }
 
+interface EmployeesIdType {
+  id: number;
+  name: string;
+  nip: string;
+  position: string;
+  profile_picture: string;
+  address: string;
+  annual_leave: number;
+  birth_of_date: string;
+  email: string;
+  gender: string;
+  phone: string;
+}
+
 const Employee = () => {
   const navigate = useNavigate();
   const [cookie] = useCookies(["token"]);
+
+  const [isOpen, setIsOpen] = useState(false);
+  function closeModal() {
+    setIsOpen(false);
+  }
+  function openModal() {
+    setIsOpen(true);
+  }
 
   const [disabled, setDisabled] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
 
   const [employees, setEmployees] = useState<EmployeesType[]>([]);
+  const [employeesId, setEmployeesId] = useState<EmployeesIdType[]>([]);
+
+  const [employeeId, setEmployeeId] = useState<number>();
+  const [employeeName, setEmployeeName] = useState<string>("");
+  const [employeeBirthdate, setEmployeeBirthdate] = useState<string>("");
+  const [employeeEmail, setEmployeeEmail] = useState<string>("");
+  const [employeeGender, setEmployeeGender] = useState<string>("");
+  const [employeePosition, setEmployeePosition] = useState<string>("");
+  const [employeePhone, setEmployeePhone] = useState<string>("");
+  const [employeeAddress, setEmployeeAddress] = useState<string>("");
 
   const [name, setName] = useState<string>("");
   const [birth_of_date, setBirthOfDate] = useState<string>("");
@@ -41,6 +74,15 @@ const Employee = () => {
   const [phone, setPhone] = useState<string>("");
   const [address, setAddress] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+
+  const [editName, setEditName] = useState<string>("");
+  const [editBirthdate, setEditBirthdate] = useState<string>("");
+  const [editEmail, setEditEmail] = useState<string>("");
+  const [editGender, setEditGender] = useState<string>("");
+  const [editPosition, setEditPosition] = useState<string>("");
+  const [editPhone, setEditPhone] = useState<string>("");
+  const [editAddress, setEditAddress] = useState<string>("");
+  const [editPassword, setEditPassword] = useState<string>("");
 
   function onClickDetail(id: number) {
     navigate(`/employee/profile/${id}`);
@@ -77,6 +119,28 @@ const Employee = () => {
       .then((res) => {
         const { data } = res.data;
         setEmployees(data);
+      })
+      .catch((err) => {});
+  }
+
+  function getEmployeesId(id: number) {
+    axios
+      .get(`employees/${id}`, {
+        headers: {
+          Authorization: `Bearer ${cookie.token}`,
+        },
+      })
+      .then((res) => {
+        const { data } = res.data;
+        console.log(data);
+        setEmployeeId(data.id);
+        setEmployeeName(data.name);
+        setEmployeeBirthdate(data.birth_of_date);
+        setEmployeeEmail(data.email);
+        setEmployeeGender(data.gender);
+        setEmployeePosition(data.position);
+        setEmployeePhone(data.phone);
+        setEmployeeAddress(data.address);
       })
       .catch((err) => {});
   }
@@ -125,10 +189,50 @@ const Employee = () => {
       .finally(() => setLoading(false));
   };
 
+  function handleEditEmployee(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const body = new FormData();
+    body.append("name", editName);
+    body.append("birth_of_date", editBirthdate);
+    body.append("email", editEmail);
+    body.append("gender", editGender);
+    body.append("position", editPosition);
+    body.append("phone", editPhone);
+    body.append("address", editAddress);
+    body.append("password", editPassword);
+    axios
+      .put(`employees/${employeeId}`, body, {
+        headers: {
+          Authorization: `Bearer ${cookie.token}`,
+        },
+      })
+      .then((res) => {
+        const { message } = res.data;
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Success",
+          text: message,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        navigate(0);
+      })
+      .catch((err) => {
+        console.log(err);
+        const { data } = err.response;
+        const { message } = data;
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: message,
+        });
+      });
+  }
+
   function handleDeleteEmployee(id: number) {
     Swal.fire({
       title: "Are you sure want to delete this employee?",
-      // text: "You won't be able to revert this!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -238,13 +342,16 @@ const Employee = () => {
                     {data.position}
                   </p>
                 </div>
+
                 <label
                   id={`btn-edit-employee-${data.id}`}
                   htmlFor={`my-modal-3`}
                   className="mx-3 text-sky hover:cursor-pointer hover:text-orange-600"
+                  onClick={() => getEmployeesId(data.id)}
                 >
                   <BiEdit size={27} />
                 </label>
+
                 <button
                   id={`btn-delete-employee-${data.id}`}
                   className="mx-3 text-sky hover:cursor-pointer hover:text-red-600"
@@ -257,6 +364,173 @@ const Employee = () => {
           </FlexyCard>
         ))}
       </WrappingCard>
+
+      <input type="checkbox" id={`my-modal-3`} className="modal-toggle" />
+      <div className="modal modal-bottom sm:modal-middle">
+        <div className="modal-box pt-52 border-2 border-sky flex flex-col justify-center text-sky">
+          <form onSubmit={handleEditEmployee}>
+            <p className="mb-5 pb-2 text-xl border-b-2 font-bold text-sky ">
+              Edit Employee
+            </p>
+            <div className="flex py-2 w-full">
+              <div className="flex items-center w-1/4 mx-5">
+                <p className="font-semibold text-black text-center">Name</p>
+              </div>
+              <div className="flex items-center justify-center w-full mx-2">
+                <CustomInput
+                  id="input-edit-name"
+                  type="text"
+                  inputSet="border-sky text-black"
+                  defaultValue={employeeName}
+                  onChange={(e) => setEditName(e.target.value)}
+                />
+              </div>
+            </div>
+            <div className="flex py-2 w-full">
+              <div className="flex items-center  w-1/4 mx-5">
+                <p className="font-semibold text-black text-center">Email</p>
+              </div>
+              <div className="flex items-center justify-center w-full mx-2">
+                <CustomInput
+                  id="input-edit-email"
+                  type="email"
+                  inputSet="border-sky text-black"
+                  defaultValue={employeeEmail}
+                  onChange={(e) => setEditEmail(e.target.value)}
+                />
+              </div>
+            </div>
+            <div className="flex py-2 w-full">
+              <div className="flex items-center w-1/4 mx-5">
+                <p className="font-semibold text-black text-center">Password</p>
+              </div>
+              <div className="flex items-center justify-center w-full mx-2">
+                <CustomInput
+                  id="input-edit-password"
+                  type="text"
+                  inputSet="border-sky text-black"
+                  defaultValue={`****************`}
+                  onChange={(e) => setEditPassword(e.target.value)}
+                />
+              </div>
+            </div>
+            <div className="flex py-2 w-full">
+              <div className="flex items-center w-1/4 mx-5">
+                <p className="font-semibold text-black text-center">Phone</p>
+              </div>
+              <div className="flex items-center justify-center w-full mx-2">
+                <CustomInput
+                  id="input-edit-phone"
+                  type="text"
+                  inputSet="border-sky text-black"
+                  defaultValue={employeePhone}
+                  onChange={(e) => setEditPhone(e.target.value)}
+                />
+              </div>
+            </div>
+            <div className="flex py-2 w-full">
+              <div className="flex items-center w-1/4 mx-5">
+                <p className="font-semibold text-black text-center">Position</p>
+              </div>
+              <div className="flex items-center justify-center w-full mx-2">
+                <select
+                  id="select-edit-position"
+                  name="position"
+                  className="select select-bordered border-sky w-full text-black font-normal"
+                  defaultValue={employeePosition}
+                  onChange={(e) => setEditPosition(e.target.value)}
+                >
+                  <option id="option-edit-position" value="">
+                    Position
+                  </option>
+                  <option
+                    key="option-edit-frontend"
+                    id="option-edit-frontend"
+                    value="Frontend Engineer"
+                  >
+                    Frontend Engineer
+                  </option>
+                  <option id="option-edit-backend" value="Backend Engineeer">
+                    Backend Engineeer
+                  </option>
+                  <option id="option-edit-quality" value="Quality Engineer">
+                    Quality Engineer
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div className="flex py-2 w-full">
+              <div className="flex items-center w-1/4 mx-5">
+                <p className="font-semibold text-black text-center">Gender</p>
+              </div>
+              <div className="flex items-center justify-center w-full mx-2">
+                <select
+                  id="select-edit-gender"
+                  name="gender"
+                  className="select select-bordered border-sky w-full text-black font-normal"
+                  defaultValue={employeeGender}
+                  onChange={(e) => setEditGender(e.target.value)}
+                >
+                  <option id="option-edit-gender" value="">
+                    Gender
+                  </option>
+                  <option id="option-edit-male" value="Male">
+                    Male
+                  </option>
+                  <option id="option-edit-female" value="Female">
+                    Female
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div className="flex py-2 w-full">
+              <div className="flex items-center w-1/4 mx-5">
+                <p className="font-semibold text-black text-center">
+                  Birthdate
+                </p>
+              </div>
+              <div className="flex items-center justify-center w-full mx-2">
+                <CustomInput
+                  id="input-edit-birthdate"
+                  type="date"
+                  inputSet="border-sky text-black"
+                  defaultValue={employeeBirthdate}
+                  onChange={(e) => setEditBirthdate(e.target.value)}
+                />
+              </div>
+            </div>
+            <div className="flex py-2 w-full">
+              <div className="flex items-center w-1/4 mx-5">
+                <p className="font-semibold text-black text-center">Addres</p>
+              </div>
+              <div className="flex items-center justify-center w-full mx-2">
+                <TextArea
+                  id="input-edit-address"
+                  inputSet="h-24 border-sky text-black"
+                  defaultValue={employeeAddress}
+                  onChange={(e) => setEditAddress(e.target.value)}
+                />
+              </div>
+            </div>
+            <div className="modal-action">
+              <button
+                id={`btn-edit-submit-${employeeId}`}
+                type="submit"
+                className="w-24 text-sm text-center border-2 border-sky bg-sky rounded-xl py-1 text-gray-50 font-medium duration-300 hover:cursor-pointer  hover:bg-blue-900  active:scale-90"
+              >
+                Submit
+              </button>
+              <label
+                id={`btn-edit-cancel-${employeeId}`}
+                htmlFor="my-modal-3"
+                className="w-24 text-sm text-center border-2 border-sky rounded-xl py-1 text-sky font-medium duration-300 hover:cursor-pointer hover:bg-red-600 hover:text-white  active:scale-90"
+              >
+                Cancel
+              </label>
+            </div>
+          </form>
+        </div>
+      </div>
 
       {/* Modal create employee import csv start */}
       <Modals1 no={1} titleModal="Import by CSV">
@@ -272,6 +546,7 @@ const Employee = () => {
                 id="input-import-file"
                 type="file"
                 className="file-input file-input-bordered w-full border-1 border-sky max-w-xs file:bg-sky file:border-none file:capitalize file:text-md text-base"
+                accept="text/csv"
               />
             </div>
           </div>
@@ -409,7 +684,7 @@ const Employee = () => {
                 <option key="option-add-male" id="option-add-male" value="Male">
                   Male
                 </option>
-                <option key="option-female" id="option-female" value="Male">
+                <option key="option-female" id="option-female" value="Female">
                   Female
                 </option>
               </select>
@@ -441,14 +716,15 @@ const Employee = () => {
             </div>
           </div>
           <div className="modal-action">
-            <button
-              id="btn-add-submit"
-              type="submit"
-              className="w-24 text-sm text-center border-2 border-sky bg-sky rounded-xl py-1 text-gray-50 font-medium duration-300 hover:cursor-pointer  hover:bg-blue-900  active:scale-90 disabled:bg-gray-300 disabled:text-gray-400 disabled:border-gray-300 disabled:cursor-not-allowed disabled:active:scale-100"
-              disabled={loading || disabled}
-            >
-              Submit
-            </button>
+            <label>
+              <button
+                id="btn-add-submit"
+                type="submit"
+                className="w-24 text-sm text-center border-2 border-sky bg-sky rounded-xl py-1 text-gray-50 font-medium duration-300 hover:cursor-pointer  hover:bg-blue-900  active:scale-90 disabled:bg-gray-300 disabled:text-gray-400 disabled:border-gray-300 disabled:cursor-not-allowed disabled:active:scale-100"
+              >
+                Submit
+              </button>
+            </label>
             <label
               id="btn-add-cancel"
               htmlFor="my-modal-2"
@@ -462,7 +738,7 @@ const Employee = () => {
       {/* Modal create employee manual end */}
 
       {/* Modal update employee start */}
-      <Modals1 no={3} parentSet="pt-48" titleModal="Edit Employee Profile">
+      {/* <Modals1 no={3} parentSet="pt-48" titleModal="Edit Employee Profile">
         <form>
           <div className="flex py-2 w-full">
             <div className="flex items-center w-1/4 mx-5">
@@ -610,7 +886,7 @@ const Employee = () => {
             </label>
           </div>
         </form>
-      </Modals1>
+      </Modals1> */}
       {/* Modal update employee end */}
     </Layout>
   );
