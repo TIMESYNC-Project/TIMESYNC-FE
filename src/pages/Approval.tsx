@@ -26,18 +26,8 @@ const Approval = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    textColor();
     getApproval();
   }, []);
-
-  function textColor() {
-    const status = appData.map((data) => data.approval_status);
-    console.log("status", status);
-    setAttendance(status);
-    // if (attendance === "pending") setColor("text-orange-500");
-    // if (attendance === "rejected") setColor("text-red-500");
-    // if (attendance === "approved") setColor("text-green-500");
-  }
 
   function getApproval() {
     axios
@@ -48,7 +38,6 @@ const Approval = () => {
       })
       .then((res) => {
         const { data } = res.data;
-        // const { approval_status } = data.data;
         setAppData(data);
       })
       .catch((err) => {
@@ -141,14 +130,14 @@ const Approval = () => {
               </div>
               <div className="modal-action">
                 <button
-                  id={`btn-reject-${"data.id"}`}
+                  id={`btn-reject-modals`}
                   type="submit"
                   className="w-24 text-sm text-center border-sky bg-sky rounded-xl py-1 text-white font-medium duration-300 hover:cursor-pointer hover:bg-red-600 hover:text-white  active:scale-90"
                 >
                   Reject
                 </button>
                 <button
-                  id={`btn-approve-${"data.id"}`}
+                  id={`btn-approve-modals`}
                   type="submit"
                   className="w-24 text-sm text-center border-sky bg-sky rounded-xl py-1 text-gray-50 font-medium duration-300 hover:cursor-pointer  hover:bg-blue-900  active:scale-90"
                 >
@@ -172,28 +161,45 @@ const Approval = () => {
             </>
           }
         >
-          <label htmlFor="my-modal-2" id={`btn-detail-approval-${"data.id"}`}>
-            <FlexyCard>
-              <div className="flex justify-center items-center w-full">
-                <div className="text-start w-1/3 mx-5">
-                  <p className="text-black capitalize font-semibold">
-                    jan 30, 2023
-                  </p>
-                </div>
-                <div className="text-center w-1/3 mx-5">
-                  <p className="text-black capitalize font-medium">1 day</p>
-                  <p className="text-black capitalize font-medium">
-                    sick leave
-                  </p>
-                </div>
-                <div className="text-end w-1/3 mx-5">
-                  <p className={`${color} capitalize font-bold`}>
-                    {attendance}
-                  </p>
-                </div>
-              </div>
-            </FlexyCard>
-          </label>
+          {appData.map((data) => {
+            return (
+              <FlexyCard parentSet="active:scale-95" key={data.id}>
+                <label
+                  htmlFor="my-modal-2"
+                  id={`btn-detail-approval-${data.id}`}
+                >
+                  <div className="flex justify-center items-center w-full">
+                    <div className="text-start w-1/3 mx-5">
+                      <p className="text-black capitalize font-semibold">
+                        {data.approval_end_date}
+                      </p>
+                    </div>
+                    <div className="text-center w-1/3 mx-5">
+                      <p className="text-black capitalize font-medium">1 day</p>
+                      <p className="text-black capitalize font-medium">
+                        {data.approval_title}
+                      </p>
+                    </div>
+                    <div className="text-end w-1/3 mx-5">
+                      <p
+                        className={`${
+                          data.approval_status === "rejected"
+                            ? "text-red-500"
+                            : "text-orange-500" &&
+                              data.approval_status === "approved"
+                            ? "text-green-500"
+                            : "text-orange-500"
+                        } capitalize font-bold`}
+                      >
+                        {data.approval_status}
+                      </p>
+                    </div>
+                  </div>
+                </label>
+              </FlexyCard>
+            );
+          })}
+
           <Modals1 no={2} titleModal="Detail Approval">
             <div className="box-border w-full bg-white rounded-2xl border-sky border-2 p-5">
               <div className="flex">
@@ -227,7 +233,7 @@ const Approval = () => {
             </div>
             <div className="modal-action">
               <label
-                id={`btn-close-${"data.id"}`}
+                id={`btn-close-modals`}
                 htmlFor="my-modal-2"
                 className="w-24 text-sm text-center border-sky bg-sky rounded-xl py-1 text-gray-50 font-medium duration-300 hover:cursor-pointer  hover:bg-navy  active:scale-90"
               >
