@@ -1,6 +1,5 @@
-import { Dialog, Transition } from "@headlessui/react";
-import { useEffect, useState, Fragment } from "react";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { BsSearch } from "react-icons/bs";
 import { useCookies } from "react-cookie";
 import { BiEdit } from "react-icons/bi";
@@ -25,37 +24,14 @@ interface EmployeesType {
   profile_picture: string;
 }
 
-interface EmployeesIdType {
-  id: number;
-  name: string;
-  nip: string;
-  position: string;
-  profile_picture: string;
-  address: string;
-  annual_leave: number;
-  birth_of_date: string;
-  email: string;
-  gender: string;
-  phone: string;
-}
-
 const Employee = () => {
   const navigate = useNavigate();
   const [cookie] = useCookies(["token"]);
-
-  const [isOpen, setIsOpen] = useState(false);
-  function closeModal() {
-    setIsOpen(false);
-  }
-  function openModal() {
-    setIsOpen(true);
-  }
 
   const [disabled, setDisabled] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
 
   const [employees, setEmployees] = useState<EmployeesType[]>([]);
-  const [employeesId, setEmployeesId] = useState<EmployeesIdType[]>([]);
 
   const [employeeId, setEmployeeId] = useState<number>();
   const [employeeName, setEmployeeName] = useState<string>("");
@@ -74,6 +50,7 @@ const Employee = () => {
   const [phone, setPhone] = useState<string>("");
   const [address, setAddress] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [file, setFile] = useState<any>();
 
   const [editName, setEditName] = useState<string>("");
   const [editBirthdate, setEditBirthdate] = useState<string>("");
@@ -188,6 +165,40 @@ const Employee = () => {
       })
       .finally(() => setLoading(false));
   };
+
+  function handleImportEmployee(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const body = new FormData();
+    body.append("file", file);
+    axios
+      .post(`register/csv`, body, {
+        headers: {
+          Authorization: `Bearer ${cookie.token}`,
+        },
+      })
+      .then((res) => {
+        const { message } = res.data;
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Success",
+          text: message,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        navigate(0);
+      })
+      .catch((err) => {
+        console.log(err);
+        const { data } = err.response;
+        const { message } = data;
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: message,
+        });
+      });
+  }
 
   function handleEditEmployee(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -365,6 +376,7 @@ const Employee = () => {
         ))}
       </WrappingCard>
 
+      {/* Modal edit employee start */}
       <input type="checkbox" id={`my-modal-3`} className="modal-toggle" />
       <div className="modal modal-bottom sm:modal-middle">
         <div className="modal-box pt-52 border-2 border-sky flex flex-col justify-center text-sky">
@@ -531,10 +543,11 @@ const Employee = () => {
           </form>
         </div>
       </div>
+      {/* Modal edit employee end */}
 
       {/* Modal create employee import csv start */}
       <Modals1 no={1} titleModal="Import by CSV">
-        <form>
+        <form onSubmit={handleImportEmployee}>
           <div className="flex py-2 w-full">
             <div className="flex items-center w-1/4 mx-5">
               <p className="w-24 font-semibold text-black text-center">
@@ -545,8 +558,9 @@ const Employee = () => {
               <input
                 id="input-import-file"
                 type="file"
-                className="file-input file-input-bordered w-full border-1 border-sky max-w-xs file:bg-sky file:border-none file:capitalize file:text-md text-base"
                 accept="text/csv"
+                className="file-input file-input-bordered w-full border-1 border-sky max-w-xs file:bg-sky file:border-none file:capitalize file:text-md text-base"
+                onChange={(e) => setFile(e.target.files?.[0])}
               />
             </div>
           </div>
@@ -721,6 +735,7 @@ const Employee = () => {
                 id="btn-add-submit"
                 type="submit"
                 className="w-24 text-sm text-center border-2 border-sky bg-sky rounded-xl py-1 text-gray-50 font-medium duration-300 hover:cursor-pointer  hover:bg-blue-900  active:scale-90 disabled:bg-gray-300 disabled:text-gray-400 disabled:border-gray-300 disabled:cursor-not-allowed disabled:active:scale-100"
+                disabled={loading || disabled}
               >
                 Submit
               </button>
