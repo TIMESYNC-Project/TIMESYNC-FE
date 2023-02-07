@@ -1,4 +1,5 @@
 import React, { FC, LabelHTMLAttributes } from "react";
+import { useCookies } from "react-cookie";
 import { Link } from "react-router-dom";
 
 import Logo from "assets/logo-yellow.png";
@@ -25,6 +26,7 @@ const Navbar: FC<NavbarProps> = ({
   inboxSet,
   settingsSet,
 }) => {
+  const [cookie, setCookie] = useCookies()
   return (
     <div className="flex flex-col">
       <section className="navbar h-10 bg-[#0F4C75] shadow-md shadow-gray-900 sticky top-0 mb-[-5rem] z-50">
@@ -42,10 +44,9 @@ const Navbar: FC<NavbarProps> = ({
         </div>
         <div className="navbar-end mr-14">
           <p className="capitalize text-md font-normal text-[#FFC909]">
-            aryo yudhanto
-            {/* {
+            Hi, {
                 cookie.name? cookie.name : null
-              } */}
+              }
           </p>
         </div>
       </section>
