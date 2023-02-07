@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import Swal from "sweetalert2";
-import moment from "moment";
 import axios from "axios";
 
 import { CustomInput, TextArea } from "components/CustomInput";
@@ -12,12 +11,16 @@ import Layout from "components/Layout";
 
 interface InboxType {
   id: number;
+  to: string
+  nip: string
   announcement_title: string;
   announcement_description: string;
   created_at: string;
 }
 interface InboxIdType {
   id?: number;
+  to?: string
+  nip?: string
   announcement_title?: string;
   announcement_description?: string;
   created_at?: string;
@@ -27,15 +30,18 @@ const Inbox = () => {
   const [inboxId, setInboxId] = useState<InboxIdType>({});
   const [addTitle, setAddtitle] = useState<string>("");
   const [inbox, setInbox] = useState<InboxType[]>([]);
+  const [inboxEm, setInboxEm] = useState<InboxType[]>([])
   const [addDesc, setAddDesc] = useState<string>("");
   const [addTo, setAddTo] = useState<string>("");
   const [cookie, setCookie] = useCookies();
   const navigate = useNavigate();
   const checkRole = cookie.role;
   const admin = checkRole == "admin";
+  const employee = checkRole == "employee";
 
   useEffect(() => {
     getInbox();
+    getInboxEm()
   }, []);
 
   function getInbox() {
@@ -48,6 +54,19 @@ const Inbox = () => {
       .then((res) => {
         const { data } = res.data;
         setInbox(data);
+      })
+      .catch((err) => {});
+  }
+  function getInboxEm() {
+    axios
+      .get(`inbox`, {
+        headers: {
+          Authorization: `Bearer ${cookie.token}`,
+        },
+      })
+      .then((res) => {
+        const { data } = res.data;
+        setInboxEm(data);
       })
       .catch((err) => {});
   }
@@ -199,77 +218,144 @@ const Inbox = () => {
           )
         }
       >
-        {inbox.map((data) => (
-          <div className="flex justify-center gap-4" key={data.id}>
-            <FlexyCard parentSet="w-fit mx-0">
-              <div className="flex items-center">
-                <label
-                  id={`btn-detail-${data.id}`}
-                  htmlFor="my-modal-3"
-                  onClick={() => getInboxId(data.id)}
-                >
-                  <div className="flex justify-center w-full gap-5 duration-300 hover:cursor-pointer active:scale-95">
-                    <div className="flex justify-center w-1/5">
-                      <p className="text-black capitalize">
-                        {moment(inboxId.created_at?.substring(0, 10)).format(
-                          "LL"
-                        )}
-                      </p>
+        {admin &&
+          inbox.map((data) => (
+            <div className="flex justify-center gap-4" key={data.id}>
+              <FlexyCard parentSet="w-fit mx-0">
+                <div className="flex items-center">
+                  <label
+                    id={`btn-detail-${data.id}`}
+                    htmlFor="my-modal-3"
+                    onClick={() => getInboxId(data.id)}
+                  >
+                    <div className="flex justify-center w-full gap-5 duration-300 hover:cursor-pointer active:scale-95">
+                      <div className="flex justify-center w-1/5">
+                        <p className="text-black capitalize">
+                          {data.created_at}
+                        </p>
+                      </div>
+                      <div className="flex flex-col w-full">
+                        <p className="text-black capitalize font-extrabold">
+                          {data.announcement_title}
+                        </p>
+                        <p className="w-[35rem]">
+                          {data.announcement_description.substring(0, 75) +
+                            "..."}
+                        </p>
+                      </div>
                     </div>
-                    <div className="flex flex-col w-full">
-                      <p className="text-black capitalize font-extrabold">
-                        {data.announcement_title}
-                      </p>
-                      <p className="w-[35rem]">
-                        {data.announcement_description.substring(0, 75) + "..."}
-                      </p>
-                    </div>
-                  </div>
-                </label>
-                {admin && (
-                  <p className="text-red-600 duration-300 hover:cursor-pointer active:scale-90">
-                    <BsTrash size={30} onClick={() => onDelete(data.id)} />
-                  </p>
-                )}
-              </div>
-            </FlexyCard>
+                  </label>
+                  {admin && (
+                    <p className="text-red-600 duration-300 hover:cursor-pointer active:scale-90">
+                      <BsTrash size={30} onClick={() => onDelete(data.id)} />
+                    </p>
+                  )}
+                </div>
+              </FlexyCard>
 
-            <form>
-              <input type="checkbox" id="my-modal-3" className="modal-toggle" />
-              <div className="modal modal-bottom sm:modal-middle">
-                <div className="modal-box border-2 border-sky flex flex-col justify-center ">
-                  <p className="mb-5 pb-2 text-2xl border-b-2 font-bold text-black">
-                    Detail Inbox
-                  </p>
-                  <div className="flex flex-col justify-center gap-5">
-                    <div className="flex">
-                      <p>
-                        {moment(inboxId.created_at?.substring(0, 10)).format(
-                          "LL"
-                        )}
+              <form>
+                <input
+                  type="checkbox"
+                  id="my-modal-3"
+                  className="modal-toggle"
+                />
+                <div className="modal modal-bottom sm:modal-middle">
+                  <div className="modal-box border-2 border-sky flex flex-col justify-center ">
+                    <p className="mb-5 pb-2 text-2xl border-b-2 font-bold text-black">
+                      Detail Inbox
+                    </p>
+                    <div className="flex flex-col justify-center gap-5">
+                      <div className="flex">
+                        <p>{inboxId.created_at}</p>
+                      </div>
+                      <p className="font-extrabold">
+                        {inboxId.announcement_title}
+                      </p>
+                      <p className="text-justify">
+                        {inboxId.announcement_description}
                       </p>
                     </div>
-                    <p className="font-extrabold">
-                      {inboxId.announcement_title}
-                    </p>
-                    <p className="text-justify">
-                      {inboxId.announcement_description}
-                    </p>
-                  </div>
-                  <div className="modal-action">
-                    <label
-                      id={`btn-close-${data.id}`}
-                      htmlFor="my-modal-3"
-                      className="w-28 text-sm text-center border-2 border-sky rounded-xl py-1 text-sky font-medium duration-300 hover:cursor-pointer hover:bg-red-600 hover:text-white  active:scale-90"
-                    >
-                      Close
-                    </label>
+                    <div className="modal-action">
+                      <label
+                        id={`btn-close-${data.id}`}
+                        htmlFor="my-modal-3"
+                        className="w-28 text-sm text-center border-2 border-sky rounded-xl py-1 text-sky font-medium duration-300 hover:cursor-pointer hover:bg-red-600 hover:text-white  active:scale-90"
+                      >
+                        Close
+                      </label>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </form>
-          </div>
-        ))}
+              </form>
+            </div>
+          ))}
+        {
+          employee && inboxEm.map((data) => (
+            <div className="flex justify-center gap-4" key={data.id}>
+              <FlexyCard parentSet="w-fit mx-0">
+                <div className="flex items-center">
+                  <label
+                    id={`btn-detail-${data.id}`}
+                    htmlFor="my-modal-3"
+                    onClick={() => getInboxId(data.id)}
+                  >
+                    <div className="flex justify-center w-full gap-5 duration-300 hover:cursor-pointer active:scale-95">
+                      <div className="flex justify-center w-1/5">
+                        <p className="text-black capitalize">
+                          {data.created_at}
+                        </p>
+                      </div>
+                      <div className="flex flex-col w-full">
+                        <p className="text-black capitalize font-extrabold">
+                          {data.announcement_title}
+                        </p>
+                        <p className="w-[35rem]">
+                          {data.announcement_description.substring(0, 75) +
+                            "..."}
+                        </p>
+                      </div>
+                    </div>
+                  </label>
+                </div>
+              </FlexyCard>
+
+              <form>
+                <input
+                  type="checkbox"
+                  id="my-modal-3"
+                  className="modal-toggle"
+                />
+                <div className="modal modal-bottom sm:modal-middle">
+                  <div className="modal-box border-2 border-sky flex flex-col justify-center ">
+                    <p className="mb-5 pb-2 text-2xl border-b-2 font-bold text-black">
+                      Detail Inbox
+                    </p>
+                    <div className="flex flex-col justify-center gap-5">
+                      <div className="flex">
+                        <p>{inboxId.created_at}</p>
+                      </div>
+                      <p className="font-extrabold">
+                        {inboxId.announcement_title}
+                      </p>
+                      <p className="text-justify">
+                        {inboxId.announcement_description}
+                      </p>
+                    </div>
+                    <div className="modal-action">
+                      <label
+                        id={`btn-close-${data.id}`}
+                        htmlFor="my-modal-3"
+                        className="w-28 text-sm text-center border-2 border-sky rounded-xl py-1 text-sky font-medium duration-300 hover:cursor-pointer hover:bg-red-600 hover:text-white  active:scale-90"
+                      >
+                        Close
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          ))
+        }
       </WrappingCard>
     </Layout>
   );
