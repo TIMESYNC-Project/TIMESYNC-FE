@@ -23,16 +23,26 @@ interface ApprovalType {
 
 const Approval = () => {
   const [attendance, setAttendance] = useState<string[]>([]);
-  const [approvalsData, setApprovalsData] = useState<ApprovalType[]>([]);
+  const [approvals, setApprovals] = useState<ApprovalType[]>([]);
+
+  const [id, setId] = useState<number>();
+  const [name, setName] = useState<string>();
+  const [createdAt, setCreatedAt] = useState<number>();
+  const [title, setTitle] = useState<number>();
+  const [status, setStatus] = useState<number>();
+  const [startDate, setStartDate] = useState<number>();
+  const [endDate, setEndDate] = useState<number>();
+  const [image, setImage] = useState<number>();
+
   const [color, setColor] = useState<string>("");
   const [cookie, setCookie] = useCookies();
   const navigate = useNavigate();
 
   useEffect(() => {
-    getApproval();
+    getApprovals();
   }, []);
 
-  function getApproval() {
+  function getApprovals() {
     {
       cookie.role === "admin" &&
         axios
@@ -43,7 +53,7 @@ const Approval = () => {
           })
           .then((res) => {
             const { data } = res.data;
-            setApprovalsData(data);
+            setApprovals(data);
             console.log(data);
           })
           .catch((err) => {
@@ -60,7 +70,7 @@ const Approval = () => {
           })
           .then((res) => {
             const { data } = res.data;
-            setApprovalsData(data);
+            setApprovals(data);
           })
           .catch((err) => {
             console.log(err);
@@ -68,11 +78,34 @@ const Approval = () => {
     }
   }
 
+  function getApprovalId(id: number) {
+    axios
+      .get(`approvals/${id}`, {
+        headers: {
+          Authorization: `Bearer ${cookie.token}`,
+        },
+      })
+      .then((res) => {
+        const { data } = res.data;
+        console.log(data);
+        setName(data.employee_name);
+        setCreatedAt(data.created_at);
+        setTitle(data.approval_title);
+        setStatus(data.approval_status);
+        setStartDate(data.approval_start_date);
+        setEndDate(data.approval_end_date);
+        setImage(data.approval_image);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   return (
     <Layout approvalSet="w-full bg-gradient-to-r from-white to-navy hover:text-white ">
       {cookie.role === "admin" ? (
         <WrappingCard judul="Approval Requests">
-          {approvalsData.map((data) => {
+          {approvals.map((data) => {
             return (
               <FlexyCard parentSet="active:scale-95" key={data.id}>
                 <label
@@ -80,6 +113,7 @@ const Approval = () => {
                   // modals klo approve or reject button ganti cancel
                   // data.approval_status === "rejected" || data.approval_status === "approved"? undefined : "my-modal-1"
                   id={`btn-approval-detail-${data.id}`}
+                  onClick={() => getApprovalId(data.id)}
                 >
                   <div className="flex justify-center items-center w-full hover:cursor-pointer">
                     <div className="text-center w-1/4">
@@ -124,9 +158,7 @@ const Approval = () => {
               <div className="box-border w-full bg-white rounded-2xl border-sky border-2 p-5">
                 <div className="flex">
                   <div className="w-1/2 flex items-center">
-                    <p className="text-black font-semibold text-xl">
-                      James Shelby
-                    </p>
+                    <p className="text-black font-semibold text-xl">{name}</p>
                   </div>
                   <div className="w-1/2 flex justify-end items-center">
                     <img src={Logo} alt="" width={40} />
@@ -134,9 +166,9 @@ const Approval = () => {
                 </div>
                 <div className="py-5">
                   <p className="text-black font-normal text-md">
-                    Januari 31, 2023 - February 1, 2023
+                    {`${startDate} - ${endDate}`}
                   </p>
-                  <p className="text-black font-normal text-md">Sick Leave</p>
+                  <p className="text-black font-normal text-md">{title}</p>
                   <p className="text-black font-normal text-md my-5">
                     Lorem ipsum dolor sit amet consectetur adipisicing elit.
                     Delectus repudiandae assumenda consequuntur maiores. Alias
@@ -144,27 +176,24 @@ const Approval = () => {
                     voluptates ipsum autem!
                   </p>
                   <div className="flex justify-center w-full">
-                    <img
-                      src="https://i.pinimg.com/564x/9f/8b/74/9f8b749c32edf47b1b3f098230a5584c.jpg"
-                      className="w-[50%]"
-                    />
+                    <img src={`${image}`} className="w-[50%]" />
                   </div>
                 </div>
               </div>
               <div className="modal-action">
                 <button
-                  id={`btn-reject-modals`}
-                  type="submit"
-                  className="w-24 text-sm text-center border-sky bg-sky rounded-xl py-1 text-white font-medium duration-300 hover:cursor-pointer hover:bg-red-600 hover:text-white  active:scale-90"
-                >
-                  Reject
-                </button>
-                <button
                   id={`btn-approve-modals`}
                   type="submit"
-                  className="w-24 text-sm text-center border-sky bg-sky rounded-xl py-1 text-gray-50 font-medium duration-300 hover:cursor-pointer  hover:bg-blue-900  active:scale-90"
+                  className="w-24 text-sm text-center border-2 border-sky bg-sky rounded-xl py-1 text-gray-50 font-medium duration-300 hover:cursor-pointer  hover:bg-blue-900  active:scale-90"
                 >
                   Approve
+                </button>
+                <button
+                  id={`btn-reject-modals`}
+                  type="submit"
+                  className="w-24 text-sm text-center border-2 border-sky rounded-xl py-1 text-sky font-medium duration-300 hover:cursor-pointer hover:bg-red-600 hover:text-white  active:scale-90"
+                >
+                  Reject
                 </button>
               </div>
             </form>
@@ -184,12 +213,13 @@ const Approval = () => {
             </>
           }
         >
-          {approvalsData.map((data) => {
+          {approvals.map((data) => {
             return (
               <FlexyCard parentSet="active:scale-95" key={data.id}>
                 <label
                   htmlFor="my-modal-2"
                   id={`btn-detail-approval-${data.id}`}
+                  onClick={() => getApprovalId(data.id)}
                 >
                   <div className="flex justify-center items-center w-full">
                     <div className="text-start w-1/3 mx-5">
@@ -227,9 +257,7 @@ const Approval = () => {
             <div className="box-border w-full bg-white rounded-2xl border-sky border-2 p-5">
               <div className="flex">
                 <div className="w-1/2 flex items-center">
-                  <p className="text-black font-semibold text-xl">
-                    James Shelby
-                  </p>
+                  <p className="text-black font-semibold text-xl">{name}</p>
                 </div>
                 <div className="w-1/2 flex justify-end items-center">
                   <img src={Logo} alt="" width={40} />
@@ -237,9 +265,9 @@ const Approval = () => {
               </div>
               <div className="py-5">
                 <p className="text-black font-normal text-md">
-                  Januari 31, 2023 - February 1, 2023
+                  {`${startDate} - ${endDate}`}
                 </p>
-                <p className="text-black font-normal text-md">Sick Leave</p>
+                <p className="text-black font-normal text-md">{title}</p>
                 <p className="text-black font-normal text-md my-5">
                   Lorem ipsum dolor sit amet consectetur adipisicing elit.
                   Delectus repudiandae assumenda consequuntur maiores. Alias
@@ -247,10 +275,7 @@ const Approval = () => {
                   voluptates ipsum autem!
                 </p>
                 <div className="flex justify-center w-full">
-                  <img
-                    src="https://i.pinimg.com/564x/9f/8b/74/9f8b749c32edf47b1b3f098230a5584c.jpg"
-                    className="w-[50%]"
-                  />
+                  <img src={`${image}`} className="w-[50%]" />
                 </div>
               </div>
             </div>
@@ -258,7 +283,7 @@ const Approval = () => {
               <label
                 id={`btn-close-modals`}
                 htmlFor="my-modal-2"
-                className="w-24 text-sm text-center border-sky bg-sky rounded-xl py-1 text-gray-50 font-medium duration-300 hover:cursor-pointer  hover:bg-navy  active:scale-90"
+                className="w-24 text-sm text-center border-2 border-sky rounded-xl py-1 text-sky font-medium duration-300 hover:cursor-pointer hover:bg-red-600 hover:text-white active:scale-90"
               >
                 Close
               </label>
