@@ -17,6 +17,7 @@ interface ApprovalType {
   approval_title: string;
   approval_status: string;
   approval_start_date: string;
+  approval_description: string;
   approval_end_date: string;
   approval_image: string;
 }
@@ -28,6 +29,7 @@ const Approval = () => {
   const [id, setId] = useState<number>();
   const [name, setName] = useState<string>();
   const [createdAt, setCreatedAt] = useState<number>();
+  const [desc, setDesc] = useState<string>("");
   const [title, setTitle] = useState<number>();
   const [status, setStatus] = useState<number>();
   const [startDate, setStartDate] = useState<number>();
@@ -95,6 +97,7 @@ const Approval = () => {
         setStartDate(data.approval_start_date);
         setEndDate(data.approval_end_date);
         setImage(data.approval_image);
+        setDesc(data.approval_description);
       })
       .catch((err) => {
         console.log(err);
@@ -169,12 +172,7 @@ const Approval = () => {
                     {`${startDate} - ${endDate}`}
                   </p>
                   <p className="text-black font-normal text-md">{title}</p>
-                  <p className="text-black font-normal text-md my-5">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Delectus repudiandae assumenda consequuntur maiores. Alias
-                    quaerat ab debitis enim nobis officiis delectus iure
-                    voluptates ipsum autem!
-                  </p>
+                  <p className="text-black font-normal text-md my-5">{desc}</p>
                   <div className="flex justify-center w-full">
                     <img src={`${image}`} className="w-[50%]" />
                   </div>
@@ -268,12 +266,7 @@ const Approval = () => {
                   {`${startDate} - ${endDate}`}
                 </p>
                 <p className="text-black font-normal text-md">{title}</p>
-                <p className="text-black font-normal text-md my-5">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Delectus repudiandae assumenda consequuntur maiores. Alias
-                  quaerat ab debitis enim nobis officiis delectus iure
-                  voluptates ipsum autem!
-                </p>
+                <p className="text-black font-normal text-md my-5">{desc}</p>
                 <div className="flex justify-center w-full">
                   <img src={`${image}`} className="w-[50%]" />
                 </div>
