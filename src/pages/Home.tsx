@@ -1,8 +1,18 @@
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
 import { AiOutlineMessage } from "react-icons/ai";
 import { useState, useEffect } from "react";
 import { GoLocation } from "react-icons/go";
 import { useCookies } from "react-cookie";
 import { Link } from "react-router-dom";
+import { Bar } from "react-chartjs-2";
 import Swal from "sweetalert2";
 import moment from "moment";
 import axios from "axios";
@@ -73,6 +83,86 @@ const Home = () => {
   const [eror, setEror] = useState<string>("");
   const [cookie, setCookie] = useCookies();
 
+  // graph start
+  ChartJS.register(CategoryScale, Tooltip, LinearScale, BarElement, Title, Legend);
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: "top" as const,
+      },
+      title: {
+        display: true,
+        text: "Januari",
+      },
+    },
+  };
+  const dataEmployee = [
+    {
+      name: "Aryo",
+      work: 320,
+      late: 2,
+    },
+    {
+      name: "Yudha",
+      work: 329,
+      late: 10,
+    },
+    {
+      name: "Anto",
+      work: 220,
+      late: 2,
+    },
+    {
+      name: "Ahmad",
+      work: 321,
+      late: 1,
+    },
+    {
+      name: "Zain",
+      work: 330,
+      late: 3,
+    },
+    {
+      name: "Alif",
+      work: 312,
+      late: 0,
+    },
+    {
+      name: "Fauzi",
+      work: 311,
+      late: 5,
+    },
+    {
+      name: "Sofyan",
+      work: 317,
+      late: 1,
+    },
+  ];
+  const labels = dataEmployee.map((data) => data.name)
+
+  const dataGraph = {
+    labels,
+    datasets: [
+      {
+        label: "Dataset 1",
+        data: dataEmployee.map((data) => data.work),
+        backgroundColor: "rgba(255, 99, 132, 0.5)",
+      },
+    ],
+  };
+  const dataGraph2 = {
+    labels,
+    datasets: [
+      {
+        label: "Dataset 2",
+        data: dataEmployee.map((data) => data.late),
+        backgroundColor: "rgb(22, 182, 71)",
+      },
+    ],
+  };
+  // graph end
+
   useEffect(() => {
     presencesToday();
     newDate();
@@ -80,7 +170,7 @@ const Home = () => {
     getInbox();
     locationMaps();
     getSetting();
-    getPresences()
+    getPresences();
   }, []);
 
   function newDate() {
@@ -268,7 +358,7 @@ const Home = () => {
         setEror(message);
       });
   }
-  
+
   return (
     <Layout homeSet="w-full bg-gradient-to-r from-white to-navy hover:text-white">
       {cookie.role === "admin" ? (
@@ -317,7 +407,11 @@ const Home = () => {
                     </p>
                   </div>
                   <hr className="mx-10 my-3 border-[1.5px] border-sky" />
-                  <div className={`pt-5 pb-10 px-5`}>Tabelll</div>
+                  <div className={`pt-5 pb-10 px-5`}>
+                    <div style={{ width: 500 }}>
+                      <Bar options={options} data={dataGraph} />
+                    </div>
+                  </div>
                 </div>
               </div>
               {/* graph 1 end */}
@@ -331,7 +425,11 @@ const Home = () => {
                     </p>
                   </div>
                   <hr className="mx-10 my-3 border-[1.5px] border-sky" />
-                  <div className={`pt-5 pb-10 px-5`}>Tabelll</div>
+                  <div className={`pt-5 pb-10 px-5`}>
+                    <div style={{ width: 500 }}>
+                      <Bar options={options} data={dataGraph2} />
+                    </div>
+                  </div>
                 </div>
               </div>
               {/* graph 2 end */}
@@ -351,7 +449,7 @@ const Home = () => {
                             />
                           </div>
                           <div className="flex justify-start items-center mx-2">
-                            <p className="text-xl text-black font-bold capitalize">
+                            <p className="text-lg text-black font-semibold capitalize">
                               {data.name}
                             </p>
                           </div>
@@ -374,7 +472,7 @@ const Home = () => {
                             <AiOutlineMessage size={25} />
                           </div>
                           <div className="flex justify-start items-center mx-2">
-                            <p className="text-xl text-black font-bold capitalize">
+                            <p className="text-md text-black font-semibold capitalize">
                               {data.announcement_title}
                             </p>
                           </div>
