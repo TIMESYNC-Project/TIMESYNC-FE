@@ -84,7 +84,14 @@ const Home = () => {
   const [cookie, setCookie] = useCookies();
 
   // graph start
-  ChartJS.register(CategoryScale, Tooltip, LinearScale, BarElement, Title, Legend);
+  ChartJS.register(
+    CategoryScale,
+    Tooltip,
+    LinearScale,
+    BarElement,
+    Title,
+    Legend
+  );
   const options = {
     responsive: true,
     plugins: {
@@ -139,7 +146,7 @@ const Home = () => {
       late: 1,
     },
   ];
-  const labels = dataEmployee.map((data) => data.name)
+  const labels = dataEmployee.map((data) => data.name);
 
   const dataGraph = {
     labels,
@@ -399,7 +406,7 @@ const Home = () => {
               </div>
 
               {/* graph 1 start */}
-              <div className="mx-20 my-10">
+              <div className="mx-20 my-10" id="graph-total-work">
                 <div className="box-border w-full bg-white rounded-3xl border-sky border-2">
                   <div className="mx-10 mt-10">
                     <p className="capitalize text-lg font-extrabold text-center">
@@ -407,8 +414,8 @@ const Home = () => {
                     </p>
                   </div>
                   <hr className="mx-10 my-3 border-[1.5px] border-sky" />
-                  <div className={`pt-5 pb-10 px-5`}>
-                    <div style={{ width: 500 }}>
+                  <div className={`pt-5 pb-10 px-5 w-full`}>
+                    <div style={{ width: 500 }} id='graph-total-work-employee'>
                       <Bar options={options} data={dataGraph} />
                     </div>
                   </div>
@@ -417,7 +424,7 @@ const Home = () => {
               {/* graph 1 end */}
 
               {/* graph 2 start */}
-              <div className="mx-20 my-10">
+              <div className="mx-20 my-10" id="grap-total-late">
                 <div className="box-border w-full bg-white rounded-3xl border-sky border-2">
                   <div className="mx-10 mt-10">
                     <p className="capitalize text-lg font-extrabold text-center">
@@ -426,7 +433,7 @@ const Home = () => {
                   </div>
                   <hr className="mx-10 my-3 border-[1.5px] border-sky" />
                   <div className={`pt-5 pb-10 px-5`}>
-                    <div style={{ width: 500 }}>
+                    <div style={{ width: 500 }} id="grap-total-late-employee">
                       <Bar options={options} data={dataGraph2} />
                     </div>
                   </div>
