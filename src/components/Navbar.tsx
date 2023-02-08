@@ -33,7 +33,7 @@ const Navbar: FC<NavbarProps> = ({
         <div className="navbar-start">
           <Link
             id="btn-navbar-logo"
-            to="/"
+            to="/home"
             className="btn btn-ghost normal-case text-md ml-11"
           >
             <img src={Logo} alt="logo-app" className="w-[42px]" />
