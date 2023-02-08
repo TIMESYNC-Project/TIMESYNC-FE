@@ -70,15 +70,16 @@ const Home = () => {
   const [hari, setHari] = useState<string>("");
   const [hour, setHour] = useState<string>("");
   const [date, setDate] = useState<string>("");
+  const [eror, setEror] = useState<string>("");
   const [cookie, setCookie] = useCookies();
 
   useEffect(() => {
+    presencesToday();
     newDate();
     getEmployee();
     getInbox();
     locationMaps();
     getSetting();
-    presencesToday()
   }, []);
 
   function newDate() {
@@ -158,8 +159,7 @@ const Home = () => {
             setLatitut(latitude);
             setLongitut(longitude);
           })
-          .catch((err) => {
-          });
+          .catch((err) => {});
       });
     }
   }
@@ -201,6 +201,7 @@ const Home = () => {
           showConfirmButton: false,
           timer: 1500,
         });
+        presencesToday();
       })
       .catch((err) => {
         const { data } = err.response;
@@ -228,7 +229,7 @@ const Home = () => {
         }
       )
       .then((res) => {
-        const {message } = res.data;
+        const { message } = res.data;
         Swal.fire({
           position: "center",
           icon: "success",
@@ -236,6 +237,7 @@ const Home = () => {
           showConfirmButton: false,
           timer: 1500,
         });
+        presencesToday();
       })
       .catch((err) => {
         const { data } = err.response;
@@ -248,22 +250,23 @@ const Home = () => {
       });
   }
 
-  async function presencesToday(){
-    await axios.get(`presences`,{
-      headers: {
-        Authorization: `Bearer ${cookie.token}`,
-      },
-    })
-    .then((res)=>{
-      console.log(res.data)
-      const{data} = res.data
-      console.log("today", data)
-      setAttendances(data)
-    })
-    .catch((err)=>{
-    })
+  function presencesToday() {
+    axios
+      .get(`presences`, {
+        headers: {
+          Authorization: `Bearer ${cookie.token}`,
+        },
+      })
+      .then((res) => {
+        const { data } = res.data;
+        setAttendances(data);
+      })
+      .catch((err) => {
+        const { data } = err.response;
+        const { message } = data;
+        setEror(message);
+      });
   }
-
   return (
     <Layout homeSet="w-full bg-gradient-to-r from-white to-navy hover:text-white">
       {cookie.role === "admin" ? (
@@ -427,15 +430,21 @@ const Home = () => {
             <hr className="mx-7 my-3 border-[1.5px] border-sky" />
             <div className="my-3 mx-7 flex">
               <div className="w-1/2">
-                <p className="text-black text-left">Logs today</p>
+                <p className="text-black text-left font-medium">Logs today</p>
               </div>
               <div className="w-1/2">
                 <Link id="btn-see-more" to={"/records"}>
-                  <p className="text-black text-right capitalize">See more..</p>
+                  <p className="text-black text-right capitalize font-medium">
+                    See more..
+                  </p>
                 </Link>
               </div>
             </div>
-            {attendances.clock_in == "" ? null : (
+            <p className="text-center text-2xl capitalize my-5 font-bold text-gray-400 animate-pulse">
+              {eror}
+            </p>
+            {Object.keys(attendances).length ===
+            0 ? null : attendances.clock_in == "" ? null : (
               <FlexyCard>
                 <div className="flex">
                   <div className="w-1/3">
@@ -459,7 +468,8 @@ const Home = () => {
                 </div>
               </FlexyCard>
             )}
-            {attendances.clock_out === "" ? null : (
+            {Object.keys(attendances).length ===
+            0 ? null : attendances.clock_out === "" ? null : (
               <FlexyCard>
                 <div className="flex">
                   <div className="w-1/3">
