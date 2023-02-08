@@ -1,15 +1,10 @@
+import { AiOutlineFileAdd, AiOutlineUserAdd } from "react-icons/ai";
+import { BsPencilSquare, BsTrash, BsSearch } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { BsSearch } from "react-icons/bs";
 import { useCookies } from "react-cookie";
-import { BiEdit } from "react-icons/bi";
 import Swal from "sweetalert2";
 import axios from "axios";
-import {
-  AiOutlineFileAdd,
-  AiOutlineUserAdd,
-  AiOutlineDelete,
-} from "react-icons/ai";
 
 import { CustomInput, TextArea } from "components/CustomInput";
 import { FlexyCard, WrappingCard } from "components/Card";
@@ -356,7 +351,7 @@ const Employee = () => {
                 </div>
               </div>
               <div className="flex w-1/2 justify-end items-center">
-                <div className="mx-5">
+                <div className="mr-6">
                   <p
                     className="font-bold text-lg text-navy duration-300 hover:cursor-pointer active:scale-95"
                     id={`btn-position-${data.id}`}
@@ -369,18 +364,18 @@ const Employee = () => {
                 <label
                   id={`btn-edit-employee-${data.id}`}
                   htmlFor={`my-modal-3`}
-                  className="mx-3 text-sky hover:cursor-pointer hover:text-orange-600"
+                  className="mx-2 text-sky hover:cursor-pointer hover:text-orange-600"
                   onClick={() => getEmployeesId(data.id)}
                 >
-                  <BiEdit size={27} />
+                  <BsPencilSquare size={27} />
                 </label>
 
                 <button
                   id={`btn-delete-employee-${data.id}`}
-                  className="mx-3 text-sky hover:cursor-pointer hover:text-red-600"
+                  className="mx-2 text-sky hover:cursor-pointer hover:text-red-600"
                   onClick={() => handleDeleteEmployee(data.id)}
                 >
-                  <AiOutlineDelete size={27} />
+                  <BsTrash size={27} />
                 </button>
               </div>
             </div>

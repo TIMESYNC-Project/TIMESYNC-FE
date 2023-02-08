@@ -11,16 +11,16 @@ import Layout from "components/Layout";
 
 interface InboxType {
   id: number;
-  to: string
-  nip: string
+  to: string;
+  nip: string;
   announcement_title: string;
   announcement_description: string;
   created_at: string;
 }
 interface InboxIdType {
   id?: number;
-  to?: string
-  nip?: string
+  to?: string;
+  nip?: string;
   announcement_title?: string;
   announcement_description?: string;
   created_at?: string;
@@ -30,7 +30,7 @@ const Inbox = () => {
   const [inboxId, setInboxId] = useState<InboxIdType>({});
   const [addTitle, setAddtitle] = useState<string>("");
   const [inbox, setInbox] = useState<InboxType[]>([]);
-  const [inboxEm, setInboxEm] = useState<InboxType[]>([])
+  const [inboxEm, setInboxEm] = useState<InboxType[]>([]);
   const [addDesc, setAddDesc] = useState<string>("");
   const [addTo, setAddTo] = useState<string>("");
   const [cookie, setCookie] = useCookies();
@@ -41,7 +41,7 @@ const Inbox = () => {
 
   useEffect(() => {
     getInbox();
-    getInboxEm()
+    getInboxEm();
   }, []);
 
   function getInbox() {
@@ -222,7 +222,7 @@ const Inbox = () => {
           inbox.map((data) => (
             <div className="flex justify-center gap-4" key={data.id}>
               <FlexyCard parentSet="w-fit mx-0">
-                <div className="flex items-center">
+                <div className="flex items-center gap-5">
                   <label
                     id={`btn-detail-${data.id}`}
                     htmlFor="my-modal-3"
@@ -239,15 +239,15 @@ const Inbox = () => {
                           {data.announcement_title}
                         </p>
                         <p className="w-[35rem]">
-                          {data.announcement_description.substring(0, 75) +
+                          {data.announcement_description.substring(0, 60) +
                             "..."}
                         </p>
                       </div>
                     </div>
                   </label>
                   {admin && (
-                    <p className="text-red-600 duration-300 hover:cursor-pointer active:scale-90">
-                      <BsTrash size={30} onClick={() => onDelete(data.id)} />
+                    <p className="text-sky hover:text-red-600 duration-300 hover:cursor-pointer active:scale-90">
+                      <BsTrash size={27} onClick={() => onDelete(data.id)} />
                     </p>
                   )}
                 </div>
@@ -289,8 +289,8 @@ const Inbox = () => {
               </form>
             </div>
           ))}
-        {
-          employee && inboxEm.map((data) => (
+        {employee &&
+          inboxEm.map((data) => (
             <div className="flex justify-center gap-4" key={data.id}>
               <FlexyCard parentSet="w-fit mx-0">
                 <div className="flex items-center">
@@ -354,8 +354,7 @@ const Inbox = () => {
                 </div>
               </form>
             </div>
-          ))
-        }
+          ))}
       </WrappingCard>
     </Layout>
   );
