@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
+import Swal from "sweetalert2";
 import axios from "axios";
 
 import { FlexyCard, WrappingCard } from "components/Card";
@@ -8,7 +9,6 @@ import { Modals1, Modals2 } from "components/Modals";
 import Button from "components/Button";
 import Layout from "components/Layout";
 import Logo from "assets/logo.png";
-import index from "routes";
 
 interface ApprovalType {
   id: number;
@@ -23,15 +23,15 @@ interface ApprovalType {
 }
 
 const Approval = () => {
-  const [attendance, setAttendance] = useState<string[]>([]);
   const [approvals, setApprovals] = useState<ApprovalType[]>([]);
+  const [approvalStatus, setApprovalStatus] = useState<string>("");
 
   const [id, setId] = useState<number>();
   const [name, setName] = useState<string>();
-  const [createdAt, setCreatedAt] = useState<number>();
+  const [createdAt, setCreatedAt] = useState<string>();
   const [desc, setDesc] = useState<string>("");
-  const [title, setTitle] = useState<number>();
-  const [status, setStatus] = useState<number>();
+  const [title, setTitle] = useState<string>();
+  const [status, setStatus] = useState<string>();
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
   const [image, setImage] = useState<string>("");
@@ -86,6 +86,7 @@ const Approval = () => {
       })
       .then((res) => {
         const { data } = res.data;
+        setId(data.id);
         setName(data.employee_name);
         setCreatedAt(data.created_at);
         setTitle(data.approval_title);
@@ -99,6 +100,39 @@ const Approval = () => {
       .catch((err) => {});
   }
 
+  function editApproval(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const body = new FormData();
+    body.append("approval_status", approvalStatus);
+    axios
+      .put(`approvals/${id}`, body, {
+        headers: {
+          Authorization: `Bearer ${cookie.token}`,
+        },
+      })
+      .then((res) => {
+        const { message } = res.data;
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Success",
+          text: message,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        navigate(0);
+      })
+      .catch((err) => {
+        const { data } = err.response;
+        const { message } = data;
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: message,
+        });
+      });
+  }
+
   async function getDayApproval() {
     const oneDay = 1000 * 60 * 60 * 24;
     const startDateApp = new Date(startDate);
@@ -110,6 +144,7 @@ const Approval = () => {
     setFinalResult(final_result);
   }
   console.log("cek hasil 1:", finalResult);
+  console.log(approvalStatus);
   return (
     <Layout approvalSet="w-full bg-gradient-to-r from-white to-navy hover:text-white ">
       {cookie.role === "admin" ? (
@@ -162,7 +197,7 @@ const Approval = () => {
 
           {/* modal detail approval start*/}
           <Modals2 no={1} titleModal="Detail Approval">
-            <form>
+            <form onSubmit={editApproval}>
               <div className="box-border w-full bg-white rounded-2xl border-sky border-2 p-5">
                 <div className="flex">
                   <div className="w-1/2 flex items-center">
@@ -191,6 +226,7 @@ const Approval = () => {
                   id={`btn-approve-modals`}
                   type="submit"
                   className="w-24 text-sm text-center border-2 border-sky bg-sky rounded-xl py-1 text-gray-50 font-medium duration-300 hover:cursor-pointer  hover:bg-blue-900  active:scale-90"
+                  onClick={() => setApprovalStatus("approved")}
                 >
                   Approve
                 </button>
@@ -198,6 +234,7 @@ const Approval = () => {
                   id={`btn-reject-modals`}
                   type="submit"
                   className="w-24 text-sm text-center border-2 border-sky rounded-xl py-1 text-sky font-medium duration-300 hover:cursor-pointer hover:bg-red-600 hover:text-white  active:scale-90"
+                  onClick={() => setApprovalStatus("rejected")}
                 >
                   Reject
                 </button>
@@ -244,7 +281,7 @@ const Approval = () => {
                           data.approval_status === "rejected"
                             ? "text-red-500"
                             : "text-orange-500" &&
-                              data.approval_status === "approved" 
+                              data.approval_status === "approved"
                             ? "text-green-500"
                             : "text-orange-500"
                         } capitalize font-bold`}
