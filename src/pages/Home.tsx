@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { GoLocation } from "react-icons/go";
 import { useCookies } from "react-cookie";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 import moment from "moment";
 import axios from "axios";
 
@@ -44,15 +45,28 @@ interface SettingsType {
   working_hour_end?: string;
   working_hour_start?: string;
 }
+interface AttendancesType {
+  attendance?: string;
+  attendance_date?: string;
+  attendance_status?: string;
+  clock_in?: string;
+  clock_in_location?: string;
+  clock_in_osm?: string;
+  clock_out?: string;
+  clock_out_location?: string;
+  clock_out_osm?: string;
+  work_time?: string;
+  id?: number;
+}
 const Home = () => {
   const [data, setData] = useState<DataType[]>([]);
+  const [attendances, setAttendances] = useState<AttendancesType>({});
   const [presences, setPresences] = useState<PresenceType[]>([]);
   const [setting, setSetting] = useState<SettingsType>({});
   const [location, setLocation] = useState<LocationType>({});
   const [inbox, setInbox] = useState<InboxType[]>([]);
-  // const [jalan, setJalan] = useState<string>("");
-  // const [prov, setProv] = useState<string>("");
-  // const [jalan, setJalan] = useState<string>("");
+  const [latitut, setLatitut] = useState<number>();
+  const [longitut, setLongitut] = useState<number>();
   const [hari, setHari] = useState<string>("");
   const [hour, setHour] = useState<string>("");
   const [date, setDate] = useState<string>("");
@@ -80,24 +94,11 @@ const Home = () => {
     ];
     const d = new Date();
     const day = weekday[d.getDay()];
-    setHari(day)
+    setHari(day);
     setHour(jam.substring(15, 21));
     setDate(tanggal.substring(0, 27));
   }
-  function getSetting() {
-    axios
-      .get(`setting`, {
-        headers: {
-          Authorization: `Bearer ${cookie.token}`,
-        },
-      })
-      .then((res) => {
-        const { data } = res.data;
-        setSetting(data);
-      })
-      .catch((err) => {});
-  }
-
+  // function for admin
   function getEmployee() {
     axios
       .get(`employees`, {
@@ -114,7 +115,7 @@ const Home = () => {
 
   function getPresences() {
     axios
-      .get(`presences`, {
+      .get(`presences/total`, {
         headers: {
           Authorization: `Bearer ${cookie.token}`,
         },
@@ -140,6 +141,7 @@ const Home = () => {
       .catch((err) => {});
   }
 
+  // function for employee
   async function locationMaps() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
@@ -150,23 +152,103 @@ const Home = () => {
             `attendances/location?latitude=${latitude}&longitude=${longitude}`
           )
           .then((res) => {
-            console.log(res.data);
             const { data } = res.data;
-            console.log("cek:", data);
             setLocation(data);
-            // setJalan(location.street? location.street : "")
-            // setLatitut(latitude);
-            // setLongitut(longitude);
+            setLatitut(latitude);
+            setLongitut(longitude);
           })
           .catch((err) => {
-            console.log(err);
-            // setLatitut(latitude);
-            // setLongitut(longitude);
           });
       });
     }
   }
-  // console.log("cek jalan",jalan)
+
+  function getSetting() {
+    axios
+      .get(`setting`, {
+        headers: {
+          Authorization: `Bearer ${cookie.token}`,
+        },
+      })
+      .then((res) => {
+        const { data } = res.data;
+        setSetting(data);
+      })
+      .catch((err) => {});
+  }
+
+  function clockIn() {
+    axios
+      .post(
+        `attendances`,
+        {
+          latitude: latitut?.toString(),
+          longitude: longitut?.toString(),
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${cookie.token}`,
+          },
+        }
+      )
+      .then((res) => {
+        const { data, message } = res.data;
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          text: message,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        setAttendances(data);
+      })
+      .catch((err) => {
+        const { data } = err.response;
+        const { message } = data;
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: message,
+        });
+      });
+  }
+
+  function clockOut() {
+    axios
+      .put(
+        `attendances`,
+        {
+          latitude: latitut?.toString(),
+          longitude: longitut?.toString(),
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${cookie.token}`,
+          },
+        }
+      )
+      .then((res) => {
+        const { data, message } = res.data;
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          text: message,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        setAttendances(data);
+      })
+      .catch((err) => {
+        const { data } = err.response;
+        const { message } = data;
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: message,
+        });
+      });
+  }
+
   return (
     <Layout homeSet="w-full bg-gradient-to-r from-white to-navy hover:text-white">
       {cookie.role === "admin" ? (
@@ -292,7 +374,9 @@ const Home = () => {
             <p className="text-7xl font-bold">{hour}</p>
           </div>
           <div className="flex justify-center">
-            <p className="text-xl">{hari}, {date}</p>
+            <p className="text-xl">
+              {hari}, {date}
+            </p>
           </div>
           <FlexyCard>
             <div className="flex justify-center items-center w-full">
@@ -316,13 +400,13 @@ const Home = () => {
                 id="btn-clockin"
                 buttonSet="border-2 border-white shadow-md shadow-black rounded-full capitalize font-medium gap-2 px-3 text-md hover:bg-navy w-1/6 mx-2"
                 label="Clock In"
-                // onClick={() => setCookie("role", "admin")}
+                onClick={() => clockIn()}
               />
               <Button
                 id="btn-clockout"
                 buttonSet="border-2 border-white shadow-md shadow-black rounded-full capitalize font-medium gap-2 px-3 text-md hover:bg-navy w-1/6 mx-2"
                 label="Clock out"
-                // onClick={() => setCookie("role", "admin")}
+                onClick={() => clockOut()}
               />
             </div>
             <hr className="mx-7 my-3 border-[1.5px] border-sky" />
@@ -336,42 +420,54 @@ const Home = () => {
                 </Link>
               </div>
             </div>
-            <FlexyCard>
-              <div className="flex">
-                <div className="w-1/3">
-                  <p className="text-lg text-black font-semibold">07.40</p>
-                  <p className="text-sm text-black">Jan 21</p>
+            {attendances?.clock_in == "" ? null : (
+              <FlexyCard>
+                <div className="flex">
+                  <div className="w-1/3">
+                    <p className="text-lg text-black font-semibold">
+                      {attendances.clock_in}
+                    </p>
+                    <p className="text-sm text-black">
+                      {attendances.attendance_date}
+                    </p>
+                  </div>
+                  <div className="w-1/3">
+                    <p className="capitalize text-center text-lg text-black font-semibold">
+                      clock in
+                    </p>
+                  </div>
+                  <div className="w-1/3">
+                    <p className="capitalize text-right text-lg text-black font-semibold">
+                      {attendances.attendance}
+                    </p>
+                  </div>
                 </div>
-                <div className="w-1/3">
-                  <p className="capitalize text-center text-lg text-black font-semibold">
-                    clock in
-                  </p>
+              </FlexyCard>
+            )}
+            {attendances?.clock_out === "" ? null : (
+              <FlexyCard>
+                <div className="flex">
+                  <div className="w-1/3">
+                    <p className="text-lg text-black font-semibold">
+                      {attendances.clock_out}
+                    </p>
+                    <p className="text-sm text-black">
+                      {attendances.attendance_date}
+                    </p>
+                  </div>
+                  <div className="w-1/3">
+                    <p className="capitalize text-center text-lg text-black font-semibold">
+                      clock out
+                    </p>
+                  </div>
+                  <div className="w-1/3">
+                    <p className="capitalize text-right text-lg text-black font-semibold">
+                      {attendances.attendance}
+                    </p>
+                  </div>
                 </div>
-                <div className="w-1/3">
-                  <p className="capitalize text-right text-lg text-black font-semibold">
-                    Presence
-                  </p>
-                </div>
-              </div>
-            </FlexyCard>
-            <FlexyCard>
-              <div className="flex">
-                <div className="w-1/3">
-                  <p className="text-lg text-black font-semibold">17.40</p>
-                  <p className="text-sm text-black">Jan 21</p>
-                </div>
-                <div className="w-1/3">
-                  <p className="capitalize text-center text-lg text-black font-semibold">
-                    clock out
-                  </p>
-                </div>
-                <div className="w-1/3">
-                  <p className="capitalize text-right text-lg text-black font-semibold">
-                    Presence
-                  </p>
-                </div>
-              </div>
-            </FlexyCard>
+              </FlexyCard>
+            )}
           </FlexyCard>
         </WrappingCard>
       )}
