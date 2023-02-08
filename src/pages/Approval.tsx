@@ -11,16 +11,19 @@ import Logo from "assets/logo.png";
 import index from "routes";
 
 interface ApprovalType {
-  approval_end_date: string;
-  approval_start_date: string;
+  id: number;
+  employee_name: string;
+  created_at: string;
   approval_title: string;
   approval_status: string;
-  id: number;
+  approval_start_date: string;
+  approval_end_date: string;
+  approval_image: string;
 }
 
 const Approval = () => {
   const [attendance, setAttendance] = useState<string[]>([]);
-  const [appData, setAppData] = useState<ApprovalType[]>([]);
+  const [approvalsData, setApprovalsData] = useState<ApprovalType[]>([]);
   const [color, setColor] = useState<string>("");
   const [cookie, setCookie] = useCookies();
   const navigate = useNavigate();
@@ -30,43 +33,63 @@ const Approval = () => {
   }, []);
 
   function getApproval() {
-    axios
-      .get(`approvals`, {
-        headers: {
-          Authorization: `Bearer ${cookie.token}`,
-        },
-      })
-      .then((res) => {
-        const { data } = res.data;
-        setAppData(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    {
+      cookie.role === "admin" &&
+        axios
+          .get(`approvals`, {
+            headers: {
+              Authorization: `Bearer ${cookie.token}`,
+            },
+          })
+          .then((res) => {
+            const { data } = res.data;
+            setApprovalsData(data);
+            console.log(data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+    }
+    {
+      cookie.role === "employee" &&
+        axios
+          .get(`employee/approvals`, {
+            headers: {
+              Authorization: `Bearer ${cookie.token}`,
+            },
+          })
+          .then((res) => {
+            const { data } = res.data;
+            setApprovalsData(data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+    }
   }
 
   return (
     <Layout approvalSet="w-full bg-gradient-to-r from-white to-navy hover:text-white ">
       {cookie.role === "admin" ? (
         <WrappingCard judul="Approval Requests">
-          {appData.map((data) => {
+          {approvalsData.map((data) => {
             return (
               <FlexyCard parentSet="active:scale-95" key={data.id}>
                 <label
                   htmlFor="my-modal-1"
                   // modals klo approve or reject button ganti cancel
                   // data.approval_status === "rejected" || data.approval_status === "approved"? undefined : "my-modal-1"
-                  id={`btn-approval-detail-${"data.id"}`}
+                  id={`btn-approval-detail-${data.id}`}
                 >
                   <div className="flex justify-center items-center w-full hover:cursor-pointer">
                     <div className="text-center w-1/4">
                       <p className="text-black capitalize font-semibold">
-                        {data.approval_end_date}
+                        {data.created_at}
                       </p>
                     </div>
                     <div className="text-center w-1/4">
                       <p className="text-black capitalize font-medium">
-                        James Shelby
+                        {data.employee_name}
                       </p>
                     </div>
                     <div className="text-center w-1/4">
@@ -161,7 +184,7 @@ const Approval = () => {
             </>
           }
         >
-          {appData.map((data) => {
+          {approvalsData.map((data) => {
             return (
               <FlexyCard parentSet="active:scale-95" key={data.id}>
                 <label
