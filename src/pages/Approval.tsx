@@ -32,9 +32,10 @@ const Approval = () => {
   const [desc, setDesc] = useState<string>("");
   const [title, setTitle] = useState<number>();
   const [status, setStatus] = useState<number>();
-  const [startDate, setStartDate] = useState<number>();
-  const [endDate, setEndDate] = useState<number>();
-  const [image, setImage] = useState<number>();
+  const [startDate, setStartDate] = useState<string>("");
+  const [endDate, setEndDate] = useState<string>("");
+  const [image, setImage] = useState<string>("");
+  const [finalResult, setFinalResult] = useState<string>("");
 
   const [color, setColor] = useState<string>("");
   const [cookie, setCookie] = useCookies();
@@ -42,12 +43,13 @@ const Approval = () => {
 
   useEffect(() => {
     getApprovals();
+    getDayApproval();
   }, []);
 
-  function getApprovals() {
+  async function getApprovals() {
     {
       cookie.role === "admin" &&
-        axios
+        (await axios
           .get(`approvals`, {
             headers: {
               Authorization: `Bearer ${cookie.token}`,
@@ -56,15 +58,12 @@ const Approval = () => {
           .then((res) => {
             const { data } = res.data;
             setApprovals(data);
-            console.log(data);
           })
-          .catch((err) => {
-            console.log(err);
-          });
+          .catch((err) => {}));
     }
     {
       cookie.role === "employee" &&
-        axios
+        (await axios
           .get(`employee/approvals`, {
             headers: {
               Authorization: `Bearer ${cookie.token}`,
@@ -74,9 +73,7 @@ const Approval = () => {
             const { data } = res.data;
             setApprovals(data);
           })
-          .catch((err) => {
-            console.log(err);
-          });
+          .catch((err) => {}));
     }
   }
 
@@ -89,7 +86,6 @@ const Approval = () => {
       })
       .then((res) => {
         const { data } = res.data;
-        console.log(data);
         setName(data.employee_name);
         setCreatedAt(data.created_at);
         setTitle(data.approval_title);
@@ -98,12 +94,22 @@ const Approval = () => {
         setEndDate(data.approval_end_date);
         setImage(data.approval_image);
         setDesc(data.approval_description);
+        getDayApproval();
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   }
 
+  async function getDayApproval() {
+    const oneDay = 1000 * 60 * 60 * 24;
+    const startDateApp = new Date(startDate);
+    const endDateApp = new Date(endDate);
+
+    const result =
+      Math.round(endDateApp.getTime() - startDateApp.getTime() + 1) / oneDay;
+    const final_result = (result + 1).toFixed(0);
+    setFinalResult(final_result);
+  }
+  console.log("cek hasil 1:", finalResult);
   return (
     <Layout approvalSet="w-full bg-gradient-to-r from-white to-navy hover:text-white ">
       {cookie.role === "admin" ? (
@@ -130,7 +136,6 @@ const Approval = () => {
                       </p>
                     </div>
                     <div className="text-center w-1/4">
-                      <p className="text-black capitalize font-medium">1 day</p>
                       <p className="text-black capitalize font-medium">
                         {data.approval_title}
                       </p>
@@ -169,7 +174,10 @@ const Approval = () => {
                 </div>
                 <div className="py-5">
                   <p className="text-black font-normal text-md">
-                    {`${startDate} - ${endDate}`}
+                    {`${startDate} to ${endDate}`}
+                  </p>
+                  <p className="text-black font-normal text-md">
+                    {`${finalResult} Days`}
                   </p>
                   <p className="text-black font-normal text-md">{title}</p>
                   <p className="text-black font-normal text-md my-5">{desc}</p>
@@ -226,7 +234,6 @@ const Approval = () => {
                       </p>
                     </div>
                     <div className="text-center w-1/3 mx-5">
-                      <p className="text-black capitalize font-medium">1 day</p>
                       <p className="text-black capitalize font-medium">
                         {data.approval_title}
                       </p>
@@ -237,7 +244,7 @@ const Approval = () => {
                           data.approval_status === "rejected"
                             ? "text-red-500"
                             : "text-orange-500" &&
-                              data.approval_status === "approved"
+                              data.approval_status === "approved" 
                             ? "text-green-500"
                             : "text-orange-500"
                         } capitalize font-bold`}
@@ -263,7 +270,10 @@ const Approval = () => {
               </div>
               <div className="py-5">
                 <p className="text-black font-normal text-md">
-                  {`${startDate} - ${endDate}`}
+                  {`${startDate} to ${endDate}`}
+                </p>
+                <p className="text-black font-normal text-md">
+                  {`${finalResult} Days`}
                 </p>
                 <p className="text-black font-normal text-md">{title}</p>
                 <p className="text-black font-normal text-md my-5">{desc}</p>
