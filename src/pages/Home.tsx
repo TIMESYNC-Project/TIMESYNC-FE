@@ -78,6 +78,7 @@ const Home = () => {
     getInbox();
     locationMaps();
     getSetting();
+    presencesToday()
   }, []);
 
   function newDate() {
@@ -192,7 +193,7 @@ const Home = () => {
         }
       )
       .then((res) => {
-        const { data, message } = res.data;
+        const { message } = res.data;
         Swal.fire({
           position: "center",
           icon: "success",
@@ -200,7 +201,6 @@ const Home = () => {
           showConfirmButton: false,
           timer: 1500,
         });
-        setAttendances(data);
       })
       .catch((err) => {
         const { data } = err.response;
@@ -228,7 +228,7 @@ const Home = () => {
         }
       )
       .then((res) => {
-        const { data, message } = res.data;
+        const {message } = res.data;
         Swal.fire({
           position: "center",
           icon: "success",
@@ -236,7 +236,6 @@ const Home = () => {
           showConfirmButton: false,
           timer: 1500,
         });
-        setAttendances(data);
       })
       .catch((err) => {
         const { data } = err.response;
@@ -247,6 +246,22 @@ const Home = () => {
           text: message,
         });
       });
+  }
+
+  async function presencesToday(){
+    await axios.get(`presences`,{
+      headers: {
+        Authorization: `Bearer ${cookie.token}`,
+      },
+    })
+    .then((res)=>{
+      console.log(res.data)
+      const{data} = res.data
+      console.log("today", data)
+      setAttendances(data)
+    })
+    .catch((err)=>{
+    })
   }
 
   return (
@@ -420,7 +435,7 @@ const Home = () => {
                 </Link>
               </div>
             </div>
-            {attendances?.clock_in == "" ? null : (
+            {attendances.clock_in == "" ? null : (
               <FlexyCard>
                 <div className="flex">
                   <div className="w-1/3">
@@ -444,7 +459,7 @@ const Home = () => {
                 </div>
               </FlexyCard>
             )}
-            {attendances?.clock_out === "" ? null : (
+            {attendances.clock_out === "" ? null : (
               <FlexyCard>
                 <div className="flex">
                   <div className="w-1/3">
