@@ -67,8 +67,9 @@ const Sidebar: FC<SidebarProps> = ({
       }
     });
   }
+
   return (
-    <div className="bg-navy h-screen w-52 shadow-lg sticky top-0 z-40 flex pt-24 pb-10 flex-col justify-between items-center">
+    <div className="bg-navy h-screen w-52 shadow-lg sticky top-0 z-40 pt-24 pb-10 flex-col justify-between items-center hidden md:flex">
       <section className="w-full flex flex-col font-semibold text-white gap-2">
         <p className={`px-7 py-2 ${homeSet}`}>
           <Link
