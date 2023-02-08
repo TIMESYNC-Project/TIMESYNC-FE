@@ -145,7 +145,7 @@ const EmployeeProfile = () => {
         <div className="flex w-full">
           <div className="w-2/6 flex flex-col items-center gap-4">
             <img
-              className="w-60 border-2 border-sky rounded-xl "
+              className="w-60 h-60 border-2 border-sky rounded-xl "
               src={data.profile_picture}
               alt="photo"
             />
