@@ -59,7 +59,6 @@ interface AttendancesType {
   id?: number;
 }
 const Home = () => {
-  const [data, setData] = useState<DataType[]>([]);
   const [attendances, setAttendances] = useState<AttendancesType>({});
   const [presences, setPresences] = useState<PresenceType[]>([]);
   const [setting, setSetting] = useState<SettingsType>({});
@@ -67,6 +66,7 @@ const Home = () => {
   const [inbox, setInbox] = useState<InboxType[]>([]);
   const [latitut, setLatitut] = useState<number>();
   const [longitut, setLongitut] = useState<number>();
+  const [data, setData] = useState<DataType[]>([]);
   const [hari, setHari] = useState<string>("");
   const [hour, setHour] = useState<string>("");
   const [date, setDate] = useState<string>("");
@@ -80,6 +80,7 @@ const Home = () => {
     getInbox();
     locationMaps();
     getSetting();
+    getPresences()
   }, []);
 
   function newDate() {
@@ -267,6 +268,7 @@ const Home = () => {
         setEror(message);
       });
   }
+  
   return (
     <Layout homeSet="w-full bg-gradient-to-r from-white to-navy hover:text-white">
       {cookie.role === "admin" ? (
