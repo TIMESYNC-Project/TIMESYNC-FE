@@ -68,7 +68,7 @@ const Sidebar: FC<SidebarProps> = ({
     });
   }
   return (
-    <div className="bg-navy h-screen w-52 shadow-lg sticky top-0 z-40 flex pt-28 pb-16 flex-col justify-between items-center">
+    <div className="bg-navy h-screen w-52 shadow-lg sticky top-0 z-40 flex pt-24 pb-10 flex-col justify-between items-center">
       <section className="w-full flex flex-col font-semibold text-white gap-2">
         <p className={`px-7 py-2 ${homeSet}`}>
           <Link
@@ -152,7 +152,7 @@ const Sidebar: FC<SidebarProps> = ({
           className="flex justify-center items-center mx-7 px-5 py-3 border-2 border-white rounded-xl shadow-md shadow-black gap-1 font-bold text-yellow-400 duration-300 hover:cursor-pointer active:scale-90"
         >
           <p>
-            <TbLogout size={25}  />
+            <TbLogout size={25} />
           </p>
           <p>Logout</p>
         </div>

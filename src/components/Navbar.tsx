@@ -26,10 +26,10 @@ const Navbar: FC<NavbarProps> = ({
   inboxSet,
   settingsSet,
 }) => {
-  const [cookie, setCookie] = useCookies()
+  const [cookie, setCookie] = useCookies();
   return (
     <div className="flex flex-col">
-      <section className="navbar h-10 bg-[#0F4C75] shadow-md shadow-gray-900 sticky top-0 mb-[-5rem] z-50">
+      <section className="navbar h-10 bg-[#0F4C75] shadow-md shadow-gray-900 sticky top-0 mb-[-4rem] z-50">
         <div className="navbar-start">
           <Link
             id="btn-navbar-logo"
@@ -44,9 +44,7 @@ const Navbar: FC<NavbarProps> = ({
         </div>
         <div className="navbar-end mr-14">
           <p className="capitalize text-md font-normal text-[#FFC909]">
-            Hi, {
-                cookie.name? cookie.name : null
-              }
+            Hi, {cookie.name ? cookie.name : null}
           </p>
         </div>
       </section>
