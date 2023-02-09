@@ -80,8 +80,8 @@ const CompanyProfile = () => {
       })
       .catch((err) => {
         console.log(err);
-        const {data} = err.response
-        const {message} = data
+        const { data } = err.response;
+        const { message } = data;
         Swal.fire({
           icon: "error",
           title: "Oops...",
@@ -98,26 +98,26 @@ const CompanyProfile = () => {
             <>
               <Link id="btn-back" to="/profile">
                 <Button
-                  buttonSet="border-2 border-white shadow-md shadow-black rounded-full capitalize font-medium gap-2 px-3 text-xs hover:bg-navy"
+                  buttonSet="border-2 border-white shadow-md shadow-black rounded-full capitalize md:font-medium gap-2 p-0 px-3 text-xs hover:bg-navy py-1 rounded-full"
                   icon={<IoReturnUpBack size={20} />}
-                  label="Back to Employee's Profile"
+                  label="Back"
                 />
               </Link>
             </>
           )
         }
       >
-        <div className="flex w-full">
-          <div className="w-2/6 flex flex-col items-center gap-4">
+        <div className="flex flex-col md:flex-row w-full gap-10 md:gap-5 xl:gap-0">
+          <div className="md:w-2/6 flex flex-col items-center gap-4">
             <img
-              className="w-60 border-2 border-sky rounded-xl "
+              className="w-60 border-2 border-sky rounded-xl"
               src={data.company_picture}
               alt="photo"
             />
             {admin && (
               <form onSubmit={editCompany}>
                 <label id="btn-update-profile" htmlFor="my-modal-1">
-                  <p className="w-48 btn tracking-wider bg-[#3282B8] text-white hover:border-white font-medium rounded-2xl capitalize border-4 border-white shadow-md shadow-black">
+                  <p className="xl:w-48 btn tracking-wider bg-[#3282B8] text-white hover:border-white font-medium rounded-2xl capitalize border-4 border-white shadow-md shadow-black">
                     Update Profile
                   </p>
                 </label>
@@ -217,9 +217,11 @@ const CompanyProfile = () => {
               </form>
             )}
           </div>
-          <div className="w-4/6 flex flex-col">
-            <p className="font-bold text-3xl mb-5">{data.company_name}</p>
-            <table className="table-auto text-xl font-bold flex flex-col gap-4">
+          <div className="md:w-4/6 flex flex-col">
+            <p className="font-bold text-xl md:text-2xl lg:text-3xl mb-5">
+              {data.company_name}
+            </p>
+            <table className="table-auto md:text-lg xl:text-xl font-bold flex flex-col gap-4">
               <tr className="flex">
                 <td className="w-2/5">Phone</td>
                 <td className="w-full">{data.company_phone}</td>
