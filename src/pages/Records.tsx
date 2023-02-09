@@ -35,13 +35,14 @@ interface DataType {
 }
 
 const Records = () => {
-  const [startDate, setStartDate] = useState<Date>();
-  const [endDate, setEndDate] = useState(null);
+  //state datepicker
   const [inStartDate, setInStartDate] = useState<string>("");
   const [inEndDate, setInEndDate] = useState<string>("");
+  const [startDate, setStartDate] = useState<Date>();
+  const [endDate, setEndDate] = useState(null);
 
-  const [records, setRecords] = useState<DataType[]>([]);
   const [employees, setEmployees] = useState<EmployeesType[]>([]);
+  const [records, setRecords] = useState<DataType[]>([]);
   const [search, setSearch] = useState<string>("");
   const [cookie, setCookie] = useCookies();
   const navigate = useNavigate();
@@ -52,9 +53,6 @@ const Records = () => {
     setEndDate(end);
     setInStartDate(moment(start).format("YYYY-MM-DD"));
     setInEndDate(moment(end).format("YYYY-MM-DD"));
-    console.log(typeof moment(start).format("YYYY-MM-DD"));
-    console.log(typeof end);
-    console.log("date", typeof dates);
   };
 
   useEffect(() => {
@@ -143,7 +141,7 @@ const Records = () => {
         >
           {employees.map((data) => {
             return (
-              <FlexyCard parentSet="active:scale-95">
+              <FlexyCard parentSet="active:scale-95" key={data.id}>
                 <div
                   key={data.id}
                   className="flex justify-center items-center hover:cursor-pointer "
@@ -205,7 +203,7 @@ const Records = () => {
         ) : (
           records.map((data) => {
             return (
-              <FlexyCard>
+              <FlexyCard key={data.id}>
                 <div className="flex justify-center items-center w-full">
                   <div className="flex justify-center w-1/4">
                     <p className="text-black capitalize ">
