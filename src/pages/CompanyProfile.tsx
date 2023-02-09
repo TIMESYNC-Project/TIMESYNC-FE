@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { IoReturnUpBack } from "react-icons/io5";
 import { useCookies } from "react-cookie";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "axios";
 
@@ -21,6 +21,7 @@ interface CompanyData {
   sosmed?: string;
 }
 const CompanyProfile = () => {
+  const navigate = useNavigate();
   const [editAddress, setEditAddress] = useState<string>("");
   const [editSosmed, setEditSosmed] = useState<string>("");
   const [editEmail, setEditEmail] = useState<string>("");
@@ -77,6 +78,7 @@ const CompanyProfile = () => {
             companyData();
           }
         });
+        navigate(0);
       })
       .catch((err) => {
         console.log(err);
@@ -94,7 +96,7 @@ const CompanyProfile = () => {
       <WrappingCard
         judul="Company Profile"
         rightSide={
-          admin ? null : (
+          !admin ? null : (
             <>
               <Link id="btn-back" to="/profile">
                 <Button
@@ -126,13 +128,13 @@ const CompanyProfile = () => {
                   id="my-modal-1"
                   className="modal-toggle"
                 />
-                <div className="modal modal-bottom sm:modal-middle">
-                  <div className="modal-box pt-80 border-2 border-sky flex flex-col justify-center text-sky">
-                    <p className="mb-5 pb-2 text-xl border-b-2 font-bold text-black">
+                <div className="modal modal-bottom md:modal-middle">
+                  <div className="modal-box pt-40 md:pt-72 xl:pt-64 border-2 border-sky flex flex-col justify-center text-sky">
+                    <p className="mb-5 pb-2 text-lg md:text-xl border-b-2 font-bold text-black">
                       Edit Company's Profile
                     </p>
-                    <div className="flex justify-center gap-5">
-                      <div className="flex flex-col gap-10 pt-5 text-md font-medium text-black">
+                    <div className="flex justify-center px-20 md:px-0 md:gap-5">
+                      <div className="flex flex-col gap-11 pt-5 text-sm md:text-md font-medium text-black">
                         <p>Name:</p>
                         <p>Phone:</p>
                         <p>Email:</p>
@@ -146,7 +148,7 @@ const CompanyProfile = () => {
                           id="input-name"
                           type="text"
                           placeholder="Type name"
-                          className="input input-bordered input-md w-80 max-w-xs border-2 border-sky text-black"
+                          className="input input-bordered input-md w-56 md:w-80 max-w-xs border-2 border-sky text-black"
                           defaultValue={data.company_name}
                           onChange={(e) => setEditName(e.target.value)}
                         />
@@ -154,7 +156,7 @@ const CompanyProfile = () => {
                           id="input-phone"
                           type="text"
                           placeholder="Type phone here"
-                          className="input input-bordered input-md w-80 max-w-xs border-2 border-sky text-black"
+                          className="input input-bordered input-md w-56 md:w-80 max-w-xs border-2 border-sky text-black"
                           defaultValue={data.company_phone}
                           onChange={(e) => setEditphone(e.target.value)}
                         />
@@ -162,7 +164,7 @@ const CompanyProfile = () => {
                           id="input-email"
                           type="email"
                           placeholder="Type email here"
-                          className="input input-bordered input-md w-80 max-w-xs border-2 border-sky text-black"
+                          className="input input-bordered input-md w-56 md:w-80 max-w-xs border-2 border-sky text-black"
                           defaultValue={data.company_email}
                           onChange={(e) => setEditEmail(e.target.value)}
                         />
@@ -170,33 +172,33 @@ const CompanyProfile = () => {
                           id="input-social-media"
                           type="text"
                           placeholder="Type social media here"
-                          className="input input-bordered input-md w-80 max-w-xs border-2 border-sky text-black"
+                          className="input input-bordered input-md w-56 md:w-80 max-w-xs border-2 border-sky text-black"
                           defaultValue={data.sosmed}
                           onChange={(e) => setEditSosmed(e.target.value)}
                         />
                         <TextArea
                           id="input-address"
                           placeholder="Type address here"
-                          className="input input-bordered input-sm h-28 w-80 max-w-xs border-2 border-sky text-black"
+                          className="input input-bordered input-sm h-28 w-56 md:w-80 max-w-xs border-2 border-sky text-black"
                           defaultValue={data.company_address}
                           onChange={(e) => setEditAddress(e.target.value)}
                         />
                         <TextArea
                           id="input-description"
                           placeholder="Type description here"
-                          className="input input-bordered input-sm h-40 w-80 max-w-xs border-2 border-sky text-black"
+                          className="input input-bordered input-sm h-40 w-56 md:w-80 max-w-xs border-2 border-sky text-black"
                           defaultValue={data.description}
                           onChange={(e) => setEditDesc(e.target.value)}
                         />
                         <CustomInput
                           id="input-picture"
                           type="file"
-                          className="file-input file-input-bordered w-full border-2 border-sky max-w-xs text-black"
+                          className="file-input file-input-bordered w-full border-2 border-sky max-w-xs text-black file:bg-sky file:text-xs md:file:text-sm file:border-0"
                           onChange={(e) => setEditPicture(e.target.files?.[0])}
                         />
                       </div>
                     </div>
-                    <div className="modal-action">
+                    <div className="modal-action pt-5">
                       <button
                         id="btn-company-submit"
                         type="submit"
@@ -222,26 +224,28 @@ const CompanyProfile = () => {
               {data.company_name}
             </p>
             <table className="table-auto md:text-lg xl:text-xl font-bold flex flex-col gap-4">
-              <tr className="flex">
-                <td className="w-2/5">Phone</td>
-                <td className="w-full">{data.company_phone}</td>
-              </tr>
-              <tr className="flex">
-                <td className="w-2/5">Email</td>
-                <td className="w-full">{data.company_email}</td>
-              </tr>
-              <tr className="flex">
-                <td className="w-2/5">Social Media</td>
-                <td className="w-full">{data.sosmed}</td>
-              </tr>
-              <tr className="flex">
-                <td className="w-2/5">Address</td>
-                <td className="w-full">{data.company_address}</td>
-              </tr>
-              <tr className="flex">
-                <td className="w-2/5">Desc</td>
-                <td className="w-full">{data.description}</td>
-              </tr>
+              <tbody>
+                <tr className="flex">
+                  <td className="w-2/5">Phone</td>
+                  <td className="w-full">{data.company_phone}</td>
+                </tr>
+                <tr className="flex">
+                  <td className="w-2/5">Email</td>
+                  <td className="w-full">{data.company_email}</td>
+                </tr>
+                <tr className="flex">
+                  <td className="w-2/5">Social Media</td>
+                  <td className="w-full">{data.sosmed}</td>
+                </tr>
+                <tr className="flex">
+                  <td className="w-2/5">Address</td>
+                  <td className="w-full">{data.company_address}</td>
+                </tr>
+                <tr className="flex">
+                  <td className="w-2/5">Desc</td>
+                  <td className="w-full">{data.description}</td>
+                </tr>
+              </tbody>
             </table>
           </div>
         </div>
