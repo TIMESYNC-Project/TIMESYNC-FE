@@ -14,17 +14,17 @@ import Layout from "components/Layout";
 import "react-datepicker/dist/react-datepicker.css";
 
 interface DataType {
-  attendance: string;
-  attendance_date: string;
-  attendance_status: string;
-  clock_in: string;
-  clock_in_location: string;
-  clock_in_map_location: string;
-  clock_out: string;
-  clock_out_location: string;
-  clock_out_map_location: string;
-  id: number;
-  work_time: string;
+  attendance?: string;
+  attendance_date?: string;
+  attendance_status?: string;
+  clock_in?: string;
+  clock_in_location?: string;
+  clock_in_map_location?: string;
+  clock_out?: string;
+  clock_out_location?: string;
+  clock_out_map_location?: string;
+  id?: number;
+  work_time?: string;
 }
 
 const RecordsDetail = () => {
@@ -33,6 +33,7 @@ const RecordsDetail = () => {
 
   const [date, setDate] = useState<string>("");
   const [records, setRecords] = useState<DataType[]>([]);
+  const [detail, setDetail] = useState<DataType>({});
   const [name, setName] = useState<string>("");
   const [date2, setDate2] = useState<Date>();
   const [cookie, setCookie] = useCookies();
@@ -78,11 +79,27 @@ const RecordsDetail = () => {
       })
       .catch((err) => {});
   }
+  // https://shirayuki.site/presences/detail/id_attendaces
+  async function presencesDetail(id: number) {
+    await axios
+      .get(`https://shirayuki.site/presences/detail/${id}`, {
+        headers: {
+          Authorization: `Bearer ${cookie.token}`,
+        },
+      })
+      .then((res) => {
+        console.log("absen id: ", res.data);
+        const { data } = res.data;
+        setDetail(data);
+        console.log("hasil ", data);
+      })
+      .catch((err) => {});
+  }
 
   return (
     <Layout recordsSet="w-full bg-gradient-to-r from-white to-navy hover:text-white">
       <WrappingCard
-        judul="Details Records"
+        judul="Records"
         rightSide={
           <>
             <div className="flex justify-center items-center">
@@ -201,7 +218,10 @@ const RecordsDetail = () => {
               key={data.attendance_date}
             >
               <FlexyCard parentSet="hover:cursor-pointer">
-                <div className="flex justify-center items-center w-full">
+                <div
+                  className="flex justify-center items-center w-full"
+                  onClick={() => presencesDetail(data.id ? data.id : 1)}
+                >
                   <div className="flex justify-center w-1/4 mx-2">
                     <p className="text-black capitalize ">
                       {data.attendance_date}
@@ -226,63 +246,79 @@ const RecordsDetail = () => {
         <Modals1 no={2} titleModal={"Details Records"}>
           <div className="flex py-2 w-full">
             <div className="flex items-center justify-start w-1/2 mx-2">
-              <p className="text-black mx-10">Date</p>
+              <p className="text-black mx-10 font-medium">Date</p>
             </div>
             <div className="flex items-center justify-start w-1/2 mx-2">
-              <p className="text-black">January 31, 2023</p>
+              <p className="text-black">{detail.attendance_date}</p>
             </div>
           </div>
+          {detail.attendance !== "present" ? null : (
+            <>
+              <div className="flex py-2 w-full">
+                <div className="flex items-center justify-start w-1/2 mx-2">
+                  <p className="text-black mx-10 font-medium">Clock In</p>
+                </div>
+                <div className="flex items-center justify-start w-1/2 mx-2">
+                  <p className="text-black">{detail.clock_in}</p>
+                </div>
+              </div>
+              <div className="flex py-2 w-full">
+                <div className="flex items-center justify-start w-1/2 mx-2">
+                  <p className="text-black mx-10 font-medium">Clock Out</p>
+                </div>
+                <div className="flex items-center justify-start w-1/2 mx-2">
+                  <p className="text-black">{detail.clock_out}</p>
+                </div>
+              </div>
+              <div className="flex py-2 w-full">
+                <div className="flex items-center justify-start w-1/2 mx-2">
+                  <p className="text-black mx-10 font-medium">Location 1</p>
+                </div>
+                <div className="flex items-center justify-start w-1/2 mx-2">
+                  <p className="text-black">{detail.clock_in_location}</p>
+                </div>
+              </div>
+              <div className="flex py-2 w-full">
+                <div className="flex items-center justify-start w-1/2 mx-2">
+                  <p className="text-black mx-10 font-medium">Location 2</p>
+                </div>
+                <div className="flex items-center justify-start w-1/2 mx-2">
+                  <p className="text-black">{detail.clock_out_location}</p>
+                </div>
+              </div>
+              <div className="flex py-2 w-full">
+                <div className="flex items-center justify-start w-1/2 mx-2">
+                  <p className="text-black mx-10 font-medium">Status</p>
+                </div>
+                <div className="flex items-center justify-start w-1/2 mx-2">
+                  <p className="text-black capitalize">
+                    {detail.attendance_status}
+                  </p>
+                </div>
+              </div>
+            </>
+          )}
           <div className="flex py-2 w-full">
             <div className="flex items-center justify-start w-1/2 mx-2">
-              <p className="text-black mx-10">Clock In</p>
+              <p className="text-black mx-10 font-medium ">Attendance</p>
             </div>
             <div className="flex items-center justify-start w-1/2 mx-2">
-              <p className="text-black">07.20</p>
+              <p className="text-black capitalize">{detail.attendance}</p>
             </div>
           </div>
-          <div className="flex py-2 w-full">
-            <div className="flex items-center justify-start w-1/2 mx-2">
-              <p className="text-black mx-10">Clock Out</p>
-            </div>
-            <div className="flex items-center justify-start w-1/2 mx-2">
-              <p className="text-black">17.20</p>
-            </div>
-          </div>
-          <div className="flex py-2 w-full">
-            <div className="flex items-center justify-start w-1/2 mx-2">
-              <p className="text-black mx-10">Location</p>
-            </div>
-            <div className="flex items-center justify-start w-1/2 mx-2">
-              <p className="text-black">
-                Jl. Jalandikuburan No.13, Kec. Mangga Dua, Kel.Cimanggis, Duren
-                Sawit, Jakarta Timur
-              </p>
-            </div>
-          </div>
-          <div className="flex py-2 w-full">
-            <div className="flex items-center justify-start w-1/2 mx-2">
-              <p className="text-black mx-10">Status</p>
-            </div>
-            <div className="flex items-center justify-start w-1/2 mx-2">
-              <p className="text-black">On Time</p>
-            </div>
-          </div>
-          <div className="flex py-2 w-full">
-            <div className="flex items-center justify-start w-1/2 mx-2">
-              <p className="text-black mx-10">Attendance</p>
-            </div>
-            <div className="flex items-center justify-start w-1/2 mx-2">
-              <p className="text-black">Presence</p>
-            </div>
-          </div>
-          <div className="flex py-2 w-full">
-            <div className="flex items-center justify-start w-1/2 mx-2">
-              <p className="text-black mx-10">Total Hours Working</p>
-            </div>
-            <div className="flex items-center justify-start w-1/2 mx-2">
-              <p className="text-black">8h 40m</p>
-            </div>
-          </div>
+          {detail.attendance !== "present" ? null : (
+            <>
+              <div className="flex py-2 w-full">
+                <div className="flex items-center justify-start w-1/2 mx-2">
+                  <p className="text-black mx-10 font-medium">Total Hours Working</p>
+                </div>
+                <div className="flex items-center justify-start w-1/2 mx-2">
+                  <p className="text-black">{detail.work_time}</p>
+                </div>
+              </div>
+            </>
+          )}
+
           <div className="modal-action">
             <label
               id="btn-cancel-detail"
