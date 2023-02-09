@@ -102,7 +102,7 @@ const Login = () => {
             </div>
             <Button
               id="btn-login"
-              buttonSet="w-full bg-lightYellow font-bold py-3 hover:bg-darkYellow text-navy border-0 mt-14"
+              buttonSet="w-full rounded-lg bg-lightYellow font-bold py-3 hover:bg-darkYellow text-navy border-0 mt-14"
               label="LOGIN"
               type="submit"
             />
