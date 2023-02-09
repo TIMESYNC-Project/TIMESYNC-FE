@@ -23,31 +23,22 @@ interface ApprovalType {
 }
 
 const Approval = () => {
-  const [approvals, setApprovals] = useState<ApprovalType[]>([]);
   const [approvalStatus, setApprovalStatus] = useState<string>("");
-
-  const [addAtt, setAddAtt] = useState<string>("");
-  const [addStart, setAddStart] = useState<string>("");
-  const [addEnd, setAddEnd] = useState<string>("");
-
-  const [id, setId] = useState<number>();
-  const [name, setName] = useState<string>();
+  const [approvals, setApprovals] = useState<ApprovalType[]>([]);
+  const [startDate, setStartDate] = useState<string>("");
   const [createdAt, setCreatedAt] = useState<string>();
+  const [endDate, setEndDate] = useState<string>("");
+  const [status, setStatus] = useState<string>();
+  const [image, setImage] = useState<string>("");
   const [desc, setDesc] = useState<string>("");
   const [title, setTitle] = useState<string>();
-  const [status, setStatus] = useState<string>();
-  const [startDate, setStartDate] = useState<string>("");
-  const [endDate, setEndDate] = useState<string>("");
-  const [image, setImage] = useState<string>("");
-  const [finalResult, setFinalResult] = useState<string>("");
-
-  const [color, setColor] = useState<string>("");
+  const [name, setName] = useState<string>();
   const [cookie, setCookie] = useCookies();
+  const [id, setId] = useState<number>();
   const navigate = useNavigate();
 
   useEffect(() => {
     getApprovals();
-    getDayApproval();
   }, []);
 
   async function getApprovals() {
@@ -81,8 +72,8 @@ const Approval = () => {
     }
   }
 
-  function getApprovalId(id: number) {
-    axios
+  async function getApprovalId(id: number) {
+    await axios
       .get(`approvals/${id}`, {
         headers: {
           Authorization: `Bearer ${cookie.token}`,
@@ -94,49 +85,14 @@ const Approval = () => {
         setName(data.employee_name);
         setCreatedAt(data.created_at);
         setTitle(data.approval_title);
-        setStatus(data.approval_status);
         setStartDate(data.approval_start_date);
         setEndDate(data.approval_end_date);
+        setStatus(data.approval_status);
         setImage(data.approval_image);
         setDesc(data.approval_description);
-        getDayApproval();
       })
       .catch((err) => {});
   }
-
-  function addAttendances(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    axios
-      .post(
-        `https://shirayuki.site/attendances/${id}`,
-        {
-          attendance: addAtt,
-          date_start: addStart,
-          date_end: addEnd,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${cookie.token}`,
-          },
-        }
-      )
-      .then((res) => {
-        console.log("cek: ", res);
-        const { message } = res.data;
-        console.log("cek: ", message);
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "Success",
-          text: message,
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        navigate(0);
-      })
-      .catch((err) => {});
-  }
-
   function editApproval(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const body = new FormData();
@@ -157,12 +113,7 @@ const Approval = () => {
           showConfirmButton: false,
           timer: 1500,
         });
-        if (approvalStatus === "approved") {
-          addAttendances(e);
-          navigate(0);
-        } else if (approvalStatus === "rejected") {
-          navigate(0);
-        }
+        navigate(0)
       })
       .catch((err) => {
         const { data } = err.response;
@@ -175,18 +126,6 @@ const Approval = () => {
       });
   }
 
-  async function getDayApproval() {
-    const oneDay = 1000 * 60 * 60 * 24;
-    const startDateApp = new Date(startDate);
-    const endDateApp = new Date(endDate);
-
-    const result =
-      Math.round(endDateApp.getTime() - startDateApp.getTime() + 1) / oneDay;
-    const final_result = (result + 1).toFixed(0);
-    setFinalResult(final_result);
-  }
-  console.log("cek hasil 1:", finalResult);
-  console.log(approvalStatus);
   return (
     <Layout approvalSet="w-full bg-gradient-to-r from-white to-navy hover:text-white ">
       {cookie.role === "admin" ? (
@@ -196,15 +135,16 @@ const Approval = () => {
               <FlexyCard parentSet="active:scale-95" key={data.id}>
                 <label
                   htmlFor="my-modal-1"
-                  // modals klo approve or reject button ganti cancel
-                  // data.approval_status === "rejected" || data.approval_status === "approved"? undefined : "my-modal-1"
                   id={`btn-approval-detail-${data.id}`}
                   onClick={() => getApprovalId(data.id)}
+                  
                 >
                   <div className="flex justify-center items-center w-full hover:cursor-pointer">
                     <div className="text-center w-1/4">
                       <p className="text-black capitalize font-semibold">
-                        {data.created_at}
+                        {new Date(`${data.created_at}`)
+                          .toString()
+                          .substring(3, 15)}
                       </p>
                     </div>
                     <div className="text-center w-1/4">
@@ -250,11 +190,10 @@ const Approval = () => {
                   </div>
                 </div>
                 <div className="py-5">
-                  <p className="text-black font-normal text-md">
-                    {`${startDate} to ${endDate}`}
-                  </p>
-                  <p className="text-black font-normal text-md">
-                    {`${finalResult} Days`}
+                  <p className="text-black font-semibold text-md mb-5">
+                    {new Date(`${startDate}`).toString().substring(3, 15)}{" "}
+                    <span className="font-normal">to</span>{" "}
+                    {new Date(`${endDate}`).toString().substring(3, 15)}
                   </p>
                   <p className="text-black font-normal text-md">{title}</p>
                   <p className="text-black font-normal text-md my-5">{desc}</p>
@@ -264,7 +203,10 @@ const Approval = () => {
                 </div>
               </div>
               <div className="modal-action">
-                <button
+                {
+                  status === "pending"? (
+                    <>
+                    <button
                   id={`btn-approve-modals`}
                   type="submit"
                   className="w-24 text-sm text-center border-2 border-sky bg-sky rounded-xl py-1 text-gray-50 font-medium duration-300 hover:cursor-pointer  hover:bg-blue-900  active:scale-90"
@@ -280,6 +222,10 @@ const Approval = () => {
                 >
                   Reject
                 </button>
+                    </>
+                  ) : null
+                }
+                
               </div>
             </form>
           </Modals2>
@@ -309,7 +255,9 @@ const Approval = () => {
                   <div className="flex justify-center items-center w-full">
                     <div className="text-start w-1/3 mx-5">
                       <p className="text-black capitalize font-semibold">
-                        {data.created_at}
+                        {new Date(`${data.created_at}`)
+                          .toString()
+                          .substring(3, 15)}
                       </p>
                     </div>
                     <div className="text-center w-1/3 mx-5">
@@ -348,11 +296,10 @@ const Approval = () => {
                 </div>
               </div>
               <div className="py-5">
-                <p className="text-black font-normal text-md">
-                  {`${startDate} to ${endDate}`}
-                </p>
-                <p className="text-black font-normal text-md">
-                  {`${finalResult} Days`}
+                <p className="text-black font-semibold text-md mb-5">
+                  {new Date(`${startDate}`).toString().substring(3, 15)}{" "}
+                  <span className="font-normal">to</span>{" "}
+                  {new Date(`${endDate}`).toString().substring(3, 15)}
                 </p>
                 <p className="text-black font-normal text-md">{title}</p>
                 <p className="text-black font-normal text-md my-5">{desc}</p>
