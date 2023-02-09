@@ -448,71 +448,71 @@ const Employee = () => {
             <p className="mb-5 pb-2 text-xl border-b-2 font-bold text-sky ">
               Edit Employee
             </p>
-            <div className="flex py-2 w-full">
-              <div className="flex items-center w-1/4 mx-5">
+            <div className="flex py-2 w-full justify-between">
+              <div className="flex items-center w-5/12">
                 <p className="font-semibold text-black text-center">Name</p>
               </div>
-              <div className="flex items-center justify-center w-full mx-2">
+              <div className="flex items-center justify-center w-full">
                 <CustomInput
                   id="input-edit-name"
                   type="text"
-                  inputSet="border-sky text-black"
+                  inputSet="border-sky text-black w-60 md:w-full"
                   defaultValue={employeeName}
                   onChange={(e) => setEditName(e.target.value)}
                 />
               </div>
             </div>
             <div className="flex py-2 w-full">
-              <div className="flex items-center  w-1/4 mx-5">
+              <div className="flex items-center w-5/12">
                 <p className="font-semibold text-black text-center">Email</p>
               </div>
-              <div className="flex items-center justify-center w-full mx-2">
+              <div className="flex items-center justify-center w-full">
                 <CustomInput
                   id="input-edit-email"
                   type="email"
-                  inputSet="border-sky text-black"
+                  inputSet="border-sky text-black w-60 md:w-full"
                   defaultValue={employeeEmail}
                   onChange={(e) => setEditEmail(e.target.value)}
                 />
               </div>
             </div>
-            <div className="flex py-2 w-full">
-              <div className="flex items-center w-1/4 mx-5">
+            <div className="flex py-2 w-full justify-between">
+              <div className="flex items-center w-5/12">
                 <p className="font-semibold text-black text-center">Password</p>
               </div>
-              <div className="flex items-center justify-center w-full mx-2">
+              <div className="flex items-center justify-center w-full">
                 <CustomInput
                   id="input-edit-password"
                   type="text"
-                  inputSet="border-sky text-black"
+                  inputSet="border-sky text-black w-60 md:w-full"
                   placeholder="Password"
                   onChange={(e) => setEditPassword(e.target.value)}
                 />
               </div>
             </div>
             <div className="flex py-2 w-full">
-              <div className="flex items-center w-1/4 mx-5">
+              <div className="flex items-center w-5/12">
                 <p className="font-semibold text-black text-center">Phone</p>
               </div>
-              <div className="flex items-center justify-center w-full mx-2">
+              <div className="flex items-center justify-center w-full">
                 <CustomInput
                   id="input-edit-phone"
                   type="text"
-                  inputSet="border-sky text-black"
+                  inputSet="border-sky text-black w-60 md:w-full"
                   defaultValue={employeePhone}
                   onChange={(e) => setEditPhone(e.target.value)}
                 />
               </div>
             </div>
             <div className="flex py-2 w-full">
-              <div className="flex items-center w-1/4 mx-5">
+              <div className="flex items-center w-5/12">
                 <p className="font-semibold text-black text-center">Position</p>
               </div>
-              <div className="flex items-center justify-center w-full mx-2">
+              <div className="flex items-center justify-center w-full">
                 <select
                   id="select-edit-position"
                   name="position"
-                  className="select select-bordered border-sky w-full text-black font-normal"
+                  className="select select-bordered border-sky text-black font-normal w-60 md:w-full"
                   defaultValue={employeePosition}
                   onChange={(e) => setEditPosition(e.target.value)}
                 >
@@ -536,14 +536,14 @@ const Employee = () => {
               </div>
             </div>
             <div className="flex py-2 w-full">
-              <div className="flex items-center w-1/4 mx-5">
+              <div className="flex items-center w-5/12">
                 <p className="font-semibold text-black text-center">Gender</p>
               </div>
-              <div className="flex items-center justify-center w-full mx-2">
+              <div className="flex items-center justify-center w-full">
                 <select
                   id="select-edit-gender"
                   name="gender"
-                  className="select select-bordered border-sky w-full text-black font-normal"
+                  className="select select-bordered border-sky text-black font-normal w-60 md:w-full"
                   defaultValue={employeeGender}
                   onChange={(e) => setEditGender(e.target.value)}
                 >
@@ -560,29 +560,29 @@ const Employee = () => {
               </div>
             </div>
             <div className="flex py-2 w-full">
-              <div className="flex items-center w-1/4 mx-5">
+              <div className="flex items-center w-5/12">
                 <p className="font-semibold text-black text-center">
                   Birthdate
                 </p>
               </div>
-              <div className="flex items-center justify-center w-full mx-2">
+              <div className="flex items-center justify-center w-full">
                 <CustomInput
                   id="input-edit-birthdate"
                   type="date"
-                  inputSet="border-sky text-black"
+                  inputSet="border-sky text-black w-60 md:w-full"
                   defaultValue={employeeBirthdate}
                   onChange={(e) => setEditBirthdate(e.target.value)}
                 />
               </div>
             </div>
             <div className="flex py-2 w-full">
-              <div className="flex items-center w-1/4 mx-5">
+              <div className="flex items-center w-5/12">
                 <p className="font-semibold text-black text-center">Addres</p>
               </div>
-              <div className="flex items-center justify-center w-full mx-2">
+              <div className="flex items-center justify-center w-full">
                 <TextArea
                   id="input-edit-address"
-                  inputSet="h-24 border-sky text-black"
+                  inputSet="h-24 border-sky text-black w-full"
                   defaultValue={employeeAddress}
                   onChange={(e) => setEditAddress(e.target.value)}
                 />
