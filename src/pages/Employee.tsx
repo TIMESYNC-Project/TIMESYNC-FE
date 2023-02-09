@@ -384,7 +384,7 @@ const Employee = () => {
       >
         {employees.map((data) => (
           <FlexyCard key={data.id}>
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center" id={`card-employee-${data.id}`}>
               <div className="flex w-1/2 flex-col md:flex-row md:items-center gap-2 md:gap-4">
                 <img
                   src={data.profile_picture}
@@ -485,7 +485,7 @@ const Employee = () => {
                   id="input-edit-password"
                   type="text"
                   inputSet="border-sky text-black w-60 md:w-full"
-                  placeholder="****************"
+                  placeholder="Password"
                   onChange={(e) => setEditPassword(e.target.value)}
                 />
               </div>

@@ -28,9 +28,9 @@ interface InboxIdType {
 
 const Inbox = () => {
   const [inboxId, setInboxId] = useState<InboxIdType>({});
+  const [inboxEm, setInboxEm] = useState<InboxType[]>([]);
   const [addTitle, setAddtitle] = useState<string>("");
   const [inbox, setInbox] = useState<InboxType[]>([]);
-  const [inboxEm, setInboxEm] = useState<InboxType[]>([]);
   const [addDesc, setAddDesc] = useState<string>("");
   const [addTo, setAddTo] = useState<string>("");
   const [cookie, setCookie] = useCookies();
@@ -221,8 +221,8 @@ const Inbox = () => {
         {admin &&
           inbox.map((data) => (
             <div className="flex justify-center gap-4" key={data.id}>
-              <FlexyCard parentSet="w-fit mx-0">
-                <div className="flex items-center gap-5">
+              <FlexyCard parentSet="w-fit mx-0" >
+                <div className="flex items-center gap-5" id={`card-inbox-${data.id}-${data.id}`}>
                   <label
                     id={`btn-detail-${data.id}`}
                     htmlFor="my-modal-3"
@@ -246,7 +246,7 @@ const Inbox = () => {
                     </div>
                   </label>
                   {admin && (
-                    <p className="text-sky hover:text-red-600 duration-300 hover:cursor-pointer active:scale-90">
+                    <p className="text-sky hover:text-red-600 duration-300 hover:cursor-pointer active:scale-90" id={`btn-delete-${data.id}`}>
                       <BsTrash size={27} onClick={() => onDelete(data.id)} />
                     </p>
                   )}
@@ -291,7 +291,7 @@ const Inbox = () => {
           ))}
         {employee &&
           inboxEm.map((data) => (
-            <div className="flex justify-center gap-4" key={data.id}>
+            <div className="flex justify-center gap-4" key={data.id} id={`card-inbox-${data.id}`}>
               <FlexyCard parentSet="w-fit mx-0">
                 <div className="flex items-center">
                   <label

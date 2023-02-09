@@ -463,7 +463,7 @@ const Home = () => {
                   <hr className="mx-10 my-3 border-[1.5px] border-sky" />
                   <div className={`pt-5 pb-10 px-5`}>
                     <div className="w-full" id="graph-total-work-employee">
-                      <Bar options={options} data={dataGraph} />
+                      <Bar options={options} data={dataGraph} id="graph-1"/>
                     </div>
                   </div>
                 </div>
@@ -481,7 +481,7 @@ const Home = () => {
                   <hr className="mx-10 my-3 border-[1.5px] border-sky" />
                   <div className={`pt-5 pb-10 px-5`}>
                     <div className="w-full" id="grap-total-late-employee">
-                      <Bar options={options} data={dataGraph2} />
+                      <Bar options={options} data={dataGraph2} id="graph-2"/>
                     </div>
                   </div>
                 </div>
