@@ -95,6 +95,7 @@ const CompanyProfile = () => {
     <Layout profileSet="w-full bg-gradient-to-r from-white to-navy hover:text-white">
       <WrappingCard
         judul="Company Profile"
+        titleSet="w-full"
         rightSide={
           admin ? null : (
             <>
