@@ -167,7 +167,10 @@ const RecordsDetail = () => {
         judul="Records"
         rightSide={
           <div className="flex items-center gap-2 xl:gap-4">
-            <div className="flex justify-center items-center border-2 rounded-xl h-14">
+            <div
+              className="flex justify-center items-center border-2 rounded-xl h-14"
+              id="card-date-range-picker"
+            >
               <DatePicker
                 selected={startDate}
                 onChange={onChange}
@@ -175,10 +178,12 @@ const RecordsDetail = () => {
                 endDate={endDate}
                 selectsRange
                 className="input input-borderd border-2 w-24 md:w-48 xl:w-full text-xs md:text-base"
+                id="input-date-range-picker"
               />
               <div
                 className="btn btn-ghost"
                 onClick={() => getRecordsEmployee()}
+                id="btn-date-range-picker"
               >
                 <BsSearch size={27} />
               </div>
@@ -299,6 +304,7 @@ const RecordsDetail = () => {
                   <div
                     className="flex justify-center items-center w-full"
                     onClick={() => presencesDetail(data.id ? data.id : 1)}
+                    id={`card-detail-records-${data.attendance_date}`}
                   >
                     <div className="flex justify-center w-1/4 mx-2">
                       <p className="text-black capitalize ">

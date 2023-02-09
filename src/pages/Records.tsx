@@ -35,13 +35,14 @@ interface DataType {
 }
 
 const Records = () => {
-  const [startDate, setStartDate] = useState<Date>();
-  const [endDate, setEndDate] = useState(null);
+  //state datepicker
   const [inStartDate, setInStartDate] = useState<string>("");
   const [inEndDate, setInEndDate] = useState<string>("");
+  const [startDate, setStartDate] = useState<Date>();
+  const [endDate, setEndDate] = useState(null);
 
-  const [records, setRecords] = useState<DataType[]>([]);
   const [employees, setEmployees] = useState<EmployeesType[]>([]);
+  const [records, setRecords] = useState<DataType[]>([]);
   const [search, setSearch] = useState<string>("");
   const [cookie, setCookie] = useCookies();
   const navigate = useNavigate();
@@ -52,9 +53,6 @@ const Records = () => {
     setEndDate(end);
     setInStartDate(moment(start).format("YYYY-MM-DD"));
     setInEndDate(moment(end).format("YYYY-MM-DD"));
-    console.log(typeof moment(start).format("YYYY-MM-DD"));
-    console.log(typeof end);
-    console.log("date", typeof dates);
   };
 
   useEffect(() => {
@@ -143,7 +141,7 @@ const Records = () => {
         >
           {employees.map((data) => {
             return (
-              <FlexyCard parentSet="active:scale-95">
+              <FlexyCard parentSet="active:scale-95" key={data.id}>
                 <div
                   key={data.id}
                   className="flex justify-between items-center hover:cursor-pointer "
@@ -179,7 +177,10 @@ const Records = () => {
           judul="Records"
           rightSide={
             <>
-              <div className="flex justify-center items-center border-2 rounded-xl h-14">
+              <div
+                className="flex justify-center items-center border-2 rounded-xl h-14"
+                id="card-date-range-picker"
+              >
                 <DatePicker
                   selected={startDate}
                   onChange={onChange}
@@ -187,10 +188,12 @@ const Records = () => {
                   endDate={endDate}
                   selectsRange
                   className="input input-borderd border-2"
+                  id="input-date-range-picker"
                 />
                 <div
                   className="btn btn-ghost"
                   onClick={() => getRecordsEmployee()}
+                  id={`btn-date-range-picker`}
                 >
                   <BsSearch size={27} />
                 </div>
@@ -205,8 +208,11 @@ const Records = () => {
           ) : (
             records.map((data) => {
               return (
-                <FlexyCard>
-                  <div className="flex justify-center items-center w-full">
+                <FlexyCard key={data.id}>
+                  <div
+                    className="flex justify-center items-center w-full"
+                    id={`card-detail-records-${data.attendance_date}`}
+                  >
                     <div className="flex justify-center w-1/4">
                       <p className="text-black capitalize ">
                         {new Date(`${data.attendance_date}`)
