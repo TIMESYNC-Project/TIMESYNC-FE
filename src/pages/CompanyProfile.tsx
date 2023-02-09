@@ -1,7 +1,7 @@
+import { Link, useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { IoReturnUpBack } from "react-icons/io5";
 import { useCookies } from "react-cookie";
-import { Link, Navigate, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "axios";
 
@@ -110,10 +110,10 @@ const CompanyProfile = () => {
           )
         }
       >
-        <div className="flex flex-col md:flex-row w-full gap-10 md:gap-5 xl:gap-0">
-          <div className="md:w-2/6 flex flex-col items-center gap-4">
+        <div className="flex flex-col lg:flex-row w-full gap-10 lg:gap-5 xl:gap-0">
+          <div className="lg:w-2/6 flex flex-col items-center gap-4">
             <img
-              className="w-60 border-2 border-sky rounded-xl"
+              className="xl:w-60 xl:h-60 border-2 border-sky rounded-xl"
               src={data.company_picture}
               alt="photo"
             />
@@ -220,7 +220,7 @@ const CompanyProfile = () => {
               </form>
             )}
           </div>
-          <div className="md:w-4/6 flex flex-col gap-3 md:gap-6">
+          <div className="lg:w-4/6 flex flex-col gap-3 md:gap-6">
             <p className="font-bold text-xl md:text-2xl lg:text-3xl mb-5">
               {data.company_name}
             </p>
