@@ -166,7 +166,7 @@ const RecordsDetail = () => {
       <WrappingCard
         judul="Records"
         rightSide={
-          <>
+          <div className="flex items-center gap-2 xl:gap-4">
             <div className="flex justify-center items-center border-2 rounded-xl h-14">
               <DatePicker
                 selected={startDate}
@@ -174,7 +174,7 @@ const RecordsDetail = () => {
                 startDate={startDate}
                 endDate={endDate}
                 selectsRange
-                className="input input-borderd border-2"
+                className="input input-borderd border-2 w-24 md:w-48 xl:w-full text-xs md:text-base"
               />
               <div
                 className="btn btn-ghost"
@@ -191,7 +191,7 @@ const RecordsDetail = () => {
               className={`normal-case bg-transparent`}
             >
               <div className="flex flex-col cursor-pointer items-center justify-center h-full">
-                <div className="flex  mx-5 text-sky">
+                <div className="flex text-sky">
                   <BiAddToQueue size={30} />
                 </div>
               </div>
@@ -277,7 +277,7 @@ const RecordsDetail = () => {
               </form>
             </Modals1>
             {/* modal add Attendance end*/}
-          </>
+          </div>
         }
       >
         <div className="pb-5">

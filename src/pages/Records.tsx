@@ -118,20 +118,20 @@ const Records = () => {
         <WrappingCard
           judul="Records"
           rightSide={
-            <div className="flex justify-end">
+            <div className="">
               <form
-                className="flex justify-end"
+                className="flex items-center gap-2"
                 id="form-search"
                 onSubmit={searchEmployees}
               >
                 <CustomInput
-                  inputSet="border-sky"
+                  inputSet="border-sky w-36 md:w-full"
                   placeholder="Search"
                   id="input-search"
                   onChange={(e) => setSearch(e.target.value)}
                 />
                 <button
-                  className="btn btn-ghost mx-1 text-sky"
+                  className="text-sky active:scale-75 duration-300"
                   type="submit"
                   id="btn-search"
                 >
@@ -146,28 +146,28 @@ const Records = () => {
               <FlexyCard parentSet="active:scale-95">
                 <div
                   key={data.id}
-                  className="flex justify-center items-center hover:cursor-pointer "
+                  className="flex justify-between items-center hover:cursor-pointer "
                   onClick={() => onClickDetail(data.id)}
                   id="btn-detail-records"
                 >
-                  <div className="flex w-1/2">
+                  <div className="flex w-1/2 items-center gap-2 md:gap-4">
                     <img
                       src={data.profile_picture}
-                      className="w-[50px] h-[50px]  rounded-full"
+                      className="w-10 h-10 md:w-16 md:h-16 rounded-full"
                     />
-                    <div className="mx-7">
-                      <p className="font-medium text-lg text-navy">
+                    <div className="flex flex-col">
+                      <p className="font-medium text-sm md:text-lg text-navy">
                         {data.nip}
                       </p>
-                      <p className="font-bold text-lg text-navy">{data.name}</p>
-                    </div>
-                  </div>
-                  <div className="flex w-1/2 justify-end">
-                    <div className="mx-5">
-                      <p className="font-bold text-lg text-navy">
-                        {data.position}
+                      <p className="font-bold text-sm md:text-lg text-navy">
+                        {data.name}
                       </p>
                     </div>
+                  </div>
+                  <div className="flex justify-end w-1/4 md:w-full text-right">
+                    <p className="font-bold text-sm md:text-lg text-navy">
+                      {data.position}
+                    </p>
                   </div>
                 </div>
               </FlexyCard>
@@ -199,34 +199,37 @@ const Records = () => {
           }
         >
           {records.length === 0 ? (
-          <p className="text-center text-3xl font-bold animate-pulse text-gray-300 capitalize">
-            add date first
-          </p>
-        ) : (
-          records.map((data) => {
-            return (
-              <FlexyCard>
-                <div className="flex justify-center items-center w-full">
-                  <div className="flex justify-center w-1/4">
-                    <p className="text-black capitalize ">
-                      {new Date(`${data.attendance_date}`)
-                        .toString()
-                        .substring(3, 15)}
-                    </p>
+            <p className="text-center text-3xl font-bold animate-pulse text-gray-300 capitalize">
+              add date first
+            </p>
+          ) : (
+            records.map((data) => {
+              return (
+                <FlexyCard>
+                  <div className="flex justify-center items-center w-full">
+                    <div className="flex justify-center w-1/4">
+                      <p className="text-black capitalize ">
+                        {new Date(`${data.attendance_date}`)
+                          .toString()
+                          .substring(3, 15)}
+                      </p>
+                    </div>
+                    <div className="flex justify-center w-1/4">
+                      <p className="text-black capitalize ">{data.clock_in}</p>
+                    </div>
+                    <div className="flex justify-center w-1/4">
+                      <p className="text-black capitalize ">{data.clock_out}</p>
+                    </div>
+                    <div className="flex justify-center w-1/4">
+                      <p className="text-black capitalize ">
+                        {data.attendance}
+                      </p>
+                    </div>
                   </div>
-                  <div className="flex justify-center w-1/4">
-                    <p className="text-black capitalize ">{data.clock_in}</p>
-                  </div>
-                  <div className="flex justify-center w-1/4">
-                    <p className="text-black capitalize ">{data.clock_out}</p>
-                  </div>
-                  <div className="flex justify-center w-1/4">
-                    <p className="text-black capitalize ">{data.attendance}</p>
-                  </div>
-                </div>
-              </FlexyCard>
-            );
-          }))}
+                </FlexyCard>
+              );
+            })
+          )}
         </WrappingCard>
       )}
     </Layout>
