@@ -1,9 +1,10 @@
+import { useNavigate, useParams } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { BiAddToQueue } from "react-icons/bi";
-import { useParams } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import DatePicker from "react-datepicker";
 import { BsSearch } from "react-icons/bs";
+import Swal from "sweetalert2";
 import moment from "moment";
 import axios from "axios";
 
@@ -47,11 +48,16 @@ const RecordsDetail = () => {
   const [inStartDate, setInStartDate] = useState<string>("");
   const [inEndDate, setInEndDate] = useState<string>("");
 
+  const [addAtt, setAddAtt] = useState<string>("");
+  const [addStart, setAddStart] = useState<string>("");
+  const [addEnd, setAddEnd] = useState<string>("");
+
   const [date, setDate] = useState<string>("");
   const [records, setRecords] = useState<DataType[]>([]);
   const [detail, setDetail] = useState<DataType>({});
   const [name, setName] = useState<ProfileType>({});
   const [cookie, setCookie] = useCookies();
+  const navigate = useNavigate();
   const { id } = useParams();
 
   const onChange = (dates: any) => {
@@ -121,6 +127,39 @@ const RecordsDetail = () => {
       })
       .catch((err) => {});
   }
+  // https://shirayuki.site/attendances/id_employee
+  function addAttendances(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    axios
+      .post(
+        `https://shirayuki.site/attendances/${id}`,
+        {
+          attendance: addAtt,
+          date_start: addStart,
+          date_end: addEnd,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${cookie.token}`,
+          },
+        }
+      )
+      .then((res) => {
+        console.log("cek: ", res);
+        const { message } = res.data;
+        console.log("cek: ", message);
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Success",
+          text: message,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        navigate(0);
+      })
+      .catch((err) => {});
+  }
 
   return (
     <Layout recordsSet="w-full bg-gradient-to-r from-white to-navy hover:text-white">
@@ -158,7 +197,7 @@ const RecordsDetail = () => {
               </div>
             </label>
             <Modals1 no={1} titleModal={"Create Attendance"}>
-              <form>
+              <form onSubmit={addAttendances}>
                 <div className="flex py-2 w-full">
                   <div className="flex items-center justify-center w-1/3 mx-2">
                     <p className="font-semibold text-black text-center">
@@ -170,7 +209,7 @@ const RecordsDetail = () => {
                       name="attendance"
                       id="select-attendance"
                       className="select select-bordered border-sky w-full text-black"
-                      // onChange={()=>}
+                      onChange={(e) => setAddAtt(e.target.value)}
                     >
                       <option value="" id="option-attendance">
                         Attendance
@@ -199,6 +238,7 @@ const RecordsDetail = () => {
                       type="date"
                       inputSet="border-sky text-black"
                       min={date}
+                      onChange={(e) => setAddStart(e.target.value)}
                     />
                   </div>
                 </div>
@@ -213,6 +253,8 @@ const RecordsDetail = () => {
                       id="input-date-end"
                       type="date"
                       inputSet="border-sky text-black"
+                      min={addStart}
+                      onChange={(e) => setAddEnd(e.target.value)}
                     />
                   </div>
                 </div>
