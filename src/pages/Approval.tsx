@@ -139,7 +139,7 @@ const Approval = () => {
                   onClick={() => getApprovalId(data.id)}
                   
                 >
-                  <div className="flex justify-center items-center w-full hover:cursor-pointer">
+                  <div className="flex justify-center items-center w-full hover:cursor-pointer" id={`card-approval-${data.id}`}>
                     <div className="text-center w-1/4">
                       <p className="text-black capitalize font-semibold">
                         {new Date(`${data.created_at}`)
@@ -224,8 +224,7 @@ const Approval = () => {
                 </button>
                     </>
                   ) : null
-                }
-                
+                }                
               </div>
             </form>
           </Modals2>
@@ -252,7 +251,7 @@ const Approval = () => {
                   id={`btn-detail-approval-${data.id}`}
                   onClick={() => getApprovalId(data.id)}
                 >
-                  <div className="flex justify-center items-center w-full">
+                  <div className="flex justify-center items-center w-full" id={`card-approval-${data.id}`}>
                     <div className="text-start w-1/3 mx-5">
                       <p className="text-black capitalize font-semibold">
                         {new Date(`${data.created_at}`)

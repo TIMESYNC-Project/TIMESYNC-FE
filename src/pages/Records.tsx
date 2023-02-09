@@ -177,7 +177,7 @@ const Records = () => {
           judul="Records"
           rightSide={
             <>
-              <div className="flex justify-center items-center border-2 rounded-xl h-14">
+              <div className="flex justify-center items-center border-2 rounded-xl h-14" id="card-date-range-picker">
                 <DatePicker
                   selected={startDate}
                   onChange={onChange}
@@ -185,10 +185,12 @@ const Records = () => {
                   endDate={endDate}
                   selectsRange
                   className="input input-borderd border-2"
+                  id="input-date-range-picker"
                 />
                 <div
                   className="btn btn-ghost"
                   onClick={() => getRecordsEmployee()}
+                  id={`btn-date-range-picker`}
                 >
                   <BsSearch size={27} />
                 </div>
@@ -204,7 +206,7 @@ const Records = () => {
           records.map((data) => {
             return (
               <FlexyCard key={data.id}>
-                <div className="flex justify-center items-center w-full">
+                <div className="flex justify-center items-center w-full" id={`card-detail-records-${data.attendance_date}`}>
                   <div className="flex justify-center w-1/4">
                     <p className="text-black capitalize ">
                       {new Date(`${data.attendance_date}`)
