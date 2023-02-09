@@ -1,25 +1,82 @@
 import React, { useState, useEffect } from "react";
 import { BiAddToQueue } from "react-icons/bi";
 import { useParams } from "react-router-dom";
+import { useCookies } from "react-cookie";
+import DatePicker from "react-datepicker";
 import moment from "moment";
+import axios from "axios";
 
 import { WrappingCard, FlexyCard } from "components/Card";
 import { Modals1, Modals2 } from "components/Modals";
 import { CustomInput } from "components/CustomInput";
 import Layout from "components/Layout";
 
+import "react-datepicker/dist/react-datepicker.css";
+
+interface DataType {
+  attendance: string;
+  attendance_date: string;
+  attendance_status: string;
+  clock_in: string;
+  clock_in_location: string;
+  clock_in_map_location: string;
+  clock_out: string;
+  clock_out_location: string;
+  clock_out_map_location: string;
+  id: number;
+  work_time: string;
+}
+
 const RecordsDetail = () => {
+  const [startDate, setStartDate] = useState<Date>();
+  const [endDate, setEndDate] = useState(null);
+
   const [date, setDate] = useState<string>("");
+  const [records, setRecords] = useState<DataType[]>([]);
+  const [name, setName] = useState<string>("");
+  const [date2, setDate2] = useState<Date>();
+  const [cookie, setCookie] = useCookies();
   const { id } = useParams();
-  console.log(id);
+
+  const onChange = (dates: any) => {
+    const [start, end] = dates;
+    setStartDate(start);
+    setEndDate(end);
+    console.log(typeof start);
+    console.log(typeof end);
+    console.log("date", typeof dates);
+  };
 
   useEffect(() => {
     newDate();
+    getRecordsEmployee();
   }, []);
 
   function newDate() {
     const tanggal = moment().format();
+    const tanggal2 = new Date();
     setDate(tanggal.substring(0, 10));
+    setDate2(tanggal2);
+  }
+  // https://shirayuki.site/record/${id}?date_from=${startDate}&date_to=${endDate}
+  // https://shirayuki.site/record/17?date_from=2023-02-05&date_to=2023-02-11
+  function getRecordsEmployee() {
+    axios
+      .get(
+        `https://shirayuki.site/record/${id}?date_from=2023-02-05&date_to=2023-02-11`,
+        {
+          headers: {
+            Authorization: `Bearer ${cookie.token}`,
+          },
+        }
+      )
+      .then((res) => {
+        const { data } = res.data;
+        const { record, employee_name } = data;
+        setName(employee_name);
+        setRecords(record);
+      })
+      .catch((err) => {});
   }
 
   return (
@@ -28,52 +85,17 @@ const RecordsDetail = () => {
         judul="Details Records"
         rightSide={
           <>
-            <select
-              name="Month"
-              id="select-date-recods"
-              className="select select-bordered border-sky w-1/3"
-              // onChange={()=>}
-            >
-              <option value="" id="option-date-recods-month">
-                Month
-              </option>
-              <option value="January" id="option-date-recods-january">
-                January
-              </option>
-              <option value="February" id="option-date-recods-february">
-                February
-              </option>
-              <option value="March" id="option-date-recods-march">
-                March
-              </option>
-              <option value="April" id="option-date-recods-april">
-                April
-              </option>
-              <option value="May" id="option-date-recods-may">
-                May
-              </option>
-              <option value="June" id="option-date-recods-june">
-                June
-              </option>
-              <option value="July" id="option-date-recods-july">
-                July
-              </option>
-              <option value="August" id="option-date-recods-august">
-                August
-              </option>
-              <option value="September" id="option-date-recods-september">
-                September
-              </option>
-              <option value="October" id="option-date-recods-october">
-                October
-              </option>
-              <option value="November" id="option-date-recods-november">
-                November
-              </option>
-              <option value="December" id="option-date-recods-december">
-                December
-              </option>
-            </select>
+            <div className="flex justify-center items-center">
+              <DatePicker
+                selected={startDate}
+                onChange={onChange}
+                startDate={startDate}
+                endDate={endDate}
+                selectsRange
+                inline
+                minDate={date2}
+              />
+            </div>
 
             {/* modal add Attendance start*/}
             <label
@@ -169,26 +191,36 @@ const RecordsDetail = () => {
         }
       >
         <div className="pb-5">
-          <p className="text-xl font-bold text-navy">James Shelby</p>
+          <p className="text-xl font-bold text-navy">{name}</p>
         </div>
-        <label htmlFor="my-modal-2" id={`btn-detail-records-${"data.id"}`}>
-          <FlexyCard parentSet="hover:cursor-pointer">
-            <div className="flex justify-center items-center w-full">
-              <div className="flex justify-center w-1/4 mx-2">
-                <p className="text-black capitalize ">jan 30, 2023</p>
-              </div>
-              <div className="flex justify-center w-1/4">
-                <p className="text-black capitalize">07.25</p>
-              </div>
-              <div className="flex justify-center w-1/4">
-                <p className="text-black capitalize">17.20</p>
-              </div>
-              <div className="flex justify-center w-1/4">
-                <p className="text-black capitalize">presence</p>
-              </div>
-            </div>
-          </FlexyCard>
-        </label>
+        {records.map((data) => {
+          return (
+            <label
+              htmlFor={data.id == 0 ? "" : "my-modal-2"}
+              id={`btn-detail-records-${data.attendance_date}`}
+              key={data.attendance_date}
+            >
+              <FlexyCard parentSet="hover:cursor-pointer">
+                <div className="flex justify-center items-center w-full">
+                  <div className="flex justify-center w-1/4 mx-2">
+                    <p className="text-black capitalize ">
+                      {data.attendance_date}
+                    </p>
+                  </div>
+                  <div className="flex justify-center w-1/4">
+                    <p className="text-black capitalize">{data.clock_in}</p>
+                  </div>
+                  <div className="flex justify-center w-1/4">
+                    <p className="text-black capitalize">{data.clock_out}</p>
+                  </div>
+                  <div className="flex justify-center w-1/4">
+                    <p className="text-black capitalize">{data.attendance}</p>
+                  </div>
+                </div>
+              </FlexyCard>
+            </label>
+          );
+        })}
 
         {/* modal detail records start*/}
         <Modals1 no={2} titleModal={"Details Records"}>
