@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { BsSearch } from "react-icons/all";
 import { useCookies } from "react-cookie";
 import DatePicker from "react-datepicker";
+import moment from "moment";
 import axios from "axios";
 
 import { CustomInput } from "components/CustomInput";
@@ -19,11 +20,27 @@ interface EmployeesType {
   position: string;
   profile_picture: string;
 }
+interface DataType {
+  attendance?: string;
+  attendance_date?: string;
+  attendance_status?: string;
+  clock_in?: string;
+  clock_in_location?: string;
+  clock_in_map_location?: string;
+  clock_out?: string;
+  clock_out_location?: string;
+  clock_out_map_location?: string;
+  id?: number;
+  work_time?: string;
+}
 
 const Records = () => {
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState(null);
+  const [inStartDate, setInStartDate] = useState<string>("");
+  const [inEndDate, setInEndDate] = useState<string>("");
 
+  const [records, setRecords] = useState<DataType[]>([]);
   const [employees, setEmployees] = useState<EmployeesType[]>([]);
   const [search, setSearch] = useState<string>("");
   const [cookie, setCookie] = useCookies();
@@ -33,8 +50,11 @@ const Records = () => {
     const [start, end] = dates;
     setStartDate(start);
     setEndDate(end);
-    console.log(start);
-    console.log(end);
+    setInStartDate(moment(start).format("YYYY-MM-DD"));
+    setInEndDate(moment(end).format("YYYY-MM-DD"));
+    console.log(typeof moment(start).format("YYYY-MM-DD"));
+    console.log(typeof end);
+    console.log("date", typeof dates);
   };
 
   useEffect(() => {
@@ -72,6 +92,24 @@ const Records = () => {
 
   function onClickDetail(id: number) {
     navigate(`/records/details/${id}`);
+  }
+
+  function getRecordsEmployee() {
+    axios
+      .get(
+        `https://shirayuki.site/record/${cookie.id}?date_from=${inStartDate}&date_to=${inEndDate}`,
+        {
+          headers: {
+            Authorization: `Bearer ${cookie.token}`,
+          },
+        }
+      )
+      .then((res) => {
+        const { data } = res.data;
+        const { record } = data;
+        setRecords(record);
+      })
+      .catch((err) => {});
   }
 
   return (
@@ -141,51 +179,54 @@ const Records = () => {
           judul="Records"
           rightSide={
             <>
-              <div className="flex justify-center items-center">
+              <div className="flex justify-center items-center border-2 rounded-xl h-14">
                 <DatePicker
                   selected={startDate}
                   onChange={onChange}
                   startDate={startDate}
                   endDate={endDate}
                   selectsRange
-                  inline
+                  className="input input-borderd border-2"
                 />
+                <div
+                  className="btn btn-ghost"
+                  onClick={() => getRecordsEmployee()}
+                >
+                  <BsSearch size={27} />
+                </div>
               </div>
             </>
           }
         >
-          <FlexyCard>
-            <div className="flex justify-center items-center w-full">
-              <div className="flex justify-center w-1/4">
-                <p className="text-black capitalize ">jan 30, 2023</p>
-              </div>
-              <div className="flex justify-center w-1/4">
-                <p>07.25</p>
-              </div>
-              <div className="flex justify-center w-1/4">
-                <p>17.20</p>
-              </div>
-              <div className="flex justify-center w-1/4">
-                <p>presence</p>
-              </div>
-            </div>
-          </FlexyCard>
-          <FlexyCard>
-            <div className="flex justify-center items-center w-full">
-              <div className="flex justify-center w-1/4">
-                <p className="text-black capitalize ">jan 30, 2023</p>
-              </div>
-              <div className="flex justify-center w-1/4">
-                <p className="text-black capitalize">07.25</p>
-              </div>
-              <div className="flex justify-center w-1/4">
-                <p className="text-black capitalize">17.20</p>
-              </div>
-              <div className="flex justify-center w-1/4">
-                <p className="text-black capitalize">presence</p>
-              </div>
-            </div>
-          </FlexyCard>
+          {records.length === 0 ? (
+          <p className="text-center text-3xl font-bold animate-pulse text-gray-300 capitalize">
+            add date first
+          </p>
+        ) : (
+          records.map((data) => {
+            return (
+              <FlexyCard>
+                <div className="flex justify-center items-center w-full">
+                  <div className="flex justify-center w-1/4">
+                    <p className="text-black capitalize ">
+                      {new Date(`${data.attendance_date}`)
+                        .toString()
+                        .substring(3, 15)}
+                    </p>
+                  </div>
+                  <div className="flex justify-center w-1/4">
+                    <p className="text-black capitalize ">{data.clock_in}</p>
+                  </div>
+                  <div className="flex justify-center w-1/4">
+                    <p className="text-black capitalize ">{data.clock_out}</p>
+                  </div>
+                  <div className="flex justify-center w-1/4">
+                    <p className="text-black capitalize ">{data.attendance}</p>
+                  </div>
+                </div>
+              </FlexyCard>
+            );
+          }))}
         </WrappingCard>
       )}
     </Layout>
