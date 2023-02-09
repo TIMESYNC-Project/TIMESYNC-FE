@@ -370,18 +370,19 @@ const Home = () => {
     <Layout homeSet="w-full bg-gradient-to-r from-white to-navy hover:text-white">
       {cookie.role === "admin" ? (
         <WrappingCard judul="Dashboard">
-          <div className="flex">
-            <div className="w-2/3">
-              <div className="grid grid-cols-2">
+          <div className="flex flex-col-reverse xl:flex-row gap-6 xl:gap-0 w-full">
+            <div className="w-full xl:w-2/3">
+              <div className="grid grid-cols-2 gap-4 xl:gap-0">
                 {/* card total employees start */}
                 <Link id="card-total-employees" to="/employees">
                   <MiniCard
+                    parentSet="h-full"
                     judul="total employees"
-                    titleSet="text-center text-lg"
+                    titleSet="flex justify-center items-center text-sm xl:text-lg h-10"
                   >
-                    <p className="text-7xl text-black font-bold text-center">
+                    <p className="text-2xl xl:text-7xl text-black font-bold text-center">
                       {`${data.length}`}
-                      <span className="capitalize text-xl font-normal">
+                      <span className="capitalize text-xs xl:text-xl font-normal">
                         person
                       </span>
                     </p>
@@ -392,12 +393,13 @@ const Home = () => {
 
                 {/* card total presence today start */}
                 <MiniCard
+                  parentSet="h-full"
                   judul="total presence today"
-                  titleSet="text-center text-lg"
+                  titleSet="justify-center items-center text-center text-sm xl:text-lg h-10"
                 >
-                  <p className="text-7xl text-black font-bold text-center">
+                  <p className="text-2xl xl:text-7xl text-black font-bold text-center">
                     {`${presences.length}`}
-                    <span className="capitalize text-xl font-normal">
+                    <span className="capitalize text-xs xl:text-xl font-normal">
                       person
                     </span>
                   </p>
@@ -406,7 +408,7 @@ const Home = () => {
               </div>
 
               {/* graph 1 start */}
-              <div className="mx-20 my-10" id="graph-total-work">
+              <div className="xl:mx-5 my-5 xl:my-10" id="graph-total-work">
                 <div className="box-border w-full bg-white rounded-3xl border-sky border-2">
                   <div className="mx-10 mt-10">
                     <p className="capitalize text-lg font-extrabold text-center">
@@ -414,8 +416,8 @@ const Home = () => {
                     </p>
                   </div>
                   <hr className="mx-10 my-3 border-[1.5px] border-sky" />
-                  <div className={`pt-5 pb-10 px-5 w-full`}>
-                    <div style={{ width: 500 }} id='graph-total-work-employee'>
+                  <div className={`pt-5 pb-10 px-5`}>
+                    <div className="w-full" id="graph-total-work-employee">
                       <Bar options={options} data={dataGraph} />
                     </div>
                   </div>
@@ -424,7 +426,7 @@ const Home = () => {
               {/* graph 1 end */}
 
               {/* graph 2 start */}
-              <div className="mx-20 my-10" id="grap-total-late">
+              <div className="xl:mx-5 my-5 xl:my-10" id="grap-total-late">
                 <div className="box-border w-full bg-white rounded-3xl border-sky border-2">
                   <div className="mx-10 mt-10">
                     <p className="capitalize text-lg font-extrabold text-center">
@@ -433,7 +435,7 @@ const Home = () => {
                   </div>
                   <hr className="mx-10 my-3 border-[1.5px] border-sky" />
                   <div className={`pt-5 pb-10 px-5`}>
-                    <div style={{ width: 500 }} id="grap-total-late-employee">
+                    <div className="w-full" id="grap-total-late-employee">
                       <Bar options={options} data={dataGraph2} />
                     </div>
                   </div>
@@ -441,22 +443,29 @@ const Home = () => {
               </div>
               {/* graph 2 end */}
             </div>
-            <div className="w-1/3">
+            <div className="xl:w-1/3">
               {/* card employees start */}
               <Link id="card-list-employees" to="/employees">
-                <MiniCard judul="employees" titleSet="text-center text-xl">
-                  {data.slice(0, 5).map((data) => {
+                <MiniCard
+                  parentSet=" overflow-auto h-full mb-4 xl:mb-0"
+                  judul="employees"
+                  titleSet="text-center h-fit text-md xl:text-xl"
+                >
+                  {data.slice(0, 10).map((data) => {
                     return (
-                      <div className="flex flex-col my-3" key={data.id}>
-                        <div className="flex flex-row justify-start">
+                      <div
+                        className="flex flex-col my-3 mx-6 xl:mx-0"
+                        key={data.id}
+                      >
+                        <div className="flex flex-row text-center xl:text-left xl:justify-start">
                           <div className="h-1/2">
                             <img
                               src={data.profile_picture}
-                              className="w-[40px] h-[40px]  rounded-full"
+                              className="w-8 h-8 xl:w-[40px] xl:h-[40px]  rounded-full"
                             />
                           </div>
                           <div className="flex justify-start items-center mx-2">
-                            <p className="text-lg text-black font-semibold capitalize">
+                            <p className="text-xs xl:text-lg text-black font-semibold capitalize">
                               {data.name}
                             </p>
                           </div>
@@ -470,16 +479,22 @@ const Home = () => {
 
               {/* card inbox start */}
               <Link id="card-list-inbox" to="/inbox">
-                <MiniCard judul="inbox" titleSet="text-center text-xl">
-                  {inbox.slice(0, 5).map((data) => {
+                <MiniCard
+                  judul="inbox"
+                  titleSet="text-center h-fit text-md xl:text-xl"
+                >
+                  {inbox.slice(0, 7).map((data) => {
                     return (
-                      <div className="flex flex-col my-3" key={data.id}>
+                      <div
+                        className="flex flex-col my-3 mx-6 xl:mx-0"
+                        key={data.id}
+                      >
                         <div className="flex flex-row justify-start">
                           <div className="h-1/2">
                             <AiOutlineMessage size={25} />
                           </div>
                           <div className="flex justify-start items-center mx-2">
-                            <p className="text-md text-black font-semibold capitalize">
+                            <p className="text-xs xl:text-lg text-black font-semibold capitalize">
                               {data.announcement_title}
                             </p>
                           </div>
