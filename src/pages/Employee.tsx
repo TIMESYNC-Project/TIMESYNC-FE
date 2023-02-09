@@ -1,5 +1,5 @@
+import { BsPencilSquare, BsTrash, BsSearch, BsThreeDots } from "react-icons/bs";
 import { AiOutlineFileAdd, AiOutlineUserAdd } from "react-icons/ai";
-import { BsPencilSquare, BsTrash, BsSearch } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
@@ -285,17 +285,20 @@ const Employee = () => {
         judul="Employees"
         rightSide={
           <>
-            <div className="flex justify-end">
-              <form className="flex justify-end" onSubmit={searchEmployees}>
+            <div className="hidden md:flex gap-4 items-center justify-end">
+              <form
+                className="flex gap-2 item-center"
+                onSubmit={searchEmployees}
+              >
                 <CustomInput
                   id="input-search"
-                  inputSet="border-sky"
+                  inputSet="border-sky w-28 md:w-48 xl:w-60"
                   placeholder="Search"
                   onChange={(e) => setSearch(e.target.value)}
                 />
                 <button
                   id="btn-search-submit"
-                  className="mx-2 ml-4 text-sky"
+                  className="text-sky"
                   type="submit"
                 >
                   <BsSearch size={27} />
@@ -306,8 +309,8 @@ const Employee = () => {
                 htmlFor={`my-modal-1`}
                 className="flex justify-center items-center"
               >
-                <div className="mx-2 text-sky hover:cursor-pointer hover:text-green-700">
-                  <AiOutlineFileAdd size={27} />
+                <div className="text-sky hover:cursor-pointer hover:text-green-700">
+                  <AiOutlineFileAdd size={30} />
                 </div>
               </label>
               <label
@@ -315,34 +318,90 @@ const Employee = () => {
                 htmlFor={`my-modal-2`}
                 className="flex justify-center items-center"
               >
-                <div className="mx-2 text-sky hover:cursor-pointer hover:text-gray-600">
-                  <AiOutlineUserAdd size={27} />
+                <div className="text-sky hover:cursor-pointer hover:text-gray-600">
+                  <AiOutlineUserAdd size={30} />
                 </div>
               </label>
+            </div>
+            <div className="z-40 dropdown dropdown-end md:hidden">
+              <label id="btn-mobile-menu" tabIndex={0}>
+                <p className="capitalize text-md font-normal duration-300 hover:cursor-pointer active:scale-75">
+                  <BsThreeDots size={27} />
+                </p>
+              </label>
+              <ul
+                tabIndex={0}
+                className="mt-3 py-2 px-4 shadow menu-compact dropdown-content border-2 border-sky bg-white rounded-2xl w-fit"
+              >
+                <li>
+                  <label
+                    id="btn-add-employee-mobile"
+                    htmlFor={`my-modal-2`}
+                    className="flex items-center"
+                  >
+                    <div className="flex items-center gap-2 text-sky hover:cursor-pointer hover:text-gray-600">
+                      <AiOutlineUserAdd size={27} />
+                      <p className="font-medium">Add Employee</p>
+                    </div>
+                  </label>
+                </li>
+                <li>
+                  <label
+                    id="btn-import-file-mobile"
+                    htmlFor={`my-modal-1`}
+                    className="flex items-center"
+                  >
+                    <div className="flex items-center gap-2 text-sky hover:cursor-pointer hover:text-green-700">
+                      <AiOutlineFileAdd size={27} />
+                      <p className="font-medium">Import File</p>
+                    </div>
+                  </label>
+                </li>
+                <li>
+                  <form
+                    className="flex gap-2 item-center"
+                    onSubmit={searchEmployees}
+                  >
+                    <CustomInput
+                      id="input-search-mobile"
+                      inputSet="border-sky w-40"
+                      placeholder="Search"
+                      onChange={(e) => setSearch(e.target.value)}
+                    />
+                    <button
+                      id="btn-search-submit-mobile"
+                      className="text-sky"
+                      type="submit"
+                    >
+                      <BsSearch size={27} />
+                    </button>
+                  </form>
+                </li>
+              </ul>
             </div>
           </>
         }
       >
         {employees.map((data) => (
           <FlexyCard key={data.id}>
-            <div className="flex justify-center items-center">
-              <div className="flex w-1/2">
+            <div className="flex justify-between items-center">
+              <div className="flex w-1/2 flex-col md:flex-row md:items-center gap-2 md:gap-4">
                 <img
                   src={data.profile_picture}
-                  className="w-[50px] h-[50px] rounded-full duration-300 hover:cursor-pointer active:scale-95"
+                  className="w-10 h-10 md:w-16 md:h-16 rounded-full duration-300 hover:cursor-pointer active:scale-95"
                   id={`btn-img-${data.id}`}
                   onClick={() => onClickDetail(data.id)}
                 />
-                <div className="mx-7">
+                <div>
                   <p
-                    className="font-medium text-lg text-navy duration-300 hover:cursor-pointer active:scale-95"
+                    className="font-medium xl:text-lg text-navy duration-300 hover:cursor-pointer active:scale-95"
                     id={`btn-nip-${data.id}`}
                     onClick={() => onClickDetail(data.id)}
                   >
                     {data.nip}
                   </p>
                   <p
-                    className="font-bold text-lg text-navy duration-300 hover:cursor-pointer active:scale-95"
+                    className="font-bold xl:text-lg text-navy duration-300 hover:cursor-pointer active:scale-95"
                     id={`btn-name-${data.id}`}
                     onClick={() => onClickDetail(data.id)}
                   >
@@ -350,33 +409,31 @@ const Employee = () => {
                   </p>
                 </div>
               </div>
-              <div className="flex w-1/2 justify-end items-center">
-                <div className="mr-6">
-                  <p
-                    className="font-bold text-lg text-navy duration-300 hover:cursor-pointer active:scale-95"
-                    id={`btn-position-${data.id}`}
-                    onClick={() => onClickDetail(data.id)}
+              <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4 xl:gap-6">
+                <p
+                  className="text-right font-bold xl:text-lg text-navy duration-300 hover:cursor-pointer active:scale-95"
+                  id={`btn-position-${data.id}`}
+                  onClick={() => onClickDetail(data.id)}
+                >
+                  {data.position}
+                </p>
+                <div className="flex justify-end items-center gap-4">
+                  <label
+                    id={`btn-edit-employee-${data.id}`}
+                    htmlFor={`my-modal-3`}
+                    className="text-sky hover:cursor-pointer hover:text-orange-500"
+                    onClick={() => getEmployeesId(data.id)}
                   >
-                    {data.position}
-                  </p>
+                    <BsPencilSquare size={27} />
+                  </label>
+                  <button
+                    id={`btn-delete-employee-${data.id}`}
+                    className="text-sky hover:cursor-pointer hover:text-red-600"
+                    onClick={() => handleDeleteEmployee(data.id)}
+                  >
+                    <BsTrash size={27} />
+                  </button>
                 </div>
-
-                <label
-                  id={`btn-edit-employee-${data.id}`}
-                  htmlFor={`my-modal-3`}
-                  className="mx-2 text-sky hover:cursor-pointer hover:text-orange-600"
-                  onClick={() => getEmployeesId(data.id)}
-                >
-                  <BsPencilSquare size={27} />
-                </label>
-
-                <button
-                  id={`btn-delete-employee-${data.id}`}
-                  className="mx-2 text-sky hover:cursor-pointer hover:text-red-600"
-                  onClick={() => handleDeleteEmployee(data.id)}
-                >
-                  <BsTrash size={27} />
-                </button>
               </div>
             </div>
           </FlexyCard>
@@ -592,7 +649,7 @@ const Employee = () => {
       {/* Modal create employee import csv end */}
 
       {/* Modal create employee manual start */}
-      <Modals1 no={2} parentSet="pt-48" titleModal="Create Employee">
+      <Modals1 no={2} parentSet="xl:pt-6" titleModal="Create Employee">
         <form onSubmit={(e) => handleCreateEmployee(e)}>
           <div className="flex py-2 w-full">
             <div className="flex items-center w-1/4 mx-5">
