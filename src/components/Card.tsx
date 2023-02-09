@@ -17,16 +17,16 @@ export const WrappingCard: FC<CardProps> = ({
   rightSide,
 }) => {
   return (
-    <div className="m-20">
+    <div className="my-10 mx-5 md:mx-12 xl:m-20">
       <div className="box-border w-full bg-white rounded-3xl border-sky border-2">
-        <div className="flex mx-10 mt-10 items-center">
+        <div className="flex mx-3 md:mx-5 xl:mx-10 mt-10 items-center">
           <div className="w-1/2">
-            <h1 className="capitalize text-3xl  font-extrabold">{judul}</h1>
+            <h1 className="capitalize text-3xl font-extrabold">{judul}</h1>
           </div>
           <div className="w-1/2 flex justify-end">{rightSide}</div>
         </div>
-        <hr className="mx-10 my-3 border-[1.5px] border-sky" />
-        <div className={`${parentSet} p-10`}>{children}</div>
+        <hr className="mx-3 md:mx-5 xl:mx-10 my-3 border-[1.5px] border-sky" />
+        <div className={`${parentSet} p-3 md:p-6 xl:p-10`}>{children}</div>
       </div>
     </div>
   );
@@ -55,12 +55,19 @@ export const CardWithLogo: FC<CardProps> = ({ children }) => {
   );
 };
 
-export const MiniCard: FC<CardProps> = ({ children, judul, titleSet }) => {
+export const MiniCard: FC<CardProps> = ({
+  parentSet,
+  children,
+  judul,
+  titleSet,
+}) => {
   return (
-    <div className="m-5">
-      <div className="box-border w-full bg-white rounded-2xl border-sky border-2 p-5">
+    <div className="xl:m-5">
+      <div
+        className={`box-border w-full bg-white rounded-2xl border-sky border-2 p-3 xl:p-5 ${parentSet}`}
+      >
         <h1 className={`capitalize font-extrabold ${titleSet}`}>{judul}</h1>
-        <hr className="m-3 border-[1.5px] border-sky" />
+        <hr className="m-5 border-[1.5px] border-sky" />
         {children}
       </div>
     </div>
