@@ -3,6 +3,7 @@ import { BiAddToQueue } from "react-icons/bi";
 import { useParams } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import DatePicker from "react-datepicker";
+import { BsSearch } from "react-icons/bs";
 import moment from "moment";
 import axios from "axios";
 
@@ -26,16 +27,30 @@ interface DataType {
   id?: number;
   work_time?: string;
 }
+interface ProfileType {
+  id?: number;
+  profile_picture?: string;
+  name?: string;
+  birth_of_date?: string;
+  nip?: string;
+  email?: string;
+  gender?: string;
+  position?: string;
+  phone?: string;
+  address?: string;
+  annual_leave?: number;
+}
 
 const RecordsDetail = () => {
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState(null);
+  const [inStartDate, setInStartDate] = useState<string>("");
+  const [inEndDate, setInEndDate] = useState<string>("");
 
   const [date, setDate] = useState<string>("");
   const [records, setRecords] = useState<DataType[]>([]);
   const [detail, setDetail] = useState<DataType>({});
-  const [name, setName] = useState<string>("");
-  const [date2, setDate2] = useState<Date>();
+  const [name, setName] = useState<ProfileType>({});
   const [cookie, setCookie] = useCookies();
   const { id } = useParams();
 
@@ -43,28 +58,41 @@ const RecordsDetail = () => {
     const [start, end] = dates;
     setStartDate(start);
     setEndDate(end);
-    console.log(typeof start);
+    setInStartDate(moment(start).format("YYYY-MM-DD"));
+    setInEndDate(moment(end).format("YYYY-MM-DD"));
+    console.log(typeof moment(start).format("YYYY-MM-DD"));
     console.log(typeof end);
     console.log("date", typeof dates);
   };
 
   useEffect(() => {
     newDate();
-    getRecordsEmployee();
+    getName();
   }, []);
 
   function newDate() {
     const tanggal = moment().format();
-    const tanggal2 = new Date();
     setDate(tanggal.substring(0, 10));
-    setDate2(tanggal2);
   }
-  // https://shirayuki.site/record/${id}?date_from=${startDate}&date_to=${endDate}
-  // https://shirayuki.site/record/17?date_from=2023-02-05&date_to=2023-02-11
+
+  function getName() {
+    axios
+      .get(`employees/${id}`, {
+        headers: {
+          Authorization: `Bearer ${cookie.token}`,
+        },
+      })
+      .then((res) => {
+        const { data } = res.data;
+        setName(data);
+      })
+      .catch((err) => {});
+  }
+
   function getRecordsEmployee() {
     axios
       .get(
-        `https://shirayuki.site/record/${id}?date_from=2023-02-05&date_to=2023-02-11`,
+        `https://shirayuki.site/record/${id}?date_from=${inStartDate}&date_to=${inEndDate}`,
         {
           headers: {
             Authorization: `Bearer ${cookie.token}`,
@@ -73,13 +101,11 @@ const RecordsDetail = () => {
       )
       .then((res) => {
         const { data } = res.data;
-        const { record, employee_name } = data;
-        setName(employee_name);
+        const { record } = data;
         setRecords(record);
       })
       .catch((err) => {});
   }
-  // https://shirayuki.site/presences/detail/id_attendaces
   async function presencesDetail(id: number) {
     await axios
       .get(`https://shirayuki.site/presences/detail/${id}`, {
@@ -102,16 +128,21 @@ const RecordsDetail = () => {
         judul="Records"
         rightSide={
           <>
-            <div className="flex justify-center items-center">
+            <div className="flex justify-center items-center border-2 rounded-xl h-14">
               <DatePicker
                 selected={startDate}
                 onChange={onChange}
                 startDate={startDate}
                 endDate={endDate}
                 selectsRange
-                inline
-                minDate={date2}
+                className="input input-borderd border-2"
               />
+              <div
+                className="btn btn-ghost"
+                onClick={() => getRecordsEmployee()}
+              >
+                <BsSearch size={27} />
+              </div>
             </div>
 
             {/* modal add Attendance start*/}
@@ -208,39 +239,47 @@ const RecordsDetail = () => {
         }
       >
         <div className="pb-5">
-          <p className="text-xl font-bold text-navy">{name}</p>
+          <p className="text-xl font-bold text-navy">{name.name}</p>
         </div>
-        {records.map((data) => {
-          return (
-            <label
-              htmlFor={data.id == 0 ? "" : "my-modal-2"}
-              id={`btn-detail-records-${data.attendance_date}`}
-              key={data.attendance_date}
-            >
-              <FlexyCard parentSet="hover:cursor-pointer">
-                <div
-                  className="flex justify-center items-center w-full"
-                  onClick={() => presencesDetail(data.id ? data.id : 1)}
-                >
-                  <div className="flex justify-center w-1/4 mx-2">
-                    <p className="text-black capitalize ">
-                      {data.attendance_date}
-                    </p>
+        {records.length === 0 ? (
+          <p className="text-center text-3xl font-bold animate-pulse text-gray-300 capitalize">
+            add date first
+          </p>
+        ) : (
+          records.map((data) => {
+            return (
+              <label
+                htmlFor={data.id == 0 ? "" : "my-modal-2"}
+                id={`btn-detail-records-${data.attendance_date}`}
+                key={data.attendance_date}
+              >
+                <FlexyCard parentSet="hover:cursor-pointer">
+                  <div
+                    className="flex justify-center items-center w-full"
+                    onClick={() => presencesDetail(data.id ? data.id : 1)}
+                  >
+                    <div className="flex justify-center w-1/4 mx-2">
+                      <p className="text-black capitalize ">
+                        {new Date(`${data.attendance_date}`)
+                          .toString()
+                          .substring(3, 15)}
+                      </p>
+                    </div>
+                    <div className="flex justify-center w-1/4">
+                      <p className="text-black capitalize">{data.clock_in}</p>
+                    </div>
+                    <div className="flex justify-center w-1/4">
+                      <p className="text-black capitalize">{data.clock_out}</p>
+                    </div>
+                    <div className="flex justify-center w-1/4">
+                      <p className="text-black capitalize">{data.attendance}</p>
+                    </div>
                   </div>
-                  <div className="flex justify-center w-1/4">
-                    <p className="text-black capitalize">{data.clock_in}</p>
-                  </div>
-                  <div className="flex justify-center w-1/4">
-                    <p className="text-black capitalize">{data.clock_out}</p>
-                  </div>
-                  <div className="flex justify-center w-1/4">
-                    <p className="text-black capitalize">{data.attendance}</p>
-                  </div>
-                </div>
-              </FlexyCard>
-            </label>
-          );
-        })}
+                </FlexyCard>
+              </label>
+            );
+          })
+        )}
 
         {/* modal detail records start*/}
         <Modals1 no={2} titleModal={"Details Records"}>
@@ -249,7 +288,11 @@ const RecordsDetail = () => {
               <p className="text-black mx-10 font-medium">Date</p>
             </div>
             <div className="flex items-center justify-start w-1/2 mx-2">
-              <p className="text-black">{detail.attendance_date}</p>
+              <p className="text-black">
+                {new Date(`${detail.attendance_date}`)
+                  .toString()
+                  .substring(3, 15)}
+              </p>
             </div>
           </div>
           {detail.attendance !== "present" ? null : (
@@ -310,7 +353,9 @@ const RecordsDetail = () => {
             <>
               <div className="flex py-2 w-full">
                 <div className="flex items-center justify-start w-1/2 mx-2">
-                  <p className="text-black mx-10 font-medium">Total Hours Working</p>
+                  <p className="text-black mx-10 font-medium">
+                    Total Hours Working
+                  </p>
                 </div>
                 <div className="flex items-center justify-start w-1/2 mx-2">
                   <p className="text-black">{detail.work_time}</p>
