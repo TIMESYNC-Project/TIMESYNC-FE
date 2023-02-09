@@ -109,7 +109,7 @@ const Records = () => {
                 <div
                   key={data.id}
                   className="flex justify-center items-center hover:cursor-pointer "
-                  onClick={() => onClickDetail(2)}
+                  onClick={() => onClickDetail(data.id)}
                   id="btn-detail-records"
                 >
                   <div className="flex w-1/2">
