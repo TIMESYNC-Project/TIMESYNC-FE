@@ -6,7 +6,7 @@ import {
   Title,
   Tooltip,
   Legend,
-} from "chart.js";
+} from "chart.js/auto";
 import { AiOutlineMessage } from "react-icons/ai";
 import { useState, useEffect } from "react";
 import { GoLocation } from "react-icons/go";
@@ -92,6 +92,27 @@ const Home = () => {
     Title,
     Legend
   );
+  // sets.forEach((set: any) => {
+  //   const randomColor = Math.floor(Math.random() * 16777215).toString(16);
+  //   label.push(set.label);
+  //   set.borderColor = `#${randomColor}`;
+  //   set.backgroundColor = `#${randomColor}`;
+  // })
+  // {
+  //   datasets: [
+  //     {
+  //       backgroundColor: "#d0d0d0",
+  //       borderColor: "#d0d0d0",
+  //       data: [0, 2, 4, 6, 8],
+  //       label: "This is label",
+  //     }
+  //   ],
+  //   labels: [
+  //     "label 1",
+  //     "label 2",
+  //     "label 3",
+  //   ]
+  // }
   const options = {
     responsive: true,
     plugins: {
@@ -133,7 +154,7 @@ const Home = () => {
     {
       name: "Alif",
       work: 312,
-      late: 0,
+      late: 2,
     },
     {
       name: "Fauzi",
@@ -146,37 +167,61 @@ const Home = () => {
       late: 1,
     },
   ];
-  const labels = dataEmployee.map((data) => data.name);
 
   const dataGraph = {
-    labels,
+    
+    labels: dataEmployee.map((data) => data.name),
     datasets: [
       {
-        label: "Dataset 1",
+        label: "Total Hours",
         data: dataEmployee.map((data) => data.work),
-        backgroundColor: "rgba(255, 99, 132, 0.5)",
+        backgroundColor: [
+          "rgb(255, 99, 132)",
+          "rgb(108, 070, 117)",
+          "rgb(045, 087, 044)",
+          "rgb(108, 059, 042)",
+          "rgb(078, 084, 082)",
+          "rgb(254, 000, 000)",
+          "rgb(030, 089, 069)",
+          "rgb(037, 109, 123)",
+        ],
+        borderColor: "black",
+        borderWidth: 2,
       },
     ],
   };
   const dataGraph2 = {
-    labels,
+    labels: dataEmployee.map((data) => data.name),
     datasets: [
       {
-        label: "Dataset 2",
+        label: "Late",
         data: dataEmployee.map((data) => data.late),
-        backgroundColor: "rgb(22, 182, 71)",
+        backgroundColor: [
+          "rgb(217, 080, 048)",
+          "rgb(040, 040, 040)",
+          "rgb(052, 062, 064)",
+          "rgb(106, 095, 049)",
+          "rgb(087, 166, 057)",
+          "rgb(255, 035, 001)",
+          "rgb(203, 208, 204)",
+          "rgb(000, 143, 057)",
+        ],
+        borderColor: "black",
+        borderWidth: 2,
       },
     ],
   };
   // graph end
 
   useEffect(() => {
-    presencesToday();
+    if(cookie.token === "employee"){
+      locationMaps();
+      getSetting();
+      presencesToday();
+    }    
     newDate();
     getEmployee();
     getInbox();
-    locationMaps();
-    getSetting();
     getPresences();
   }, []);
 
