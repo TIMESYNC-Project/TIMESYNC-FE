@@ -96,11 +96,11 @@ const CompanyProfile = () => {
       <WrappingCard
         judul="Company Profile"
         rightSide={
-          !admin ? null : (
+          admin ? null : (
             <>
               <Link id="btn-back" to="/profile">
                 <Button
-                  buttonSet="border-2 border-white shadow-md shadow-black rounded-full capitalize md:font-medium gap-2 p-0 px-3 text-xs hover:bg-navy py-1 rounded-full"
+                  buttonSet="border-2 border-white shadow-md shadow-black rounded-full capitalize md:font-medium gap-2 px-3 text-xs hover:bg-navy py-1 md:py-2 rounded-full"
                   icon={<IoReturnUpBack size={20} />}
                   label="Back"
                 />
@@ -219,12 +219,12 @@ const CompanyProfile = () => {
               </form>
             )}
           </div>
-          <div className="md:w-4/6 flex flex-col">
+          <div className="md:w-4/6 flex flex-col gap-3 md:gap-6">
             <p className="font-bold text-xl md:text-2xl lg:text-3xl mb-5">
               {data.company_name}
             </p>
-            <table className="table-auto md:text-lg xl:text-xl font-bold flex flex-col gap-4">
-              <tbody>
+            <table className="table-auto md:text-lg xl:text-xl font-bold flex flex-col">
+              <tbody className="flex flex-col gap-2 md:gap-3 xl:gap-5">
                 <tr className="flex">
                   <td className="w-2/5">Phone</td>
                   <td className="w-full">{data.company_phone}</td>
