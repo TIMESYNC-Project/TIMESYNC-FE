@@ -93,7 +93,7 @@ const Navbar: FC<NavbarProps> = ({
             Hi, {cookie.name ? cookie.name : "Stranger"}
           </p>
           <div className="dropdown dropdown-end md:hidden">
-            <label tabIndex={0} className="btn btn-ghost">
+            <label id="btn-navbar-menu" tabIndex={0} className="btn btn-ghost">
               <p className="capitalize text-md font-normal text-[#FFC909]">
                 Hi, {cookie.name ? cookie.name : "Stranger"}
               </p>
@@ -104,7 +104,7 @@ const Navbar: FC<NavbarProps> = ({
             >
               <li>
                 <Link
-                  id="btn-sidebar-home"
+                  id="btn-navbar-home-mobile"
                   to="/home"
                   className="flex gap-2 items-center duration-300 hover:cursor-pointer active:scale-90"
                 >
@@ -114,7 +114,7 @@ const Navbar: FC<NavbarProps> = ({
               </li>
               <li>
                 <Link
-                  id="btn-sidebar-profile"
+                  id="btn-navbar-profile-mobile"
                   to={admin ? "/profile/company" : "/profile"}
                   className="flex gap-2 items-center duration-300 hover:cursor-pointer active:scale-90"
                 >
@@ -125,7 +125,7 @@ const Navbar: FC<NavbarProps> = ({
               <li>
                 {admin && (
                   <Link
-                    id="btn-sidebar-employees"
+                    id="btn-navbar-employees-mobile"
                     to="/employees"
                     className="flex gap-2 items-center duration-300 hover:cursor-pointer active:scale-90"
                   >
@@ -136,7 +136,7 @@ const Navbar: FC<NavbarProps> = ({
               </li>
               <li>
                 <Link
-                  id="btn-sidebar-records"
+                  id="btn-navbar-records-mobile"
                   to="/records"
                   className="flex gap-2 items-center duration-300 hover:cursor-pointer active:scale-90"
                 >
@@ -146,7 +146,7 @@ const Navbar: FC<NavbarProps> = ({
               </li>
               <li>
                 <Link
-                  id="btn-sidebar-approval"
+                  id="btn-navbar-approval-mobile"
                   to="/approval"
                   className="flex gap-2 items-center duration-300 hover:cursor-pointer active:scale-90"
                 >
@@ -156,7 +156,7 @@ const Navbar: FC<NavbarProps> = ({
               </li>
               <li>
                 <Link
-                  id="btn-sidebar-inbox"
+                  id="btn-navbar-inbox-mobile"
                   to="/inbox"
                   className="flex gap-2 items-center duration-300 hover:cursor-pointer active:scale-90"
                 >
@@ -167,7 +167,7 @@ const Navbar: FC<NavbarProps> = ({
               <li>
                 {admin && (
                   <Link
-                    id="btn-sidebar-settings"
+                    id="btn-navbar-settings-mobile"
                     to="/settings"
                     className="flex gap-2 items-center duration-300 hover:cursor-pointer active:scale-90"
                   >
@@ -178,7 +178,7 @@ const Navbar: FC<NavbarProps> = ({
               </li>
               <li>
                 <div
-                  id="btn-sidebar-logout"
+                  id="btn-navbar-logout-mobile"
                   onClick={() => onLogout()}
                   className="flex items-center mx- mt-2 py-1 gap-2 font-bold duration-300 hover:cursor-pointer active:scale-90"
                 >
