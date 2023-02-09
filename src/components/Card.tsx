@@ -34,7 +34,7 @@ export const WrappingCard: FC<CardProps> = ({
 
 export const FlexyCard: FC<CardProps> = ({ children, parentSet }) => {
   return (
-    <div className={`my-5 mx-24 ${parentSet}`}>
+    <div className={`my-5 xl:mx-24 ${parentSet}`}>
       <div className="box-border w-full bg-white rounded-2xl border-sky border-2 p-5">
         {children}
       </div>
