@@ -2,12 +2,15 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { BsSearch } from "react-icons/all";
 import { useCookies } from "react-cookie";
+import DatePicker from "react-datepicker";
 import axios from "axios";
 
 import { CustomInput } from "components/CustomInput";
 import { WrappingCard } from "components/Card";
 import { FlexyCard } from "components/Card";
 import Layout from "components/Layout";
+
+import "react-datepicker/dist/react-datepicker.css";
 
 interface EmployeesType {
   id: number;
@@ -18,10 +21,21 @@ interface EmployeesType {
 }
 
 const Records = () => {
+  const [startDate, setStartDate] = useState<Date>();
+  const [endDate, setEndDate] = useState(null);
+
   const [employees, setEmployees] = useState<EmployeesType[]>([]);
   const [search, setSearch] = useState<string>("");
   const [cookie, setCookie] = useCookies();
   const navigate = useNavigate();
+
+  const onChange = (dates: any) => {
+    const [start, end] = dates;
+    setStartDate(start);
+    setEndDate(end);
+    console.log(start);
+    console.log(end);
+  };
 
   useEffect(() => {
     getEmployees();
@@ -67,7 +81,11 @@ const Records = () => {
           judul="Records"
           rightSide={
             <div className="flex justify-end">
-              <form className="flex justify-end" id="form-search" onSubmit={searchEmployees}>
+              <form
+                className="flex justify-end"
+                id="form-search"
+                onSubmit={searchEmployees}
+              >
                 <CustomInput
                   inputSet="border-sky"
                   placeholder="Search"
@@ -100,10 +118,10 @@ const Records = () => {
                       className="w-[50px] h-[50px]  rounded-full"
                     />
                     <div className="mx-7">
-                      <p className="font-medium text-lg text-navy">{data.nip}</p>
-                      <p className="font-bold text-lg text-navy">
-                        {data.name}
+                      <p className="font-medium text-lg text-navy">
+                        {data.nip}
                       </p>
+                      <p className="font-bold text-lg text-navy">{data.name}</p>
                     </div>
                   </div>
                   <div className="flex w-1/2 justify-end">
@@ -124,11 +142,13 @@ const Records = () => {
           rightSide={
             <>
               <div className="flex justify-center items-center">
-                <CustomInput
-                  id="input-date"
-                  type="date"
-                  inputSet="border-sky"
-                  // onChange={}
+                <DatePicker
+                  selected={startDate}
+                  onChange={onChange}
+                  startDate={startDate}
+                  endDate={endDate}
+                  selectsRange
+                  inline
                 />
               </div>
             </>
