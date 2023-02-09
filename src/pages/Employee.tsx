@@ -285,7 +285,7 @@ const Employee = () => {
         judul="Employees"
         rightSide={
           <>
-            <div className="hidden md:flex gap-4 items-center justify-end">
+            <div className="hidden lg:flex gap-4 items-center justify-end">
               <form
                 className="flex gap-2 item-center"
                 onSubmit={searchEmployees}
@@ -323,7 +323,7 @@ const Employee = () => {
                 </div>
               </label>
             </div>
-            <div className="z-40 dropdown dropdown-end md:hidden">
+            <div className="z-40 dropdown dropdown-end lg:hidden">
               <label id="btn-mobile-menu" tabIndex={0}>
                 <p className="capitalize text-md font-normal duration-300 hover:cursor-pointer active:scale-75">
                   <BsThreeDots size={27} />
@@ -384,7 +384,10 @@ const Employee = () => {
       >
         {employees.map((data) => (
           <FlexyCard key={data.id}>
-            <div className="flex justify-between items-center" id={`card-employee-${data.id}`}>
+            <div
+              className="flex justify-between items-center"
+              id={`card-employee-${data.id}`}
+            >
               <div className="flex w-1/2 flex-col md:flex-row md:items-center gap-2 md:gap-4">
                 <img
                   src={data.profile_picture}

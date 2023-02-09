@@ -1,4 +1,5 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { IoReturnUpBack } from "react-icons/io5";
 import { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
 import Swal from "sweetalert2";
@@ -135,17 +136,18 @@ const EmployeeProfile = () => {
           cookie.role === "admin" ? (
             <Button
               id="btn-back"
-              buttonSet="border-2 border-white shadow-md shadow-black rounded-full capitalize font-medium gap-2 px-3 text-xs hover:bg-navy w-1/4"
+              buttonSet="border-2 border-white shadow-md shadow-black rounded-full capitalize font-medium px-3 py-1 md:py-2 text-xs hover:bg-navy gap-2 w-full"
+              icon={<IoReturnUpBack size={20} />}
               label="Back"
               onClick={() => navigate(-1)}
             />
           ) : null
         }
       >
-        <div className="flex w-full">
-          <div className="w-2/6 flex flex-col items-center gap-4">
+        <div className="flex flex-col lg:flex-row gap-8 lg:gap-0 w-full">
+          <div className="lg:w-2/6 flex flex-col items-center gap-4">
             <img
-              className="w-60 h-60 border-2 border-sky rounded-xl "
+              className="w-40 h-40 md:w-52 md:h-52 xl:w-60 xl:h-60 border-2 border-sky rounded-xl "
               src={data.profile_picture}
               alt="photo"
             />
@@ -252,12 +254,12 @@ const EmployeeProfile = () => {
               </>
             )}
           </div>
-          <div className="w-4/6 flex flex-col">
+          <div className="lg:w-4/6 flex flex-col">
             <p>{data.nip}</p>
-            <p className="font-bold text-3xl">{data.name}</p>
-            <p className="text-lg">{data.position}</p>
+            <p className="font-bold text-2xl md:text-3xl">{data.name}</p>
+            <p className=" text-lg md:text-lg">{data.position}</p>
 
-            <span className="underline font-semibold text-2xl pt-2 pb-8">
+            <span className="underline font-semibold text-xl md:text-2xl pt-2 pb-8">
               {cookie.role === "admin" ? (
                 <p>{company.company_name}</p>
               ) : (
@@ -267,8 +269,8 @@ const EmployeeProfile = () => {
               )}
             </span>
 
-            <table className="table-auto text-xl font-bold flex flex-col gap-4">
-              <tbody>
+            <table className="table-auto md:text-lg lg:text-xl font-bold flex flex-col gap-4">
+              <tbody className="flex flex-col gap-2">
                 <tr className="flex">
                   <td className="w-2/5">Gender</td>
                   <td className="w-full">{data.gender}</td>
@@ -291,7 +293,7 @@ const EmployeeProfile = () => {
                 </tr>
               </tbody>
             </table>
-            <p className="text-xl font-bold pt-8">
+            <p className="md:text-lg lg:text-xl font-bold pt-4 lg:pt-6">
               Annual Leaves Available : {data.annual_leave}
             </p>
           </div>
