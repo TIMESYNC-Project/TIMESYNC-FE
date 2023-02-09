@@ -26,6 +26,10 @@ const Approval = () => {
   const [approvals, setApprovals] = useState<ApprovalType[]>([]);
   const [approvalStatus, setApprovalStatus] = useState<string>("");
 
+  const [addAtt, setAddAtt] = useState<string>("");
+  const [addStart, setAddStart] = useState<string>("");
+  const [addEnd, setAddEnd] = useState<string>("");
+
   const [id, setId] = useState<number>();
   const [name, setName] = useState<string>();
   const [createdAt, setCreatedAt] = useState<string>();
@@ -100,6 +104,39 @@ const Approval = () => {
       .catch((err) => {});
   }
 
+  function addAttendances(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    axios
+      .post(
+        `https://shirayuki.site/attendances/${id}`,
+        {
+          attendance: addAtt,
+          date_start: addStart,
+          date_end: addEnd,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${cookie.token}`,
+          },
+        }
+      )
+      .then((res) => {
+        console.log("cek: ", res);
+        const { message } = res.data;
+        console.log("cek: ", message);
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Success",
+          text: message,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        navigate(0);
+      })
+      .catch((err) => {});
+  }
+
   function editApproval(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const body = new FormData();
@@ -120,7 +157,12 @@ const Approval = () => {
           showConfirmButton: false,
           timer: 1500,
         });
-        navigate(0);
+        if (approvalStatus === "approved") {
+          addAttendances(e);
+          navigate(0);
+        } else if (approvalStatus === "rejected") {
+          navigate(0);
+        }
       })
       .catch((err) => {
         const { data } = err.response;
@@ -267,7 +309,7 @@ const Approval = () => {
                   <div className="flex justify-center items-center w-full">
                     <div className="text-start w-1/3 mx-5">
                       <p className="text-black capitalize font-semibold">
-                        {data.approval_end_date}
+                        {data.created_at}
                       </p>
                     </div>
                     <div className="text-center w-1/3 mx-5">
