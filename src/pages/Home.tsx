@@ -511,10 +511,10 @@ const Home = () => {
       ) : (
         <WrappingCard judul="Attendance">
           <div className="flex justify-center">
-            <p className="text-7xl font-bold">{hour}</p>
+            <p className="text-5xl md:text-7xl font-bold">{hour}</p>
           </div>
           <div className="flex justify-center">
-            <p className="text-xl">
+            <p className="text-base md:text-xl">
               {hari}, {date}
             </p>
           </div>
@@ -532,37 +532,39 @@ const Home = () => {
             <p className="text-black font-semibold text-center mt-5">
               Office Hours
             </p>
-            <p className="text-black text-3xl font-bold text-center mt-2">
+            <p className="text-black text-2xl md:text-3xl font-bold text-center mt-2">
               {setting.working_hour_start} - {setting.working_hour_end}
             </p>
-            <div className="flex justify-center items-center my-7">
+            <div className="flex justify-center items-center my-7 gap-4">
               <Button
                 id="btn-clockin"
-                buttonSet="border-2 border-white shadow-md shadow-black rounded-full capitalize font-medium gap-2 px-3 text-md hover:bg-navy w-1/6 mx-2"
+                buttonSet="border-2 border-white shadow-md shadow-black rounded-full capitalize font-medium px-3 text-xs md:text-sm hover:bg-navy w-1/6 w-[6rem] md:w-32"
                 label="Clock In"
                 onClick={() => clockIn()}
               />
               <Button
                 id="btn-clockout"
-                buttonSet="border-2 border-white shadow-md shadow-black rounded-full capitalize font-medium gap-2 px-3 text-md hover:bg-navy w-1/6 mx-2"
+                buttonSet="border-2 border-white shadow-md shadow-black rounded-full capitalize font-medium px-3 text-xs md:text-sm hover:bg-navy w-1/6 w-[6rem] md:w-32"
                 label="Clock out"
                 onClick={() => clockOut()}
               />
             </div>
-            <hr className="mx-7 my-3 border-[1.5px] border-sky" />
-            <div className="my-3 mx-7 flex">
+            <hr className="xl:mx-7 my-3 border-[1.5px] border-sky" />
+            <div className="my-3 xl:mx-7 flex">
               <div className="w-1/2">
-                <p className="text-black text-left font-medium">Logs today</p>
+                <p className="text-black text-sm md:text-base text-left font-medium">
+                  Logs today
+                </p>
               </div>
               <div className="w-1/2">
                 <Link id="btn-see-more" to={"/records"}>
-                  <p className="text-black text-right capitalize font-medium">
+                  <p className="text-black text-sm md:text-base text-right capitalize font-medium">
                     See more..
                   </p>
                 </Link>
               </div>
             </div>
-            <p className="text-center text-2xl capitalize my-5 font-bold text-gray-400 animate-pulse">
+            <p className="text-center md:text-2xl capitalize my-5 font-bold text-gray-400 animate-pulse">
               {eror}
             </p>
             {Object.keys(attendances).length ===
@@ -570,20 +572,20 @@ const Home = () => {
               <FlexyCard>
                 <div className="flex">
                   <div className="w-1/3">
-                    <p className="text-lg text-black font-semibold">
+                    <p className="text-sm md:text-lg text-black font-semibold">
                       {attendances.clock_in}
                     </p>
-                    <p className="text-sm text-black">
+                    <p className="text-xs md:text-sm text-black">
                       {attendances.attendance_date}
                     </p>
                   </div>
                   <div className="w-1/3">
-                    <p className="capitalize text-center text-lg text-black font-semibold">
+                    <p className="capitalize text-center text-sm md:text-lg text-black font-semibold">
                       clock in
                     </p>
                   </div>
                   <div className="w-1/3">
-                    <p className="capitalize text-right text-lg text-black font-semibold">
+                    <p className="capitalize text-right text-sm md:text-lg text-black font-semibold">
                       {attendances.attendance}
                     </p>
                   </div>
@@ -595,20 +597,20 @@ const Home = () => {
               <FlexyCard>
                 <div className="flex">
                   <div className="w-1/3">
-                    <p className="text-lg text-black font-semibold">
+                    <p className="text-sm md:text-lg text-black font-semibold">
                       {attendances.clock_out}
                     </p>
-                    <p className="text-sm text-black">
+                    <p className="text-xs md:text-sm text-black">
                       {attendances.attendance_date}
                     </p>
                   </div>
                   <div className="w-1/3">
-                    <p className="capitalize text-center text-lg text-black font-semibold">
+                    <p className="capitalize text-center text-sm md:text-lg text-black font-semibold">
                       clock out
                     </p>
                   </div>
                   <div className="w-1/3">
-                    <p className="capitalize text-right text-lg text-black font-semibold">
+                    <p className="capitalize text-right text-sm md:text-lg text-black font-semibold">
                       {attendances.attendance}
                     </p>
                   </div>
