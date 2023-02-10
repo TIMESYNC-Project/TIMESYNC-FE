@@ -284,26 +284,29 @@ const RecordsDetail = () => {
               >
                 <FlexyCard parentSet="hover:cursor-pointer">
                   <div
-                    className="flex justify-center items-center w-full"
+                    className="flex justify-between items-center"
                     onClick={() => presencesDetail(data.id ? data.id : 1)}
                     id={`card-detail-records-${data.attendance_date}`}
                   >
-                    <div className="flex justify-center w-1/4 mx-2">
+                    <section className="flex justify-start w-1/3">
                       <p className="text-black capitalize ">
                         {new Date(`${data.attendance_date}`)
                           .toString()
                           .substring(3, 15)}
                       </p>
-                    </div>
-                    <div className="flex justify-center w-1/4">
-                      <p className="text-black capitalize">{data.clock_in}</p>
-                    </div>
-                    <div className="flex justify-center w-1/4">
-                      <p className="text-black capitalize">{data.clock_out}</p>
-                    </div>
-                    <div className="flex justify-center w-1/4">
+                    </section>
+                    {data.clock_in && data.clock_out !== null && (
+                      <section className="flex items-center">
+                        <p className="text-black capitalize">{data.clock_in}</p>
+                        <p className="mx-2 md:mx-6 lg:mx-16">-</p>
+                        <p className="text-black capitalize">
+                          {data.clock_out}
+                        </p>
+                      </section>
+                    )}
+                    <section className="flex justify-end w-1/3">
                       <p className="text-black capitalize">{data.attendance}</p>
-                    </div>
+                    </section>
                   </div>
                 </FlexyCard>
               </label>
