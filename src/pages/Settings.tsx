@@ -77,29 +77,35 @@ const Settings = () => {
     <Layout settingsSet="w-full bg-gradient-to-r from-white to-navy hover:text-white">
       <WrappingCard judul="Settings">
         <form onSubmit={editSetting}>
-          <section className="flex justify-center gap-10 mb-10">
-            <div className="flex flex-col items-center gap-4">
-              <p className="text-lg font-bold">Set office start hour</p>
-              <div className="flex items-baseline gap-5">
+          <section className="flex justify-center items-center mb-10">
+            <div className="flex flex-col justify-center items-center gap-4">
+              <p className="text-sm md:text-lg lg:text-2xl text-center font-bold w-40 md:w-60 lg:w-80">
+                Set office start hour
+              </p>
+              <div className="flex items-baseline">
                 <CustomInput
                   id="input-start-hour"
                   type="text"
                   parentSet="w-20"
-                  inputSet="input-sm text-center border-sky border-2 font-bold text-xl focus:border-lightYellow"
+                  inputSet="input-md text-center border-sky border-2 font-bold text-base md:text-lg lg:text-2xl focus:border-lightYellow w-24 lg:w-48"
                   defaultValue={setting.working_hour_start}
                   onChange={(e) => setEditStartHour(e.target.value)}
                 />
               </div>
             </div>
-            <p className="mt-10 font-extrabold text-2xl">-</p>
-            <div className="flex flex-col items-center gap-4">
-              <p className="text-lg font-bold">Set office end hour</p>
-              <div className="flex items-baseline gap-5">
+            <p className="flex justify-center mt-9 md:mt-11 lg:mt-12 font-extrabold text-lg md:text-2xl lg:text-3xl">
+              -
+            </p>
+            <div className="flex flex-col justify-center items-center gap-4">
+              <p className="text-sm md:text-lg lg:text-2xl text-center font-bold w-40 md:w-60 lg:w-80">
+                Set office end hour
+              </p>
+              <div className="flex items-baseline">
                 <CustomInput
                   id="input-end-hour"
                   type="text"
                   parentSet="w-20"
-                  inputSet="input-sm text-center border-sky border-2 font-bold text-xl focus:border-lightYellow"
+                  inputSet="input-md text-center border-sky border-2 font-bold text-base md:text-lg lg:text-2xl focus:border-lightYellow w-24 lg:w-48"
                   defaultValue={setting.working_hour_end}
                   onChange={(e) => setEditEndtHour(e.target.value)}
                 />
@@ -107,37 +113,41 @@ const Settings = () => {
             </div>
           </section>
           <section className="flex flex-col items-center gap-4 mb-10">
-            <p className="text-lg font-bold">Set office start hour tolerancy</p>
+            <p className="text-sm md:text-lg lg:text-2xl font-bold">
+              Set office start hour tolerancy
+            </p>
             <div className="flex items-baseline gap-2">
               <CustomInput
                 id="input-tolerancy"
                 type="text"
                 parentSet="w-20"
-                inputSet="input-sm text-center border-sky border-2 font-bold text-xl focus:border-lightYellow"
+                inputSet="input-md text-center border-sky border-2 font-bold text-base md:text-lg lg:text-2xl focus:border-lightYellow w-24 lg:w-48"
                 defaultValue={setting.tolerance}
                 onChange={(e) => setEdittolerancy(e.target.value)}
               />
-              <p className="font-medium text-xl">min</p>
+              <p className="font-medium text-days lg:text-lg">mins</p>
             </div>
           </section>
-          <section className="flex flex-col items-center gap-4 mb-10">
-            <p className="text-lg font-bold">Set employee's annual leaves:</p>
+          <section className="flex flex-col items-center gap-4">
+            <p className="text-sm md:text-lg lg:text-2xl font-bold">
+              Set employee's annual leaves:
+            </p>
             <div className="flex items-baseline gap-2">
               <CustomInput
                 id="input-annual-leaves"
                 type="text"
                 parentSet="w-20"
-                inputSet="input-sm text-center border-sky border-2 font-bold text-xl focus:border-lightYellow"
+                inputSet="input-md text-center border-sky border-2 font-bold text-base md:text-lg lg:text-2xl focus:border-lightYellow w-24 lg:w-48"
                 defaultValue={setting.annual_leave}
                 onChange={(e) => setAnLeave(e.target.value)}
               />
-              <p className="font-medium text-xl">days</p>
+              <p className="font-medium text-base lg:text-lg">days</p>
             </div>
           </section>
-          <section className="flex justify-center">
+          <section className="flex justify-center mt-10 md:mt-12 mb-4 md:mb-0">
             <Button
               id="btn-save-settings"
-              buttonSet="w-60 border-4 rounded-xl shadow-md shadow-black flex items-center"
+              buttonSet="w-52 lg:w-80 py-1 md:py-2 border-4 rounded-xl shadow-md shadow-black flex items-center"
               label="Save Settings"
               type="submit"
             />
