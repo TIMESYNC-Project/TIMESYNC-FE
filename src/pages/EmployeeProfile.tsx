@@ -9,31 +9,16 @@ import { WrappingCard } from "components/Card";
 import Button from "components/Button";
 import Layout from "components/Layout";
 
-interface ProfileType {
-  id?: number;
-  profile_picture?: string;
-  name?: string;
-  birth_of_date?: string;
-  nip?: string;
-  email?: string;
-  gender?: string;
-  position?: string;
-  phone?: string;
-  address?: string;
-  annual_leave?: number;
-}
-interface CompanyData {
-  company_name?: string;
-}
+import { ProfileType, CompanyData } from "utils/Type";
 
 const EmployeeProfile = () => {
+  const [company, setCompany] = useState<CompanyData>({});
+  const [password, setPassword] = useState<string>("");
+  const [data, setData] = useState<ProfileType>({});
+  const [image, setImage] = useState<any>();
+  const [cookie, setCookie] = useCookies();
   const navigate = useNavigate();
   const { id } = useParams();
-  const [cookie, setCookie] = useCookies();
-  const [data, setData] = useState<ProfileType>({});
-  const [company, setCompany] = useState<CompanyData>({});
-  const [image, setImage] = useState<any>();
-  const [password, setPassword] = useState<string>("");
 
   useEffect(() => {
     companyData();

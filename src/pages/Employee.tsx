@@ -11,51 +11,43 @@ import { FlexyCard, WrappingCard } from "components/Card";
 import { Modals1 } from "components/Modals";
 import Layout from "components/Layout";
 
-interface EmployeesType {
-  id: number;
-  name: string;
-  nip: string;
-  position: string;
-  profile_picture: string;
-}
+import { EmployeesType } from "utils/Type";
 
 const Employee = () => {
-  const navigate = useNavigate();
-  const [cookie] = useCookies(["token"]);
-
-  const [disabled, setDisabled] = useState<boolean>(true);
-  const [loading, setLoading] = useState<boolean>(false);
-
-  const [search, setSearch] = useState<string>("");
-  const [employees, setEmployees] = useState<EmployeesType[]>([]);
-
-  const [employeeId, setEmployeeId] = useState<number>();
-  const [employeeName, setEmployeeName] = useState<string>("");
   const [employeeBirthdate, setEmployeeBirthdate] = useState<string>("");
-  const [employeeEmail, setEmployeeEmail] = useState<string>("");
-  const [employeeGender, setEmployeeGender] = useState<string>("");
   const [employeePosition, setEmployeePosition] = useState<string>("");
-  const [employeePhone, setEmployeePhone] = useState<string>("");
   const [employeeAddress, setEmployeeAddress] = useState<string>("");
+  const [employeeGender, setEmployeeGender] = useState<string>("");
+  const [employeePhone, setEmployeePhone] = useState<string>("");
+  const [employeeEmail, setEmployeeEmail] = useState<string>("");
+  const [employeeName, setEmployeeName] = useState<string>("");
+  const [employeeId, setEmployeeId] = useState<number>();
 
-  const [name, setName] = useState<string>("");
   const [birth_of_date, setBirthOfDate] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [gender, setGender] = useState<string>("");
-  const [position, setPosition] = useState<string>("");
-  const [phone, setPhone] = useState<string>("");
-  const [address, setAddress] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [position, setPosition] = useState<string>("");
+  const [address, setAddress] = useState<string>("");
+  const [gender, setGender] = useState<string>("");
+  const [phone, setPhone] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [name, setName] = useState<string>("");
   const [file, setFile] = useState<any>();
 
-  const [editName, setEditName] = useState<string>("");
   const [editBirthdate, setEditBirthdate] = useState<string>("");
-  const [editEmail, setEditEmail] = useState<string>("");
-  const [editGender, setEditGender] = useState<string>("");
   const [editPosition, setEditPosition] = useState<string>("");
-  const [editPhone, setEditPhone] = useState<string>("");
-  const [editAddress, setEditAddress] = useState<string>("");
   const [editPassword, setEditPassword] = useState<string>("");
+  const [editAddress, setEditAddress] = useState<string>("");
+  const [editGender, setEditGender] = useState<string>("");
+  const [editEmail, setEditEmail] = useState<string>("");
+  const [editPhone, setEditPhone] = useState<string>("");
+  const [editName, setEditName] = useState<string>("");
+
+  const [employees, setEmployees] = useState<EmployeesType[]>([]);
+  const [disabled, setDisabled] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [search, setSearch] = useState<string>("");
+  const [cookie] = useCookies(["token"]);
+  const navigate = useNavigate();
 
   function onClickDetail(id: number) {
     navigate(`/employee/profile/${id}`);
@@ -126,10 +118,25 @@ const Employee = () => {
         },
       })
       .then((res) => {
-        const { data } = res.data;
+        const { data, message } = res.data;
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          text: message,
+          showConfirmButton: false,
+          timer: 1500,
+        });
         setEmployees(data);
       })
-      .catch((err) => {});
+      .catch((err) => {
+        const { data } = err.response;
+        const { message } = data;
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: message,
+        });
+      });
   }
 
   const handleCreateEmployee = async (e: React.FormEvent<HTMLFormElement>) => {

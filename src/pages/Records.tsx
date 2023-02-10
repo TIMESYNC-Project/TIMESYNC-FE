@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { BsSearch } from "react-icons/all";
 import { useCookies } from "react-cookie";
 import DatePicker from "react-datepicker";
+import Swal from "sweetalert2";
 import moment from "moment";
 import axios from "axios";
 
@@ -11,28 +12,8 @@ import { WrappingCard } from "components/Card";
 import { FlexyCard } from "components/Card";
 import Layout from "components/Layout";
 
+import { EmployeesType, DataRecordsType } from "utils/Type";
 import "react-datepicker/dist/react-datepicker.css";
-
-interface EmployeesType {
-  id: number;
-  name: string;
-  nip: string;
-  position: string;
-  profile_picture: string;
-}
-interface DataType {
-  attendance?: string;
-  attendance_date?: string;
-  attendance_status?: string;
-  clock_in?: string;
-  clock_in_location?: string;
-  clock_in_map_location?: string;
-  clock_out?: string;
-  clock_out_location?: string;
-  clock_out_map_location?: string;
-  id?: number;
-  work_time?: string;
-}
 
 const Records = () => {
   //state datepicker
@@ -42,7 +23,7 @@ const Records = () => {
   const [endDate, setEndDate] = useState(null);
 
   const [employees, setEmployees] = useState<EmployeesType[]>([]);
-  const [records, setRecords] = useState<DataType[]>([]);
+  const [records, setRecords] = useState<DataRecordsType[]>([]);
   const [search, setSearch] = useState<string>("");
   const [cookie, setCookie] = useCookies();
   const navigate = useNavigate();
@@ -82,10 +63,25 @@ const Records = () => {
         },
       })
       .then((res) => {
-        const { data } = res.data;
+        const { data, message } = res.data;
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          text: message,
+          showConfirmButton: false,
+          timer: 1500,
+        });
         setEmployees(data);
       })
-      .catch((err) => {});
+      .catch((err) => {
+        const { data } = err.response;
+        const { message } = data;
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: message,
+        });
+      });
   }
 
   function onClickDetail(id: number) {
@@ -103,11 +99,24 @@ const Records = () => {
         }
       )
       .then((res) => {
-        const { data } = res.data;
+        const { data, message } = res.data;
         const { record } = data;
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          text: message,
+          showConfirmButton: false,
+          timer: 1500,
+        });
         setRecords(record);
       })
-      .catch((err) => {});
+      .catch((err) => {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Add date first",
+        });
+      });
   }
 
   return (
@@ -189,6 +198,7 @@ const Records = () => {
                   selectsRange
                   className="input input-borderd border-2"
                   id="input-date-range-picker"
+                  maxDate={new Date()}
                 />
                 <div
                   className="btn btn-ghost"

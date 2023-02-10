@@ -52,7 +52,6 @@ const Login = () => {
         navigate("/home");
       })
       .catch((err) => {
-        console.log(err.response);
         const { data } = err.response;
         const { message } = data;
         Swal.fire({

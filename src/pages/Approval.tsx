@@ -10,17 +10,7 @@ import Button from "components/Button";
 import Layout from "components/Layout";
 import Logo from "assets/logo.png";
 
-interface ApprovalType {
-  id: number;
-  employee_name: string;
-  created_at: string;
-  approval_title: string;
-  approval_status: string;
-  approval_start_date: string;
-  approval_description: string;
-  approval_end_date: string;
-  approval_image: string;
-}
+import { ApprovalType } from "utils/Type";
 
 const Approval = () => {
   const [approvalStatus, setApprovalStatus] = useState<string>("");

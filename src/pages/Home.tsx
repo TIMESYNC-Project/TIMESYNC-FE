@@ -21,72 +21,26 @@ import { MiniCard, FlexyCard, WrappingCard } from "components/Card";
 import Layout from "components/Layout";
 import Button from "components/Button";
 
-interface DataType {
-  id: number;
-  name: string;
-  nip: string;
-  position: string;
-  profile_picture: string;
-}
-interface PresenceType {
-  id: number;
-  name: string;
-  nip: string;
-  position: string;
-  profile_picture: string;
-}
-interface InboxType {
-  id: number;
-  announcement_title: string;
-  announcement_description: string;
-}
-interface LocationType {
-  city?: string;
-  country?: string;
-  postal_code?: string;
-  state?: string;
-  street?: string;
-  url_osm?: string;
-}
-interface SettingsType {
-  annual_leave?: number;
-  id?: number;
-  tolerance?: number;
-  working_hour_end?: string;
-  working_hour_start?: string;
-}
-interface AttendancesType {
-  attendance?: string;
-  attendance_date?: string;
-  attendance_status?: string;
-  clock_in?: string;
-  clock_in_location?: string;
-  clock_in_osm?: string;
-  clock_out?: string;
-  clock_out_location?: string;
-  clock_out_osm?: string;
-  work_time?: string;
-  id?: number;
-}
-
-interface GrpahType {
-  employee_name: string;
-  employee_nip: string;
-  monthly_total_working_hour: number;
-  monthly_total_employee_late: number;
-}
+import {
+  EmployeesType,
+  InboxType,
+  LocationType,
+  SettingsType,
+  DataRecordsType,
+  GrpahType,
+} from "utils/Type";
 
 const Home = () => {
-  const [attendances, setAttendances] = useState<AttendancesType>({});
-  const [presences, setPresences] = useState<PresenceType[]>([]);
-  const [location, setLocation] = useState<LocationType>({});
+  const [attendances, setAttendances] = useState<DataRecordsType>({});
+  const [presences, setPresences] = useState<EmployeesType[]>([]);
   const [totalHour, setTotalHour] = useState<GrpahType[]>([]);
   const [totalLate, setTotalLate] = useState<GrpahType[]>([]);
+  const [location, setLocation] = useState<LocationType>({});
   const [setting, setSetting] = useState<SettingsType>({});
+  const [data, setData] = useState<EmployeesType[]>([]);
   const [inbox, setInbox] = useState<InboxType[]>([]);
-  const [latitut, setLatitut] = useState<number>();
   const [longitut, setLongitut] = useState<number>();
-  const [data, setData] = useState<DataType[]>([]);
+  const [latitut, setLatitut] = useState<number>();
   const [hari, setHari] = useState<string>("");
   const [hour, setHour] = useState<string>("");
   const [date, setDate] = useState<string>("");

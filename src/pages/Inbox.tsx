@@ -9,32 +9,18 @@ import { CustomInput, TextArea } from "components/CustomInput";
 import { FlexyCard, WrappingCard } from "components/Card";
 import Layout from "components/Layout";
 
-interface InboxType {
-  id: number;
-  to: string;
-  nip: string;
-  announcement_title: string;
-  announcement_description: string;
-  created_at: string;
-}
-interface InboxIdType {
-  id?: number;
-  to?: string;
-  nip?: string;
-  announcement_title?: string;
-  announcement_description?: string;
-  created_at?: string;
-}
+import { CreateInboxType, InboxIdType } from "utils/Type";
 
 const Inbox = () => {
+  const [inboxEm, setInboxEm] = useState<CreateInboxType[]>([]);
+  const [inbox, setInbox] = useState<CreateInboxType[]>([]);
   const [inboxId, setInboxId] = useState<InboxIdType>({});
-  const [inboxEm, setInboxEm] = useState<InboxType[]>([]);
   const [addTitle, setAddtitle] = useState<string>("");
-  const [inbox, setInbox] = useState<InboxType[]>([]);
   const [addDesc, setAddDesc] = useState<string>("");
   const [addTo, setAddTo] = useState<string>("");
   const [cookie, setCookie] = useCookies();
   const navigate = useNavigate();
+
   const checkRole = cookie.role;
   const admin = checkRole == "admin";
   const employee = checkRole == "employee";
@@ -221,8 +207,11 @@ const Inbox = () => {
         {admin &&
           inbox.map((data) => (
             <div className="flex justify-center gap-4" key={data.id}>
-              <FlexyCard parentSet="w-fit mx-0" >
-                <div className="flex items-center gap-5" id={`card-inbox-${data.id}-${data.id}`}>
+              <FlexyCard parentSet="w-fit mx-0">
+                <div
+                  className="flex items-center gap-5"
+                  id={`card-inbox-${data.id}-${data.id}`}
+                >
                   <label
                     id={`btn-detail-${data.id}`}
                     htmlFor="my-modal-3"
@@ -231,7 +220,9 @@ const Inbox = () => {
                     <div className="flex justify-center w-full gap-5 duration-300 hover:cursor-pointer active:scale-95">
                       <div className="flex justify-center w-1/5">
                         <p className="text-black capitalize">
-                          {data.created_at}
+                          {new Date(`${data.created_at}`)
+                            .toString()
+                            .substring(3, 15)}
                         </p>
                       </div>
                       <div className="flex flex-col w-full">
@@ -246,7 +237,10 @@ const Inbox = () => {
                     </div>
                   </label>
                   {admin && (
-                    <p className="text-sky hover:text-red-600 duration-300 hover:cursor-pointer active:scale-90" id={`btn-delete-${data.id}`}>
+                    <p
+                      className="text-sky hover:text-red-600 duration-300 hover:cursor-pointer active:scale-90"
+                      id={`btn-delete-${data.id}`}
+                    >
                       <BsTrash size={27} onClick={() => onDelete(data.id)} />
                     </p>
                   )}
@@ -266,7 +260,11 @@ const Inbox = () => {
                     </p>
                     <div className="flex flex-col justify-center gap-5">
                       <div className="flex">
-                        <p>{inboxId.created_at}</p>
+                        <p>
+                          {new Date(`${inboxId.created_at}`)
+                            .toString()
+                            .substring(3, 15)}
+                        </p>
                       </div>
                       <p className="font-extrabold">
                         {inboxId.announcement_title}
@@ -291,7 +289,11 @@ const Inbox = () => {
           ))}
         {employee &&
           inboxEm.map((data) => (
-            <div className="flex justify-center gap-4" key={data.id} id={`card-inbox-${data.id}`}>
+            <div
+              className="flex justify-center gap-4"
+              key={data.id}
+              id={`card-inbox-${data.id}`}
+            >
               <FlexyCard parentSet="w-fit mx-0">
                 <div className="flex items-center">
                   <label

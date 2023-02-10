@@ -13,49 +13,23 @@ import { Modals1, Modals2 } from "components/Modals";
 import { CustomInput } from "components/CustomInput";
 import Layout from "components/Layout";
 
+import { DataRecordsType, ProfileType } from "utils/Type";
 import "react-datepicker/dist/react-datepicker.css";
 
-interface DataType {
-  attendance?: string;
-  attendance_date?: string;
-  attendance_status?: string;
-  clock_in?: string;
-  clock_in_location?: string;
-  clock_in_map_location?: string;
-  clock_out?: string;
-  clock_out_location?: string;
-  clock_out_map_location?: string;
-  id?: number;
-  work_time?: string;
-}
-interface ProfileType {
-  id?: number;
-  profile_picture?: string;
-  name?: string;
-  birth_of_date?: string;
-  nip?: string;
-  email?: string;
-  gender?: string;
-  position?: string;
-  phone?: string;
-  address?: string;
-  annual_leave?: number;
-}
-
 const RecordsDetail = () => {
-  const [startDate, setStartDate] = useState<Date>();
-  const [endDate, setEndDate] = useState(null);
   const [inStartDate, setInStartDate] = useState<string>("");
   const [inEndDate, setInEndDate] = useState<string>("");
+  const [startDate, setStartDate] = useState<Date>();
+  const [endDate, setEndDate] = useState(null);
 
-  const [addAtt, setAddAtt] = useState<string>("");
   const [addStart, setAddStart] = useState<string>("");
+  const [addAtt, setAddAtt] = useState<string>("");
   const [addEnd, setAddEnd] = useState<string>("");
 
-  const [date, setDate] = useState<string>("");
-  const [records, setRecords] = useState<DataType[]>([]);
-  const [detail, setDetail] = useState<DataType>({});
+  const [records, setRecords] = useState<DataRecordsType[]>([]);
+  const [detail, setDetail] = useState<DataRecordsType>({});
   const [name, setName] = useState<ProfileType>({});
+  const [date, setDate] = useState<string>("");
   const [cookie, setCookie] = useCookies();
   const navigate = useNavigate();
   const { id } = useParams();
@@ -66,9 +40,6 @@ const RecordsDetail = () => {
     setEndDate(end);
     setInStartDate(moment(start).format("YYYY-MM-DD"));
     setInEndDate(moment(end).format("YYYY-MM-DD"));
-    console.log(typeof moment(start).format("YYYY-MM-DD"));
-    console.log(typeof end);
-    console.log("date", typeof dates);
   };
 
   useEffect(() => {
@@ -106,12 +77,26 @@ const RecordsDetail = () => {
         }
       )
       .then((res) => {
-        const { data } = res.data;
+        const { data, message } = res.data;
         const { record } = data;
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          text: message,
+          showConfirmButton: false,
+          timer: 1500,
+        });
         setRecords(record);
       })
-      .catch((err) => {});
+      .catch((err) => {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Add date first",
+        });
+      });
   }
+
   async function presencesDetail(id: number) {
     await axios
       .get(`https://shirayuki.site/presences/detail/${id}`, {
@@ -120,14 +105,12 @@ const RecordsDetail = () => {
         },
       })
       .then((res) => {
-        console.log("absen id: ", res.data);
         const { data } = res.data;
         setDetail(data);
-        console.log("hasil ", data);
       })
       .catch((err) => {});
   }
-  // https://shirayuki.site/attendances/id_employee
+
   function addAttendances(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     axios
@@ -145,9 +128,7 @@ const RecordsDetail = () => {
         }
       )
       .then((res) => {
-        console.log("cek: ", res);
         const { message } = res.data;
-        console.log("cek: ", message);
         Swal.fire({
           position: "center",
           icon: "success",
@@ -179,6 +160,7 @@ const RecordsDetail = () => {
                 selectsRange
                 className="input input-borderd border-2 w-24 md:w-48 xl:w-full text-xs md:text-base"
                 id="input-date-range-picker"
+                maxDate={new Date()}
               />
               <div
                 className="btn btn-ghost"
