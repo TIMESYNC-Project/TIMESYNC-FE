@@ -616,17 +616,17 @@ const Employee = () => {
       <Modals1 no={1} titleModal="Import by CSV">
         <form onSubmit={handleImportEmployee}>
           <div className="flex py-2 w-full">
-            <div className="flex items-center w-1/4 mx-5">
-              <p className="w-24 font-semibold text-black text-center">
+            <div className="flex items-center w-1/2">
+              <p className="font-semibold text-black text-center">
                 Select file:
               </p>
             </div>
-            <div className="flex items-center justify-center w-full mx-2">
+            <div className="flex items-center justify-center w-full">
               <input
                 id="input-import-file"
                 type="file"
                 accept="text/csv"
-                className="file-input file-input-bordered w-full border-1 border-sky max-w-xs file:bg-sky file:border-none file:capitalize file:text-md text-base"
+                className="file-input file-input-bordered w-full border-1 border-sky max-w-xs file:bg-sky file:border-none file:capitalize md:file:text-base text-xs md:text-base file:text-xs file:w-24 md:file:w-fit"
                 onChange={(e) => setFile(e.target.files?.[0])}
               />
             </div>
@@ -655,10 +655,10 @@ const Employee = () => {
       <Modals1 no={2} parentSet="xl:pt-6" titleModal="Create Employee">
         <form onSubmit={(e) => handleCreateEmployee(e)}>
           <div className="flex py-2 w-full">
-            <div className="flex items-center w-1/4 mx-5">
+            <div className="flex items-center w-5/12">
               <p className="font-semibold text-black text-center">Name</p>
             </div>
-            <div className="flex items-center justify-center w-full mx-2">
+            <div className="flex items-center justify-center w-full">
               <CustomInput
                 id="input-add-name"
                 type="text"
@@ -668,10 +668,10 @@ const Employee = () => {
             </div>
           </div>
           <div className="flex py-2 w-full">
-            <div className="flex items-center  w-1/4 mx-5">
+            <div className="flex items-center w-5/12">
               <p className="font-semibold text-black text-center">Email</p>
             </div>
-            <div className="flex items-center justify-center w-full mx-2">
+            <div className="flex items-center justify-center w-full">
               <CustomInput
                 id="input-add-email"
                 type="email"
@@ -681,10 +681,10 @@ const Employee = () => {
             </div>
           </div>
           <div className="flex py-2 w-full">
-            <div className="flex items-center w-1/4 mx-5">
+            <div className="flex items-center w-5/12">
               <p className="font-semibold text-black text-center">Password</p>
             </div>
-            <div className="flex items-center justify-center w-full mx-2">
+            <div className="flex items-center justify-center w-full">
               <CustomInput
                 id="input-add-password"
                 type="text"
@@ -694,10 +694,10 @@ const Employee = () => {
             </div>
           </div>
           <div className="flex py-2 w-full">
-            <div className="flex items-center w-1/4 mx-5">
+            <div className="flex items-center w-5/12">
               <p className="font-semibold text-black text-center">Phone</p>
             </div>
-            <div className="flex items-center justify-center w-full mx-2">
+            <div className="flex items-center justify-center w-full">
               <CustomInput
                 id="input-add-phone"
                 type="text"
@@ -707,10 +707,10 @@ const Employee = () => {
             </div>
           </div>
           <div className="flex py-2 w-full">
-            <div className="flex items-center w-1/4 mx-5">
+            <div className="flex items-center w-5/12">
               <p className="font-semibold text-black text-center">Position</p>
             </div>
-            <div className="flex items-center justify-center w-full mx-2">
+            <div className="flex items-center justify-center w-full">
               <select
                 id="select-add-position"
                 name="position"
@@ -749,10 +749,10 @@ const Employee = () => {
             </div>
           </div>
           <div className="flex py-2 w-full">
-            <div className="flex items-center w-1/4 mx-5">
+            <div className="flex items-center w-5/12">
               <p className="font-semibold text-black text-center">Gender</p>
             </div>
-            <div className="flex items-center justify-center w-full mx-2">
+            <div className="flex items-center justify-center w-full">
               <select
                 id="select-add-gender"
                 name="gender"
@@ -772,23 +772,23 @@ const Employee = () => {
             </div>
           </div>
           <div className="flex py-2 w-full">
-            <div className="flex items-center w-1/4 mx-5">
+            <div className="flex items-center w-5/12">
               <p className="font-semibold text-black text-center">Birthdate</p>
             </div>
-            <div className="flex items-center justify-center w-full mx-2">
+            <div className="flex items-center justify-center w-full">
               <CustomInput
                 id="input-add-birthdate"
                 type="date"
-                inputSet="border-sky text-black"
+                inputSet="border-sky text-black w-[13.5rem] md:w-full"
                 onChange={(e) => setBirthOfDate(e.target.value)}
               />
             </div>
           </div>
           <div className="flex py-2 w-full">
-            <div className="flex items-center w-1/4 mx-5">
-              <p className="font-semibold text-black text-center">Addres</p>
+            <div className="flex items-center w-5/12">
+              <p className="font-semibold text-black text-center">Address</p>
             </div>
-            <div className="flex items-center justify-center w-full mx-2">
+            <div className="flex items-center justify-center w-full">
               <TextArea
                 id="input-add-address"
                 inputSet="h-24 border-sky text-black"
