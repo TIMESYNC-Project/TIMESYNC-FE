@@ -13,10 +13,10 @@ import { useCookies } from "react-cookie";
 const RequestApproval = () => {
   const [addTitle, setAddTitle] = useState<string>("");
   const [addStart, setAddStart] = useState<string>("");
-  const [addEnd, setAddEnd] = useState<string>("");
   const [addDesc, setAddDesc] = useState<string>("");
-  const [addImg, setAddImg] = useState<any>();
+  const [addEnd, setAddEnd] = useState<string>("");
   const [date, setDate] = useState<string>("");
+  const [addImg, setAddImg] = useState<any>();
   const [cookie, setCookie] = useCookies();
   const navigate = useNavigate();
 

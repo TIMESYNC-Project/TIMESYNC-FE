@@ -10,17 +10,7 @@ import Button from "components/Button";
 import Layout from "components/Layout";
 import Logo from "assets/logo.png";
 
-interface ApprovalType {
-  id: number;
-  employee_name: string;
-  created_at: string;
-  approval_title: string;
-  approval_status: string;
-  approval_start_date: string;
-  approval_description: string;
-  approval_end_date: string;
-  approval_image: string;
-}
+import { ApprovalType } from "utils/Type";
 
 const Approval = () => {
   const [approvalStatus, setApprovalStatus] = useState<string>("");
@@ -113,7 +103,7 @@ const Approval = () => {
           showConfirmButton: false,
           timer: 1500,
         });
-        navigate(0)
+        navigate(0);
       })
       .catch((err) => {
         const { data } = err.response;
@@ -137,9 +127,11 @@ const Approval = () => {
                   htmlFor="my-modal-1"
                   id={`btn-approval-detail-${data.id}`}
                   onClick={() => getApprovalId(data.id)}
-                  
                 >
-                  <div className="flex justify-center items-center w-full hover:cursor-pointer" id={`card-approval-${data.id}`}>
+                  <div
+                    className="flex justify-center items-center w-full hover:cursor-pointer"
+                    id={`card-approval-${data.id}`}
+                  >
                     <div className="text-center w-1/4">
                       <p className="text-black capitalize font-semibold">
                         {new Date(`${data.created_at}`)
@@ -203,28 +195,26 @@ const Approval = () => {
                 </div>
               </div>
               <div className="modal-action">
-                {
-                  status === "pending"? (
-                    <>
+                {status === "pending" ? (
+                  <>
                     <button
-                  id={`btn-approve-modals`}
-                  type="submit"
-                  className="w-24 text-sm text-center border-2 border-sky bg-sky rounded-xl py-1 text-gray-50 font-medium duration-300 hover:cursor-pointer  hover:bg-blue-900  active:scale-90"
-                  onClick={() => setApprovalStatus("approved")}
-                >
-                  Approve
-                </button>
-                <button
-                  id={`btn-reject-modals`}
-                  type="submit"
-                  className="w-24 text-sm text-center border-2 border-sky rounded-xl py-1 text-sky font-medium duration-300 hover:cursor-pointer hover:bg-red-600 hover:text-white  active:scale-90"
-                  onClick={() => setApprovalStatus("rejected")}
-                >
-                  Reject
-                </button>
-                    </>
-                  ) : null
-                }                
+                      id={`btn-approve-modals`}
+                      type="submit"
+                      className="w-24 text-sm text-center border-2 border-sky bg-sky rounded-xl py-1 text-gray-50 font-medium duration-300 hover:cursor-pointer  hover:bg-blue-900  active:scale-90"
+                      onClick={() => setApprovalStatus("approved")}
+                    >
+                      Approve
+                    </button>
+                    <button
+                      id={`btn-reject-modals`}
+                      type="submit"
+                      className="w-24 text-sm text-center border-2 border-sky rounded-xl py-1 text-sky font-medium duration-300 hover:cursor-pointer hover:bg-red-600 hover:text-white  active:scale-90"
+                      onClick={() => setApprovalStatus("rejected")}
+                    >
+                      Reject
+                    </button>
+                  </>
+                ) : null}
               </div>
             </form>
           </Modals2>
@@ -251,7 +241,10 @@ const Approval = () => {
                   id={`btn-detail-approval-${data.id}`}
                   onClick={() => getApprovalId(data.id)}
                 >
-                  <div className="flex justify-center items-center w-full" id={`card-approval-${data.id}`}>
+                  <div
+                    className="flex justify-center items-center w-full"
+                    id={`card-approval-${data.id}`}
+                  >
                     <div className="text-start w-1/3 mx-5">
                       <p className="text-black capitalize font-semibold">
                         {new Date(`${data.created_at}`)
