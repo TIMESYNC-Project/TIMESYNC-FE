@@ -129,27 +129,27 @@ const Approval = () => {
                   onClick={() => getApprovalId(data.id)}
                 >
                   <div
-                    className="flex justify-center items-center w-full hover:cursor-pointer"
+                    className="flex justify-between items-center text-xs md:text-sm lg:text-base hover:cursor-pointer"
                     id={`card-approval-${data.id}`}
                   >
-                    <div className="text-center w-1/4">
+                    <section className="flex justify-start w-1/4">
                       <p className="text-black capitalize font-semibold">
                         {new Date(`${data.created_at}`)
                           .toString()
                           .substring(3, 15)}
                       </p>
-                    </div>
-                    <div className="text-center w-1/4">
+                    </section>
+                    <section className="flex justify-start text-start w-1/4 mr-1">
                       <p className="text-black capitalize font-medium">
                         {data.employee_name}
                       </p>
-                    </div>
-                    <div className="text-center w-1/4">
+                    </section>
+                    <section className="flex justify-center text-center w-1/4 ml-1">
                       <p className="text-black capitalize font-medium">
                         {data.approval_title}
                       </p>
-                    </div>
-                    <div className="text-center w-1/4">
+                    </section>
+                    <section className="flex justify-end w-1/4">
                       <p
                         className={`${
                           data.approval_status === "rejected"
@@ -162,7 +162,7 @@ const Approval = () => {
                       >
                         {data.approval_status}
                       </p>
-                    </div>
+                    </section>
                   </div>
                 </label>
               </FlexyCard>
@@ -175,22 +175,28 @@ const Approval = () => {
               <div className="box-border w-full bg-white rounded-2xl border-sky border-2 p-5">
                 <div className="flex">
                   <div className="w-1/2 flex items-center">
-                    <p className="text-black font-semibold text-xl">{name}</p>
+                    <p className="text-black font-semibold text-base md:text-lg lg:text-xl">
+                      {name}
+                    </p>
                   </div>
                   <div className="w-1/2 flex justify-end items-center">
-                    <img src={Logo} alt="" width={40} />
+                    <img src={Logo} alt="" className="w-8 md:w-10 lg:w-12" />
                   </div>
                 </div>
                 <div className="py-5">
-                  <p className="text-black font-semibold text-md mb-5">
+                  <p className="text-black font-semibold text-sm lg:text-base mb-5">
                     {new Date(`${startDate}`).toString().substring(3, 15)}{" "}
-                    <span className="font-normal">to</span>{" "}
+                    <span className="font-normal"> - </span>{" "}
                     {new Date(`${endDate}`).toString().substring(3, 15)}
                   </p>
-                  <p className="text-black font-normal text-md">{title}</p>
-                  <p className="text-black font-normal text-md my-5">{desc}</p>
+                  <p className="text-black font-normal text-sm lg:text-base">
+                    {title}
+                  </p>
+                  <p className="text-black font-normal text-sm lg:text-base my-5">
+                    {desc}
+                  </p>
                   <div className="flex justify-center w-full">
-                    <img src={`${image}`} className="w-[50%]" />
+                    <img src={`${image}`} className="w-[60%]" />
                   </div>
                 </div>
               </div>
