@@ -6,12 +6,12 @@ import {
   Title,
   Tooltip,
   Legend,
-} from "chart.js/auto";
+} from "chart.js";
 import { AiOutlineMessage } from "react-icons/ai";
 import { useState, useEffect } from "react";
 import { GoLocation } from "react-icons/go";
 import { useCookies } from "react-cookie";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Bar } from "react-chartjs-2";
 import Swal from "sweetalert2";
 import moment from "moment";
@@ -68,11 +68,21 @@ interface AttendancesType {
   work_time?: string;
   id?: number;
 }
+
+interface GrpahType {
+  employee_name: string;
+  employee_nip: string;
+  monthly_total_working_hour: number;
+  monthly_total_employee_late: number;
+}
+
 const Home = () => {
   const [attendances, setAttendances] = useState<AttendancesType>({});
   const [presences, setPresences] = useState<PresenceType[]>([]);
-  const [setting, setSetting] = useState<SettingsType>({});
   const [location, setLocation] = useState<LocationType>({});
+  const [totalHour, setTotalHour] = useState<GrpahType[]>([]);
+  const [totalLate, setTotalLate] = useState<GrpahType[]>([]);
+  const [setting, setSetting] = useState<SettingsType>({});
   const [inbox, setInbox] = useState<InboxType[]>([]);
   const [latitut, setLatitut] = useState<number>();
   const [longitut, setLongitut] = useState<number>();
@@ -82,6 +92,7 @@ const Home = () => {
   const [date, setDate] = useState<string>("");
   const [eror, setEror] = useState<string>("");
   const [cookie, setCookie] = useCookies();
+  const navigate = useNavigate();
 
   // graph start
   ChartJS.register(
@@ -92,27 +103,6 @@ const Home = () => {
     Title,
     Legend
   );
-  // sets.forEach((set: any) => {
-  //   const randomColor = Math.floor(Math.random() * 16777215).toString(16);
-  //   label.push(set.label);
-  //   set.borderColor = `#${randomColor}`;
-  //   set.backgroundColor = `#${randomColor}`;
-  // })
-  // {
-  //   datasets: [
-  //     {
-  //       backgroundColor: "#d0d0d0",
-  //       borderColor: "#d0d0d0",
-  //       data: [0, 2, 4, 6, 8],
-  //       label: "This is label",
-  //     }
-  //   ],
-  //   labels: [
-  //     "label 1",
-  //     "label 2",
-  //     "label 3",
-  //   ]
-  // }
   const options = {
     responsive: true,
     plugins: {
@@ -121,60 +111,19 @@ const Home = () => {
       },
       title: {
         display: true,
-        text: "Januari",
+        text: "January",
       },
     },
   };
-  const dataEmployee = [
-    {
-      name: "Aryo",
-      work: 320,
-      late: 2,
-    },
-    {
-      name: "Yudha",
-      work: 329,
-      late: 10,
-    },
-    {
-      name: "Anto",
-      work: 220,
-      late: 2,
-    },
-    {
-      name: "Ahmad",
-      work: 321,
-      late: 1,
-    },
-    {
-      name: "Zain",
-      work: 330,
-      late: 3,
-    },
-    {
-      name: "Alif",
-      work: 312,
-      late: 2,
-    },
-    {
-      name: "Fauzi",
-      work: 311,
-      late: 5,
-    },
-    {
-      name: "Sofyan",
-      work: 317,
-      late: 1,
-    },
-  ];
 
   const dataGraph = {
-    
-    labels: dataEmployee.map((data) => data.name),
+    labels: totalHour.map(
+      (data) => data.employee_nip + "-" + data.employee_name
+    ),
     datasets: [
       {
         label: "Total Hours",
-        data: dataEmployee.map((data) => data.work),
+        data: totalHour.map((data) => data.monthly_total_working_hour),
         backgroundColor: [
           "rgb(255, 99, 132)",
           "rgb(108, 070, 117)",
@@ -191,11 +140,13 @@ const Home = () => {
     ],
   };
   const dataGraph2 = {
-    labels: dataEmployee.map((data) => data.name),
+    labels: totalLate.map(
+      (data) => data.employee_nip + "-" + data.employee_name
+    ),
     datasets: [
       {
         label: "Late",
-        data: dataEmployee.map((data) => data.late),
+        data: totalLate.map((data) => data.monthly_total_employee_late),
         backgroundColor: [
           "rgb(217, 080, 048)",
           "rgb(040, 040, 040)",
@@ -214,11 +165,16 @@ const Home = () => {
   // graph end
 
   useEffect(() => {
-    if(cookie.token === "employee"){
+    if (cookie.role !== "admin") {
       locationMaps();
       getSetting();
       presencesToday();
-    }    
+    }
+    if (!cookie.token) {
+      navigate("/");
+    }
+    graphTotalLate();
+    graphTotalHour();
     newDate();
     getEmployee();
     getInbox();
@@ -244,8 +200,8 @@ const Home = () => {
     setDate(tanggal.substring(0, 27));
   }
   // function for admin
-  function getEmployee() {
-    axios
+  async function getEmployee() {
+    await axios
       .get(`employees`, {
         headers: {
           Authorization: `Bearer ${cookie.token}`,
@@ -258,8 +214,8 @@ const Home = () => {
       .catch((err) => {});
   }
 
-  function getPresences() {
-    axios
+  async function getPresences() {
+    await axios
       .get(`presences/total`, {
         headers: {
           Authorization: `Bearer ${cookie.token}`,
@@ -272,8 +228,8 @@ const Home = () => {
       .catch((err) => {});
   }
 
-  function getInbox() {
-    axios
+  async function getInbox() {
+    await axios
       .get(`announcements`, {
         headers: {
           Authorization: `Bearer ${cookie.token}`,
@@ -286,8 +242,36 @@ const Home = () => {
       .catch((err) => {});
   }
 
+  async function graphTotalHour() {
+    await axios
+      .get(`graph?type=mtwh&year_month=2023-01&limit=8`, {
+        headers: {
+          Authorization: `Bearer ${cookie.token}`,
+        },
+      })
+      .then((res) => {
+        const { data } = res.data;
+        setTotalHour(data);
+      })
+      .catch((err) => {});
+  }
+
+  async function graphTotalLate() {
+    await axios
+      .get(`graph?type=mtel&year_month=2023-01&limit=8`, {
+        headers: {
+          Authorization: `Bearer ${cookie.token}`,
+        },
+      })
+      .then((res) => {
+        const { data } = res.data;
+        setTotalLate(data);
+      })
+      .catch((err) => {});
+  }
+
   // function for employee
-  async function locationMaps() {
+  function locationMaps() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         const latitude = position.coords.latitude;
@@ -307,8 +291,8 @@ const Home = () => {
     }
   }
 
-  function getSetting() {
-    axios
+  async function getSetting() {
+    await axios
       .get(`setting`, {
         headers: {
           Authorization: `Bearer ${cookie.token}`,
@@ -457,13 +441,18 @@ const Home = () => {
                 <div className="box-border w-full bg-white rounded-3xl border-sky border-2">
                   <div className="mx-10 mt-10">
                     <p className="capitalize text-lg font-extrabold text-center">
-                      Traffic total working hours by weekly
+                      Traffic total working hours by month
                     </p>
                   </div>
                   <hr className="mx-10 my-3 border-[1.5px] border-sky" />
-                  <div className={`pt-5 pb-10 px-5`}>
+                  <div className={`py-5 px-5`}>
                     <div className="w-full" id="graph-total-work-employee">
-                      <Bar options={options} data={dataGraph} id="graph-1"/>
+                      <Bar
+                        className="!h-full !w-full"
+                        options={options}
+                        data={dataGraph}
+                        id="graph-1"
+                      />
                     </div>
                   </div>
                 </div>
@@ -475,13 +464,18 @@ const Home = () => {
                 <div className="box-border w-full bg-white rounded-3xl border-sky border-2">
                   <div className="mx-10 mt-10">
                     <p className="capitalize text-lg font-extrabold text-center">
-                      Traffic total late employees by weekly
+                      Traffic total late employees by month
                     </p>
                   </div>
                   <hr className="mx-10 my-3 border-[1.5px] border-sky" />
                   <div className={`pt-5 pb-10 px-5`}>
                     <div className="w-full" id="grap-total-late-employee">
-                      <Bar options={options} data={dataGraph2} id="graph-2"/>
+                      <Bar
+                        className="!h-full !w-full"
+                        options={options}
+                        data={dataGraph2}
+                        id="graph-2"
+                      />
                     </div>
                   </div>
                 </div>
@@ -490,17 +484,21 @@ const Home = () => {
             </div>
             <div className="xl:w-1/3">
               {/* card employees start */}
-              <Link id="card-list-employees" to="/employees">
-                <MiniCard
-                  parentSet=" overflow-auto h-full mb-4 xl:mb-0"
-                  judul="employees"
-                  titleSet="text-center h-fit text-md xl:text-xl"
-                >
-                  {data.slice(0, 10).map((data) => {
-                    return (
-                      <div
-                        className="flex flex-col my-3 mx-6 xl:mx-0"
-                        key={data.id}
+
+              <MiniCard
+                parentSet=" overflow-auto h-full mb-4 xl:mb-0"
+                judul="employees"
+                titleSet="text-center h-fit text-md xl:text-xl"
+              >
+                {data.slice(0, 10).map((data) => {
+                  return (
+                    <div
+                      className="flex flex-col my-3 mx-6 xl:mx-0"
+                      key={data.id}
+                    >
+                      <Link
+                        id={`card-list-employees-${data.id}`}
+                        to={`/employee/profile/${data.id}`}
                       >
                         <div className="flex flex-row text-center xl:text-left xl:justify-start">
                           <div className="h-1/2">
@@ -515,11 +513,11 @@ const Home = () => {
                             </p>
                           </div>
                         </div>
-                      </div>
-                    );
-                  })}
-                </MiniCard>
-              </Link>
+                      </Link>
+                    </div>
+                  );
+                })}
+              </MiniCard>
               {/* card employees end */}
 
               {/* card inbox start */}
