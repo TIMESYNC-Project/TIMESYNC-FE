@@ -241,7 +241,7 @@ const RecordsDetail = () => {
                     <CustomInput
                       id="input-date-start"
                       type="date"
-                      inputSet="border-sky text-black"
+                      inputSet="border-sky text-black w-44 md:w-full"
                       min={date}
                       onChange={(e) => setAddStart(e.target.value)}
                     />
@@ -257,27 +257,27 @@ const RecordsDetail = () => {
                     <CustomInput
                       id="input-date-end"
                       type="date"
-                      inputSet="border-sky text-black"
+                      inputSet="border-sky text-black w-44 md:w-full"
                       min={addStart}
                       onChange={(e) => setAddEnd(e.target.value)}
                     />
                   </div>
                 </div>
                 <div className="modal-action">
-                  <label
-                    id="btn-cancel-attendance"
-                    htmlFor="my-modal-1"
-                    className="w-24 text-sm text-center border-sky bg-sky rounded-xl py-1 text-white font-medium duration-300 hover:cursor-pointer hover:bg-red-600 hover:text-white  active:scale-90"
-                  >
-                    Cancel
-                  </label>
                   <button
                     id="btn-submit-attendance"
                     type="submit"
-                    className="w-24 text-sm text-center border-sky bg-sky rounded-xl py-1 text-gray-50 font-medium duration-300 hover:cursor-pointer  hover:bg-blue-900  active:scale-90"
+                    className="w-24 text-sm text-center border-2 border-sky bg-sky rounded-xl py-1 text-gray-50 font-medium duration-300 hover:cursor-pointer  hover:bg-blue-900  active:scale-90"
                   >
-                    Update
+                    Submit
                   </button>
+                  <label
+                    id="btn-cancel-attendance"
+                    htmlFor="my-modal-1"
+                    className="w-24 text-sm text-center border-2 border-sky rounded-xl py-1 text-sky font-medium duration-300 hover:cursor-pointer hover:bg-red-600 hover:text-white  active:scale-90"
+                  >
+                    Cancel
+                  </label>
                 </div>
               </form>
             </Modals1>
