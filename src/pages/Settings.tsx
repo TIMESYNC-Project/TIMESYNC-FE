@@ -9,13 +9,7 @@ import { WrappingCard } from "components/Card";
 import Layout from "components/Layout";
 import Button from "components/Button";
 
-interface SettingsType {
-  annual_leave?: number;
-  id?: number;
-  tolerance?: number;
-  working_hour_end?: string;
-  working_hour_start?: string;
-}
+import { SettingsType } from "utils/Type";
 
 const Settings = () => {
   const [editStartHour, setEditStartHour] = useState<string>("");
@@ -95,15 +89,6 @@ const Settings = () => {
                   defaultValue={setting.working_hour_start}
                   onChange={(e) => setEditStartHour(e.target.value)}
                 />
-                {/* <p className="font-extrabold text-xl">:</p>
-                <CustomInput
-                  id="input-start-minute"
-                  type="text"
-                  parentSet="w-20"
-                  inputSet="input-sm text-center border-sky border-2 font-bold text-xl focus:border-lightYellow"
-                  defaultValue={setting.working_hour_start?.substring(3, 5)}
-                  onChange={(e) => setEditStartMin(e.target.value)}
-                /> */}
               </div>
             </div>
             <p className="mt-10 font-extrabold text-2xl">-</p>
@@ -118,15 +103,6 @@ const Settings = () => {
                   defaultValue={setting.working_hour_end}
                   onChange={(e) => setEditEndtHour(e.target.value)}
                 />
-                {/* <p className="font-extrabold text-xl">:</p>
-                <CustomInput
-                  id="input-end-minute"
-                  type="text"
-                  parentSet="w-20"
-                  inputSet="input-sm text-center border-sky border-2 font-bold text-xl focus:border-lightYellow"
-                  defaultValue={setting.working_hour_end?.substring(3, 5)}
-                  onChange={(e) => setEditEndtMin(e.target.value)}
-                /> */}
               </div>
             </div>
           </section>

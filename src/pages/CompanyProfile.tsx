@@ -10,18 +10,9 @@ import { WrappingCard } from "components/Card";
 import Button from "components/Button";
 import Layout from "components/Layout";
 
-interface CompanyData {
-  company_address?: string;
-  company_phone?: string;
-  description?: string;
-  company_email?: string;
-  id?: number;
-  company_name?: string;
-  company_picture?: string;
-  sosmed?: string;
-}
+import { CompanyData } from "utils/Type";
+
 const CompanyProfile = () => {
-  const navigate = useNavigate();
   const [editAddress, setEditAddress] = useState<string>("");
   const [editSosmed, setEditSosmed] = useState<string>("");
   const [editEmail, setEditEmail] = useState<string>("");
@@ -32,6 +23,7 @@ const CompanyProfile = () => {
   const [data, setData] = useState<CompanyData>({});
   const [cookie, setCookie] = useCookies();
   const admin = cookie.role === "admin";
+  const navigate = useNavigate();
 
   useEffect(() => {
     companyData();
