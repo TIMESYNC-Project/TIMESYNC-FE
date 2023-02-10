@@ -113,7 +113,7 @@ const Approval = () => {
           showConfirmButton: false,
           timer: 1500,
         });
-        navigate(0)
+        navigate(0);
       })
       .catch((err) => {
         const { data } = err.response;
@@ -137,27 +137,29 @@ const Approval = () => {
                   htmlFor="my-modal-1"
                   id={`btn-approval-detail-${data.id}`}
                   onClick={() => getApprovalId(data.id)}
-                  
                 >
-                  <div className="flex justify-center items-center w-full hover:cursor-pointer" id={`card-approval-${data.id}`}>
-                    <div className="text-center w-1/4">
+                  <div
+                    className="flex justify-between items-center text-xs md:text-sm lg:text-base hover:cursor-pointer"
+                    id={`card-approval-${data.id}`}
+                  >
+                    <section className="flex justify-start w-1/4">
                       <p className="text-black capitalize font-semibold">
                         {new Date(`${data.created_at}`)
                           .toString()
                           .substring(3, 15)}
                       </p>
-                    </div>
-                    <div className="text-center w-1/4">
+                    </section>
+                    <section className="flex justify-start text-start w-1/4 mr-1">
                       <p className="text-black capitalize font-medium">
                         {data.employee_name}
                       </p>
-                    </div>
-                    <div className="text-center w-1/4">
+                    </section>
+                    <section className="flex justify-center text-center w-1/4 ml-1">
                       <p className="text-black capitalize font-medium">
                         {data.approval_title}
                       </p>
-                    </div>
-                    <div className="text-center w-1/4">
+                    </section>
+                    <section className="flex justify-end w-1/4">
                       <p
                         className={`${
                           data.approval_status === "rejected"
@@ -170,7 +172,7 @@ const Approval = () => {
                       >
                         {data.approval_status}
                       </p>
-                    </div>
+                    </section>
                   </div>
                 </label>
               </FlexyCard>
@@ -183,48 +185,52 @@ const Approval = () => {
               <div className="box-border w-full bg-white rounded-2xl border-sky border-2 p-5">
                 <div className="flex">
                   <div className="w-1/2 flex items-center">
-                    <p className="text-black font-semibold text-xl">{name}</p>
+                    <p className="text-black font-semibold text-base md:text-lg lg:text-xl">
+                      {name}
+                    </p>
                   </div>
                   <div className="w-1/2 flex justify-end items-center">
-                    <img src={Logo} alt="" width={40} />
+                    <img src={Logo} alt="" className="w-8 md:w-10 lg:w-12" />
                   </div>
                 </div>
                 <div className="py-5">
-                  <p className="text-black font-semibold text-md mb-5">
+                  <p className="text-black font-semibold text-sm lg:text-base mb-5">
                     {new Date(`${startDate}`).toString().substring(3, 15)}{" "}
-                    <span className="font-normal">to</span>{" "}
+                    <span className="font-normal"> - </span>{" "}
                     {new Date(`${endDate}`).toString().substring(3, 15)}
                   </p>
-                  <p className="text-black font-normal text-md">{title}</p>
-                  <p className="text-black font-normal text-md my-5">{desc}</p>
+                  <p className="text-black font-normal text-sm lg:text-base">
+                    {title}
+                  </p>
+                  <p className="text-black font-normal text-sm lg:text-base my-5">
+                    {desc}
+                  </p>
                   <div className="flex justify-center w-full">
-                    <img src={`${image}`} className="w-[50%]" />
+                    <img src={`${image}`} className="w-[60%]" />
                   </div>
                 </div>
               </div>
               <div className="modal-action">
-                {
-                  status === "pending"? (
-                    <>
+                {status === "pending" ? (
+                  <>
                     <button
-                  id={`btn-approve-modals`}
-                  type="submit"
-                  className="w-24 text-sm text-center border-2 border-sky bg-sky rounded-xl py-1 text-gray-50 font-medium duration-300 hover:cursor-pointer  hover:bg-blue-900  active:scale-90"
-                  onClick={() => setApprovalStatus("approved")}
-                >
-                  Approve
-                </button>
-                <button
-                  id={`btn-reject-modals`}
-                  type="submit"
-                  className="w-24 text-sm text-center border-2 border-sky rounded-xl py-1 text-sky font-medium duration-300 hover:cursor-pointer hover:bg-red-600 hover:text-white  active:scale-90"
-                  onClick={() => setApprovalStatus("rejected")}
-                >
-                  Reject
-                </button>
-                    </>
-                  ) : null
-                }                
+                      id={`btn-approve-modals`}
+                      type="submit"
+                      className="w-24 text-sm text-center border-2 border-sky bg-sky rounded-xl py-1 text-gray-50 font-medium duration-300 hover:cursor-pointer  hover:bg-blue-900  active:scale-90"
+                      onClick={() => setApprovalStatus("approved")}
+                    >
+                      Approve
+                    </button>
+                    <button
+                      id={`btn-reject-modals`}
+                      type="submit"
+                      className="w-24 text-sm text-center border-2 border-sky rounded-xl py-1 text-sky font-medium duration-300 hover:cursor-pointer hover:bg-red-600 hover:text-white  active:scale-90"
+                      onClick={() => setApprovalStatus("rejected")}
+                    >
+                      Reject
+                    </button>
+                  </>
+                ) : null}
               </div>
             </form>
           </Modals2>
@@ -251,7 +257,10 @@ const Approval = () => {
                   id={`btn-detail-approval-${data.id}`}
                   onClick={() => getApprovalId(data.id)}
                 >
-                  <div className="flex justify-center items-center w-full" id={`card-approval-${data.id}`}>
+                  <div
+                    className="flex justify-center items-center w-full"
+                    id={`card-approval-${data.id}`}
+                  >
                     <div className="text-start w-1/3 mx-5">
                       <p className="text-black capitalize font-semibold">
                         {new Date(`${data.created_at}`)
