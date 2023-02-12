@@ -11,10 +11,12 @@ import Layout from "components/Layout";
 import Logo from "assets/logo.png";
 
 import { ApprovalType } from "utils/Type";
+import Loader from "components/Loader";
 
 const Approval = () => {
   const [approvalStatus, setApprovalStatus] = useState<string>("");
   const [approvals, setApprovals] = useState<ApprovalType[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
   const [startDate, setStartDate] = useState<string>("");
   const [createdAt, setCreatedAt] = useState<string>();
   const [endDate, setEndDate] = useState<string>("");
@@ -32,6 +34,7 @@ const Approval = () => {
   }, []);
 
   async function getApprovals() {
+    setLoading(true);
     {
       cookie.role === "admin" &&
         (await axios
@@ -44,7 +47,8 @@ const Approval = () => {
             const { data } = res.data;
             setApprovals(data);
           })
-          .catch((err) => {}));
+          .catch((err) => {})
+          .finally(() => setLoading(false)));
     }
     {
       cookie.role === "employee" &&
@@ -58,7 +62,8 @@ const Approval = () => {
             const { data } = res.data;
             setApprovals(data);
           })
-          .catch((err) => {}));
+          .catch((err) => {})
+          .finally(() => setLoading(false)));
     }
   }
 
@@ -84,6 +89,7 @@ const Approval = () => {
       .catch((err) => {});
   }
   function editApproval(e: React.FormEvent<HTMLFormElement>) {
+    setLoading(true);
     e.preventDefault();
     const body = new FormData();
     body.append("approval_status", approvalStatus);
@@ -103,7 +109,6 @@ const Approval = () => {
           showConfirmButton: false,
           timer: 1500,
         });
-        navigate(0);
       })
       .catch((err) => {
         const { data } = err.response;
@@ -113,12 +118,15 @@ const Approval = () => {
           title: "Oops...",
           text: message,
         });
-      });
+      })
+      .finally(() => setLoading(false));
   }
 
   return (
     <Layout approvalSet="w-full bg-gradient-to-r from-white to-navy hover:text-white ">
-      {cookie.role === "admin" ? (
+      {loading ? (
+        <Loader />
+      ) : cookie.role === "admin" ? (
         <WrappingCard judul="Approval Requests">
           {approvals.map((data) => {
             return (
@@ -225,6 +233,8 @@ const Approval = () => {
             </form>
           </Modals2>
         </WrappingCard>
+      ) : loading ? (
+        <Loader />
       ) : (
         <WrappingCard
           judul="Approval"
