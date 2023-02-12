@@ -29,6 +29,7 @@ import {
   DataRecordsType,
   GrpahType,
 } from "utils/Type";
+import Loader from "components/Loader";
 
 const Home = () => {
   const [attendances, setAttendances] = useState<DataRecordsType>({});
@@ -37,6 +38,7 @@ const Home = () => {
   const [totalLate, setTotalLate] = useState<GrpahType[]>([]);
   const [location, setLocation] = useState<LocationType>({});
   const [setting, setSetting] = useState<SettingsType>({});
+  const [loading, setLoading] = useState<boolean>(false);
   const [data, setData] = useState<EmployeesType[]>([]);
   const [inbox, setInbox] = useState<InboxType[]>([]);
   const [longitut, setLongitut] = useState<number>();
@@ -155,6 +157,7 @@ const Home = () => {
   }
   // function for admin
   async function getEmployee() {
+    setLoading(true);
     await axios
       .get(`employees`, {
         headers: {
@@ -165,10 +168,12 @@ const Home = () => {
         const { data } = res.data;
         setData(data);
       })
-      .catch((err) => {});
+      .catch((err) => {})
+      .finally(() => setLoading(false));
   }
 
   async function getPresences() {
+    setLoading(true);
     await axios
       .get(`presences/total`, {
         headers: {
@@ -179,10 +184,12 @@ const Home = () => {
         const { data } = res.data;
         setPresences(data);
       })
-      .catch((err) => {});
+      .catch((err) => {})
+      .finally(() => setLoading(false));
   }
 
   async function getInbox() {
+    setLoading(true);
     await axios
       .get(`announcements`, {
         headers: {
@@ -193,10 +200,12 @@ const Home = () => {
         const { data } = res.data;
         setInbox(data);
       })
-      .catch((err) => {});
+      .catch((err) => {})
+      .finally(() => setLoading(false));
   }
 
   async function graphTotalHour() {
+    setLoading(true);
     await axios
       .get(`graph?type=mtwh&year_month=2023-01&limit=8`, {
         headers: {
@@ -207,10 +216,12 @@ const Home = () => {
         const { data } = res.data;
         setTotalHour(data);
       })
-      .catch((err) => {});
+      .catch((err) => {})
+      .finally(() => setLoading(false));
   }
 
   async function graphTotalLate() {
+    setLoading(true);
     await axios
       .get(`graph?type=mtel&year_month=2023-01&limit=8`, {
         headers: {
@@ -221,11 +232,13 @@ const Home = () => {
         const { data } = res.data;
         setTotalLate(data);
       })
-      .catch((err) => {});
+      .catch((err) => {})
+      .finally(() => setLoading(false));
   }
 
   // function for employee
   function locationMaps() {
+    setLoading(true);
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         const latitude = position.coords.latitude;
@@ -240,12 +253,14 @@ const Home = () => {
             setLatitut(latitude);
             setLongitut(longitude);
           })
-          .catch((err) => {});
+          .catch((err) => {})
+          .finally(() => setLoading(false));
       });
     }
   }
 
   async function getSetting() {
+    setLoading(true);
     await axios
       .get(`setting`, {
         headers: {
@@ -256,10 +271,12 @@ const Home = () => {
         const { data } = res.data;
         setSetting(data);
       })
-      .catch((err) => {});
+      .catch((err) => {})
+      .finally(() => setLoading(false));
   }
 
   function clockIn() {
+    setLoading(true);
     axios
       .post(
         `attendances`,
@@ -292,10 +309,12 @@ const Home = () => {
           title: "Oops...",
           text: message,
         });
-      });
+      })
+      .finally(() => setLoading(false));
   }
 
   function clockOut() {
+    setLoading(true);
     axios
       .put(
         `attendances`,
@@ -328,10 +347,12 @@ const Home = () => {
           title: "Oops...",
           text: message,
         });
-      });
+      })
+      .finally(() => setLoading(false));
   }
 
   function presencesToday() {
+    setLoading(true);
     axios
       .get(`presences`, {
         headers: {
@@ -346,12 +367,15 @@ const Home = () => {
         const { data } = err.response;
         const { message } = data;
         setEror(message);
-      });
+      })
+      .finally(() => setLoading(false));
   }
 
   return (
     <Layout homeSet="w-full bg-gradient-to-r from-white to-navy hover:text-white">
-      {cookie.role === "admin" ? (
+      {loading ? (
+        <Loader />
+      ) : cookie.role === "admin" ? (
         <WrappingCard judul="Dashboard">
           <div className="flex flex-col-reverse xl:flex-row gap-6 xl:gap-0 w-full">
             <div className="w-full xl:w-2/3">
@@ -505,6 +529,8 @@ const Home = () => {
             </div>
           </div>
         </WrappingCard>
+      ) : loading ? (
+        <Loader />
       ) : (
         <WrappingCard judul="Attendance">
           <div className="flex justify-center">
@@ -573,7 +599,9 @@ const Home = () => {
                       {attendances.clock_in}
                     </p>
                     <p className="text-xs md:text-sm text-black">
-                      {attendances.attendance_date}
+                      {new Date(`${attendances.attendance_date}`)
+                        .toString()
+                        .substring(3, 15)}
                     </p>
                   </div>
                   <div className="w-1/3">
@@ -598,7 +626,9 @@ const Home = () => {
                       {attendances.clock_out}
                     </p>
                     <p className="text-xs lg:text-sm text-black">
-                      {attendances.attendance_date}
+                      {new Date(`${attendances.attendance_date}`)
+                        .toString()
+                        .substring(3, 15)}
                     </p>
                   </div>
                   <div className="w-1/3">
