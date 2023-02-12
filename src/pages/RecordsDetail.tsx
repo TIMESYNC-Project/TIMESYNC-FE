@@ -180,7 +180,6 @@ const RecordsDetail = () => {
                   selectsRange
                   className="input input-borderd border-2 w-24 md:w-48 xl:w-full text-xs md:text-base"
                   id="input-date-range-picker"
-                  maxDate={new Date()}
                 />
                 <div
                   className="btn btn-ghost"
