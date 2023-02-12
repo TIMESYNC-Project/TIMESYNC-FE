@@ -146,6 +146,7 @@ const RequestApproval = () => {
               <input
                 id="input-picture"
                 type="file"
+                accept="image/png, image/jpeg"
                 className="file-input file-input-bordered w-full border-1 border-sky max-w-xs file:bg-sky file:border-none file:capitalize file:text-xs text-xs lg:file:text-base lg:text-base file:w-20 lg:file:w-fit disabled:bg-gray-300 disabled:text-gray-400 disabled:border-gray-300 disabled:cursor-not-allowed disabled:active:scale-100"
                 onChange={(e) => setAddImg(e.target.files?.[0])}
               />
