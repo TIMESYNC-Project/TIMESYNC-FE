@@ -102,8 +102,8 @@ const RequestApproval = () => {
         >
           <CardWithLogo>
             <form onSubmit={reqApproval}>
-              <div className="flex my-5 gap-2 items-center">
-                <p className="">Approval: </p>
+              <p className="text-xs lg:text-base">Approval Type: </p>
+              <div className="flex gap-2 items-center">
                 <select
                   id="select-approval-type"
                   name="approval-type"
@@ -125,8 +125,10 @@ const RequestApproval = () => {
                 </select>
               </div>
 
-              <div className="flex my-5 gap-2 items-center">
-                <p>Date Start: </p>
+              <p className="text-xs lg:text-base mt-5">
+                Date Range: (start - end)
+              </p>
+              <div className="flex gap-2 items-center">
                 <input
                   id="input-start-date"
                   type="date"
@@ -135,13 +137,11 @@ const RequestApproval = () => {
                   className="input input-bordered border-sky text-xs lg:text-base"
                   onChange={(e) => setAddStart(e.target.value)}
                 />
-              </div>
-              <div className="flex my-5 gap-2 items-center">
-                <p>Date End:</p>
+                <p>-</p>
                 <input
                   id="input-end-date"
                   type="date"
-                  min={addStart? addStart : date}
+                  min={addStart ? addStart : date}
                   className="input input-bordered border-sky text-xs lg:text-base"
                   onChange={(e) => setAddEnd(e.target.value)}
                 />
@@ -150,7 +150,7 @@ const RequestApproval = () => {
               <TextArea
                 id="input-description"
                 parentSet="my-5"
-                inputSet="textarea textarea-bordered border-sky h-48 text-sm lg:text-base"
+                inputSet="my-5 textarea textarea-bordered border-sky h-48 text-sm lg:text-base"
                 placeholder="Description"
                 onChange={(e) => setAddDesc(e.target.value)}
               />
@@ -161,10 +161,10 @@ const RequestApproval = () => {
                 className="file-input file-input-bordered w-full border-1 border-sky max-w-xs file:bg-sky file:border-none file:capitalize file:text-xs text-xs lg:file:text-base lg:text-base file:w-20 lg:file:w-fit disabled:bg-gray-300 disabled:text-gray-400 disabled:border-gray-300 disabled:cursor-not-allowed disabled:active:scale-100"
                 onChange={(e) => setAddImg(e.target.files?.[0])}
               />
-              <div className="flex justify-end">
+              <div className="flex justify-end mt-3">
                 <Button
                   id="btn-submit"
-                  buttonSet="border-2 border-white shadow-md shadow-black rounded-full capitalize font-medium gap-2 px-3 text-sm tracking-tighter lg:tracking-normal lg:text-base hover:bg-navy my-5 disabled:bg-gray-300 disabled:text-gray-400 disabled:border-gray-300 disabled:cursor-not-allowed disabled:active:scale-100"
+                  buttonSet="border-2 border-white shadow-md rounded-full capitalize font-medium gap-2 px-5 py-1 text-sm tracking-tighter lg:tracking-normal lg:text-base hover:bg-navy my-5 disabled:bg-gray-300 disabled:text-gray-400 disabled:border-gray-300 disabled:cursor-not-allowed disabled:active:scale-100"
                   label="Submit"
                   type="submit"
                   disabled={disabled || loading}
