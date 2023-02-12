@@ -10,9 +10,9 @@ import { CustomInput, TextArea } from "components/CustomInput";
 import { FlexyCard, WrappingCard } from "components/Card";
 import { Modals1 } from "components/Modals";
 import Layout from "components/Layout";
+import Loader from "components/Loader";
 
 import { EmployeesType } from "utils/Type";
-import Loader from "components/Loader";
 
 const Employee = () => {
   const [employeeBirthdate, setEmployeeBirthdate] = useState<string>("");
@@ -257,15 +257,6 @@ const Employee = () => {
             navigate(0);
           }
         });
-        // Swal.fire({
-        //   position: "center",
-        //   icon: "success",
-        //   title: "Success",
-        //   text: message,
-        //   showConfirmButton: false,
-        //   timer: 1500,
-        // });
-        // navigate(0);
       })
       .catch((err) => {
         const { data } = err.response;

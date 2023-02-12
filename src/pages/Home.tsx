@@ -20,6 +20,7 @@ import axios from "axios";
 import { MiniCard, FlexyCard, WrappingCard } from "components/Card";
 import Layout from "components/Layout";
 import Button from "components/Button";
+import Loader from "components/Loader";
 
 import {
   EmployeesType,
@@ -29,7 +30,6 @@ import {
   DataRecordsType,
   GrpahType,
 } from "utils/Type";
-import Loader from "components/Loader";
 
 const Home = () => {
   const [attendances, setAttendances] = useState<DataRecordsType>({});
@@ -155,6 +155,7 @@ const Home = () => {
     setHour(jam.substring(15, 21));
     setDate(tanggal.substring(0, 27));
   }
+
   // function for admin
   async function getEmployee() {
     setLoading(true);
@@ -276,7 +277,6 @@ const Home = () => {
   }
 
   function clockIn() {
-    setLoading(true);
     axios
       .post(
         `attendances`,
@@ -299,7 +299,7 @@ const Home = () => {
           showConfirmButton: false,
           timer: 1500,
         });
-        presencesToday();
+        navigate(0)
       })
       .catch((err) => {
         const { data } = err.response;
@@ -310,11 +310,9 @@ const Home = () => {
           text: message,
         });
       })
-      .finally(() => setLoading(false));
   }
 
   function clockOut() {
-    setLoading(true);
     axios
       .put(
         `attendances`,
@@ -337,7 +335,7 @@ const Home = () => {
           showConfirmButton: false,
           timer: 1500,
         });
-        presencesToday();
+        navigate(0)
       })
       .catch((err) => {
         const { data } = err.response;
@@ -348,11 +346,9 @@ const Home = () => {
           text: message,
         });
       })
-      .finally(() => setLoading(false));
   }
 
   function presencesToday() {
-    setLoading(true);
     axios
       .get(`presences`, {
         headers: {
@@ -368,7 +364,6 @@ const Home = () => {
         const { message } = data;
         setEror(message);
       })
-      .finally(() => setLoading(false));
   }
 
   return (
