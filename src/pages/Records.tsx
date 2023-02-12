@@ -85,7 +85,7 @@ const Records = () => {
           title: "Oops...",
           text: message,
         });
-      })
+      });
   }
 
   function onClickDetail(id: number) {
@@ -134,27 +134,25 @@ const Records = () => {
           <WrappingCard
             judul="Records"
             rightSide={
-              <div className="">
-                <form
-                  className="flex items-center gap-2"
-                  id="form-search"
-                  onSubmit={searchEmployees}
+              <form
+                className="flex items-center gap-2"
+                id="form-search"
+                onSubmit={searchEmployees}
+              >
+                <CustomInput
+                  inputSet="border-sky w-36 md:w-full"
+                  placeholder="Search"
+                  id="input-search"
+                  onChange={(e) => setSearch(e.target.value)}
+                />
+                <button
+                  className="text-sky active:scale-75 duration-300"
+                  type="submit"
+                  id="btn-search"
                 >
-                  <CustomInput
-                    inputSet="border-sky w-36 md:w-full"
-                    placeholder="Search"
-                    id="input-search"
-                    onChange={(e) => setSearch(e.target.value)}
-                  />
-                  <button
-                    className="text-sky active:scale-75 duration-300"
-                    type="submit"
-                    id="btn-search"
-                  >
-                    <BsSearch size={27} />
-                  </button>
-                </form>
-              </div>
+                  <BsSearch size={27} />
+                </button>
+              </form>
             }
           >
             {employees.map((data) => {
@@ -208,16 +206,16 @@ const Records = () => {
                   startDate={startDate}
                   endDate={endDate}
                   selectsRange
-                  className="input input-borderd border-2"
+                  className="input input-borderd text-xs lg:text-base border-2 w-32 md:w-48 lg:w-full"
                   id="input-date-range-picker"
                   maxDate={new Date()}
                 />
                 <div
-                  className="btn btn-ghost"
+                  className="px-2 duration-300 hover:cursor-pointer active:scale-75"
                   onClick={() => getRecordsEmployee()}
                   id={`btn-date-range-picker`}
                 >
-                  <BsSearch size={27} />
+                  <BsSearch size={25} />
                 </div>
               </div>
             </>
@@ -232,23 +230,26 @@ const Records = () => {
               return (
                 <FlexyCard key={data.id}>
                   <div
-                    className="flex justify-center items-center w-full"
+                    className="flex justify-between items-center w-full"
                     id={`card-detail-records-${data.attendance_date}`}
                   >
-                    <div className="flex justify-center w-1/4">
+                    <div className="flex justify-start w-1/3">
                       <p className="text-black capitalize ">
                         {new Date(`${data.attendance_date}`)
                           .toString()
                           .substring(3, 15)}
                       </p>
                     </div>
-                    <div className="flex justify-center w-1/4">
-                      <p className="text-black capitalize ">{data.clock_in}</p>
-                    </div>
-                    <div className="flex justify-center w-1/4">
-                      <p className="text-black capitalize ">{data.clock_out}</p>
-                    </div>
-                    <div className="flex justify-center w-1/4">
+                    {data.clock_in && data.clock_out !== null && (
+                      <section className="flex items-center">
+                        <p className="text-black capitalize">{data.clock_in}</p>
+                        <p className="mx-2 md:mx-6 lg:mx-16">-</p>
+                        <p className="text-black capitalize">
+                          {data.clock_out}
+                        </p>
+                      </section>
+                    )}
+                    <div className="flex justify-end w-1/3">
                       <p className="text-black capitalize ">
                         {data.attendance}
                       </p>
