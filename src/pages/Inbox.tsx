@@ -104,7 +104,7 @@ const Inbox = () => {
           confirmButtonText: "Ok",
         }).then((result) => {
           if (result.isConfirmed) {
-            getInbox()
+            getInbox();
           }
         });
       })
@@ -211,7 +211,7 @@ const Inbox = () => {
                         </button>
                         <label
                           id="btn-inbox-cancel"
-                          htmlFor={`${loading? "" : "my-modal-1"}`}
+                          htmlFor={`${loading ? "" : "my-modal-1"}`}
                           className="w-24 text-sm text-center border-2 border-sky rounded-xl py-1 text-sky font-medium duration-300 hover:cursor-pointer hover:bg-red-600 hover:text-white  active:scale-90 disabled:bg-gray-300 disabled:text-gray-400 disabled:border-gray-300 disabled:cursor-not-allowed disabled:active:scale-100"
                         >
                           Cancel
@@ -273,27 +273,27 @@ const Inbox = () => {
                 key={data.id}
                 id={`card-inbox-${data.id}`}
               >
-                <FlexyCard parentSet="w-fit mx-0">
+                <FlexyCard parentSet="w-full">
                   <div className="flex items-center">
                     <label
                       id={`btn-detail-${data.id}`}
                       htmlFor="my-modal-3"
                       onClick={() => getInboxId(data.id)}
                     >
-                      <div className="flex justify-center w-full gap-5 duration-300 hover:cursor-pointer active:scale-95">
-                        <div className="flex justify-center w-1/5">
+                      <div className="flex justify-center w-full gap-2 duration-300 hover:cursor-pointer active:scale-95">
+                        <div className="flex justify-center w-20 items-center">
                           <p className="text-black capitalize">
                             {new Date(`${data.created_at}`)
                               .toString()
                               .substring(3, 15)}
                           </p>
                         </div>
-                        <div className="flex flex-col w-full">
-                          <p className="text-black capitalize font-extrabold">
+                        <div className="flex flex-col w-48 md:w-72 xl:w-[35rem]">
+                          <p className="text-black capitalize font-extrabold w-full">
                             {data.announcement_title}
                           </p>
-                          <p className="w-[35rem]">
-                            {data.announcement_description.substring(0, 75) +
+                          <p className="w-full">
+                            {data.announcement_description.substring(0, 65) +
                               "..."}
                           </p>
                         </div>
