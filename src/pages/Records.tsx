@@ -14,6 +14,7 @@ import Layout from "components/Layout";
 
 import { EmployeesType, DataRecordsType } from "utils/Type";
 import "react-datepicker/dist/react-datepicker.css";
+import Loader from "components/Loader";
 
 const Records = () => {
   //state datepicker
@@ -24,6 +25,7 @@ const Records = () => {
 
   const [employees, setEmployees] = useState<EmployeesType[]>([]);
   const [records, setRecords] = useState<DataRecordsType[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
   const [search, setSearch] = useState<string>("");
   const [cookie, setCookie] = useCookies();
   const navigate = useNavigate();
@@ -38,9 +40,10 @@ const Records = () => {
 
   useEffect(() => {
     getEmployees();
-  }, [search]);
+  }, []);
 
   function getEmployees() {
+    setLoading(true);
     axios
       .get(`employees`, {
         headers: {
@@ -51,7 +54,8 @@ const Records = () => {
         const { data } = res.data;
         setEmployees(data);
       })
-      .catch((err) => {});
+      .catch((err) => {})
+      .finally(() => setLoading(false));
   }
 
   function searchEmployees(e: React.FormEvent<HTMLFormElement>) {
@@ -81,7 +85,7 @@ const Records = () => {
           title: "Oops...",
           text: message,
         });
-      });
+      })
   }
 
   function onClickDetail(id: number) {
@@ -89,6 +93,7 @@ const Records = () => {
   }
 
   function getRecordsEmployee() {
+    setLoading(true);
     axios
       .get(
         `https://shirayuki.site/record/${cookie.id}?date_from=${inStartDate}&date_to=${inEndDate}`,
@@ -116,71 +121,78 @@ const Records = () => {
           title: "Oops...",
           text: "Add date first",
         });
-      });
+      })
+      .finally(() => setLoading(false));
   }
 
   return (
     <Layout recordsSet="w-full bg-gradient-to-r from-white to-navy hover:text-white">
       {cookie.role === "admin" ? (
-        <WrappingCard
-          judul="Records"
-          rightSide={
-            <div className="">
-              <form
-                className="flex items-center gap-2"
-                id="form-search"
-                onSubmit={searchEmployees}
-              >
-                <CustomInput
-                  inputSet="border-sky w-36 md:w-full"
-                  placeholder="Search"
-                  id="input-search"
-                  onChange={(e) => setSearch(e.target.value)}
-                />
-                <button
-                  className="text-sky active:scale-75 duration-300"
-                  type="submit"
-                  id="btn-search"
+        loading ? (
+          <Loader />
+        ) : (
+          <WrappingCard
+            judul="Records"
+            rightSide={
+              <div className="">
+                <form
+                  className="flex items-center gap-2"
+                  id="form-search"
+                  onSubmit={searchEmployees}
                 >
-                  <BsSearch size={27} />
-                </button>
-              </form>
-            </div>
-          }
-        >
-          {employees.map((data) => {
-            return (
-              <FlexyCard parentSet="active:scale-95" key={data.id}>
-                <div
-                  key={data.id}
-                  className="flex justify-between items-center hover:cursor-pointer "
-                  onClick={() => onClickDetail(data.id)}
-                  id="btn-detail-records"
-                >
-                  <div className="flex w-1/2 items-center gap-2 md:gap-4">
-                    <img
-                      src={data.profile_picture}
-                      className="w-10 h-10 md:w-16 md:h-16 rounded-full"
-                    />
-                    <div className="flex flex-col">
-                      <p className="font-medium text-sm md:text-lg text-navy">
-                        {data.nip}
-                      </p>
+                  <CustomInput
+                    inputSet="border-sky w-36 md:w-full"
+                    placeholder="Search"
+                    id="input-search"
+                    onChange={(e) => setSearch(e.target.value)}
+                  />
+                  <button
+                    className="text-sky active:scale-75 duration-300"
+                    type="submit"
+                    id="btn-search"
+                  >
+                    <BsSearch size={27} />
+                  </button>
+                </form>
+              </div>
+            }
+          >
+            {employees.map((data) => {
+              return (
+                <FlexyCard parentSet="active:scale-95" key={data.id}>
+                  <div
+                    key={data.id}
+                    className="flex justify-between items-center hover:cursor-pointer "
+                    onClick={() => onClickDetail(data.id)}
+                    id="btn-detail-records"
+                  >
+                    <div className="flex w-1/2 items-center gap-2 md:gap-4">
+                      <img
+                        src={data.profile_picture}
+                        className="w-10 h-10 md:w-16 md:h-16 rounded-full"
+                      />
+                      <div className="flex flex-col">
+                        <p className="font-medium text-sm md:text-lg text-navy">
+                          {data.nip}
+                        </p>
+                        <p className="font-bold text-sm md:text-lg text-navy">
+                          {data.name}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex justify-end w-1/4 md:w-full text-right">
                       <p className="font-bold text-sm md:text-lg text-navy">
-                        {data.name}
+                        {data.position}
                       </p>
                     </div>
                   </div>
-                  <div className="flex justify-end w-1/4 md:w-full text-right">
-                    <p className="font-bold text-sm md:text-lg text-navy">
-                      {data.position}
-                    </p>
-                  </div>
-                </div>
-              </FlexyCard>
-            );
-          })}
-        </WrappingCard>
+                </FlexyCard>
+              );
+            })}
+          </WrappingCard>
+        )
+      ) : loading ? (
+        <Loader />
       ) : (
         <WrappingCard
           judul="Records"

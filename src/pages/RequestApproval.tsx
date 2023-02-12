@@ -9,8 +9,11 @@ import { TextArea } from "components/CustomInput";
 import Button from "components/Button";
 import Layout from "components/Layout";
 import { useCookies } from "react-cookie";
+import Loader from "components/Loader";
 
 const RequestApproval = () => {
+  const [disabled, setDisabled] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
   const [addTitle, setAddTitle] = useState<string>("");
   const [addStart, setAddStart] = useState<string>("");
   const [addDesc, setAddDesc] = useState<string>("");
@@ -24,12 +27,21 @@ const RequestApproval = () => {
     newDate();
   }, []);
 
+  useEffect(() => {
+    if (addTitle && addStart && addEnd && addDesc && addImg) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
+    }
+  }, [addTitle, addStart, addEnd, addDesc, addImg]);
+  
   function newDate() {
     const tanggal = moment().format();
     setDate(tanggal.substring(0, 10));
   }
 
   function reqApproval(e: React.FormEvent<HTMLFormElement>) {
+    setLoading(true);
     e.preventDefault();
     const formData = new FormData();
     formData.append("approval_title", addTitle);
@@ -64,84 +76,90 @@ const RequestApproval = () => {
           title: "Oops...",
           text: message,
         });
-      });
+      })
+      .finally(() => setLoading(false));
   }
   return (
     <Layout approvalSet="w-full bg-gradient-to-r from-white to-navy hover:text-white">
-      <WrappingCard
-        judul="Request Approval"
-        rightSide={
-          <>
-            <Button
-              id="btn-back"
-              buttonSet="border-2 border-white shadow-md shadow-black rounded-full capitalize font-medium gap-2 px-3 text-xs hover:bg-navy w-1/4"
-              label="Back"
-              onClick={() => navigate(-1)}
-            />
-          </>
-        }
-      >
-        <CardWithLogo>
-          <form onSubmit={reqApproval}>
-            <select
-              id="select-approval-type"
-              name="approval-type"
-              className="select select-bordered border-sky w-1/3"
-              onChange={(e) => setAddTitle(e.target.value)}
-            >
-              <option id="option-approval-type" value="">
-                Approval Type
-              </option>
-              <option id="option-annual-leave" value="Annual Leave">
-                Annual Leave
-              </option>
-              <option id="option-on-leave" value="On Leave">
-                On Leave
-              </option>
-              <option id="option-sick-leave" value="Sick Leave">
-                Sick Leave
-              </option>
-            </select>
-            <div className="flex my-5">
-              <input
-                id="input-start-date"
-                type="date"
-                min={date}
-                className="input input-bordered border-sky mr-5 w-1/3"
-                onChange={(e) => setAddStart(e.target.value)}
-              />
-              <input
-                id="input-end-date"
-                type="date"
-                min={addStart}
-                className="input input-bordered border-sky mr-5 w-1/3"
-                onChange={(e) => setAddEnd(e.target.value)}
-              />
-            </div>
-            <TextArea
-              id="input-description"
-              parentSet="my-5"
-              inputSet="textarea textarea-bordered border-sky h-48"
-              placeholder="Description"
-              onChange={(e) => setAddDesc(e.target.value)}
-            />
-            <input
-              id="input-picture"
-              type="file"
-              className="file-input file-input-bordered w-full border-1 border-sky max-w-xs file:bg-sky file:border-none file:capitalize file:text-md text-base"
-              onChange={(e) => setAddImg(e.target.files?.[0])}
-            />
-            <div className="flex justify-end">
+      {loading ? (
+        <Loader />
+      ) : (
+        <WrappingCard
+          judul="Request Approval"
+          rightSide={
+            <>
               <Button
-                id="btn-submit"
-                buttonSet="border-2 border-white shadow-md shadow-black rounded-full capitalize font-medium gap-2 px-3 text-md hover:bg-navy w-1/4 my-5"
-                label="Submit"
-                type="submit"
+                id="btn-back"
+                buttonSet="border-2 border-white shadow-md shadow-black rounded-full capitalize font-medium gap-2 px-3 text-xs hover:bg-navy w-1/4"
+                label="Back"
+                onClick={() => navigate(-1)}
               />
-            </div>
-          </form>
-        </CardWithLogo>
-      </WrappingCard>
+            </>
+          }
+        >
+          <CardWithLogo>
+            <form onSubmit={reqApproval}>
+              <select
+                id="select-approval-type"
+                name="approval-type"
+                className="select select-bordered border-sky w-1/3"
+                onChange={(e) => setAddTitle(e.target.value)}
+              >
+                <option id="option-approval-type" value="">
+                  Approval Type
+                </option>
+                <option id="option-annual-leave" value="Annual Leave">
+                  Annual Leave
+                </option>
+                <option id="option-on-leave" value="On Leave">
+                  On Leave
+                </option>
+                <option id="option-sick-leave" value="Sick Leave">
+                  Sick Leave
+                </option>
+              </select>
+              <div className="flex my-5">
+                <input
+                  id="input-start-date"
+                  type="date"
+                  min={date}
+                  className="input input-bordered border-sky mr-5 w-1/3"
+                  onChange={(e) => setAddStart(e.target.value)}
+                />
+                <input
+                  id="input-end-date"
+                  type="date"
+                  min={addStart}
+                  className="input input-bordered border-sky mr-5 w-1/3"
+                  onChange={(e) => setAddEnd(e.target.value)}
+                />
+              </div>
+              <TextArea
+                id="input-description"
+                parentSet="my-5"
+                inputSet="textarea textarea-bordered border-sky h-48"
+                placeholder="Description"
+                onChange={(e) => setAddDesc(e.target.value)}
+              />
+              <input
+                id="input-picture"
+                type="file"
+                className="file-input file-input-bordered w-full border-1 border-sky max-w-xs file:bg-sky file:border-none file:capitalize file:text-md text-base disabled:bg-gray-300 disabled:text-gray-400 disabled:border-gray-300 disabled:cursor-not-allowed disabled:active:scale-100"
+                onChange={(e) => setAddImg(e.target.files?.[0])}
+              />
+              <div className="flex justify-end">
+                <Button
+                  id="btn-submit"
+                  buttonSet="border-2 border-white shadow-md shadow-black rounded-full capitalize font-medium gap-2 px-3 text-md hover:bg-navy w-1/4 my-5 disabled:bg-gray-300 disabled:text-gray-400 disabled:border-gray-300 disabled:cursor-not-allowed disabled:active:scale-100"
+                  label="Submit"
+                  type="submit"
+                  disabled={disabled || loading}
+                />
+              </div>
+            </form>
+          </CardWithLogo>
+        </WrappingCard>
+      )}
     </Layout>
   );
 };
