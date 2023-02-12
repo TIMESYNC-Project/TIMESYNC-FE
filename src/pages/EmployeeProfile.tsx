@@ -139,7 +139,7 @@ const EmployeeProfile = () => {
           }
         >
           <div className="flex flex-col lg:flex-row gap-8 lg:gap-0 w-full">
-            <div className="lg:w-2/6 flex flex-col items-center gap-4">
+            <div className="lg:w-2/6 flex flex-col items-center gap-2 lg:gap-4">
               <img
                 className="w-40 h-40 md:w-52 md:h-52 xl:w-60 xl:h-60 border-2 border-sky rounded-xl "
                 src={data.profile_picture}
@@ -148,7 +148,7 @@ const EmployeeProfile = () => {
               {cookie.role === "admin" ? null : (
                 <>
                   <label id="btn-update-photo" htmlFor="my-modal-1">
-                    <p className="w-48 btn tracking-wider bg-[#3282B8] text-white hover:border-white font-medium rounded-2xl capitalize border-4 border-white shadow-md shadow-black">
+                    <p className="w-36 lg:w-48 text-xs lg:text-base text-center py-2 tracking-wider bg-[#3282B8] text-white hover:border-white font-medium rounded-2xl capitalize border-4 border-white shadow-md shadow-black duration-300 active:scale-90 hover:cursor-pointer">
                       Update Photo
                     </p>
                   </label>
@@ -160,19 +160,21 @@ const EmployeeProfile = () => {
                   <div className="modal modal-bottom sm:modal-middle">
                     <div className="modal-box border-2 border-sky flex flex-col justify-center text-sky">
                       <form onSubmit={handleEditProfile}>
-                        <p className="mb-5 pb-2 text-xl border-b-2 font-medium">
+                        <p className="mb-5 pb-2 lg:text-xl border-b-2 font-medium">
                           Update Photo
                         </p>
                         <div className="flex justify-center gap-5">
                           <div className="flex flex-col gap-5">
-                            <p className="py-3">Select Photo:</p>
+                            <p className="py-3 w-24 text-sm lg:text-base lg:w-28">
+                            Select Photo:
+                          </p>
                           </div>
                           <div className="flex flex-col gap-5">
                             <input
                               id="input-photo"
                               type="file"
                               accept="image/png, image/jpeg"
-                              className="file-input file-input-bordered w-full border-2 file:bg-sky file:border-0 border-sky max-w-xs"
+                              className="file-input file-input-bordered w-full border-2 file:bg-sky file:border-0 border-sky max-w-xs file:w-24 file:text-xs text-xs lg:file:w-fit lg:file:text-sm lg:text-base"
                               onChange={(e) => setImage(e.target.files?.[0])}
                             />
                           </div>
@@ -196,10 +198,9 @@ const EmployeeProfile = () => {
                       </form>
                     </div>
                   </div>
-
                   <label id="btn-update-password" htmlFor="my-modal-2">
-                    <p className="w-48 btn tracking-wider bg-[#3282B8] text-white hover:border-white font-medium rounded-2xl capitalize border-4 border-white shadow-md shadow-black">
-                      Update Password
+                    <p className="w-36 lg:w-48 text-xs lg:text-base text-center py-2 tracking-wider bg-[#3282B8] text-white hover:border-white font-medium rounded-2xl capitalize border-4 border-white shadow-md shadow-black duration-300 active:scale-90 hover:cursor-pointer">
+                    Edit Password
                     </p>
                   </label>
                   <input
@@ -210,18 +211,20 @@ const EmployeeProfile = () => {
                   <div className="modal modal-bottom sm:modal-middle">
                     <div className="modal-box border-2 border-sky flex flex-col justify-center text-sky">
                       <form onSubmit={handleEditProfile}>
-                        <p className="mb-5 pb-2 text-xl border-b-2 font-medium">
-                          Update Password
+                        <p className="mb-5 pb-2 lg:text-xl border-b-2 font-medium">
+                          Edit Password
                         </p>
                         <div className="flex justify-center items-center gap-5">
                           <div className="flex flex-col gap-5">
-                            <p className="py-3">New Password:</p>
+                            <p className="py-3 w-28 text-sm lg:text-base lg:w-32">
+                            New Password:
+                          </p>
                           </div>
                           <div className="flex flex-col gap-5">
                             <input
                               id="input-new-password"
-                              type="password"
-                              className="input input-bordered input-md w-full max-w-xs border-2 border-sky"
+                              type="text"
+                              className="input input-bordered input-md w-full max-w-xs border-2 border-sky text-sm lg:text-base"
                               onChange={(e) => setPassword(e.target.value)}
                             />
                           </div>
@@ -250,10 +253,10 @@ const EmployeeProfile = () => {
             </div>
             <div className="lg:w-4/6 flex flex-col">
               <p>{data.nip}</p>
-              <p className="font-bold text-2xl md:text-3xl">{data.name}</p>
-              <p className=" text-lg md:text-lg">{data.position}</p>
+              <p className="font-bold text-2xl lg:text-3xl">{data.name}</p>
+              <p className=" text-lg lg:text-lg">{data.position}</p>
 
-              <span className="underline font-semibold text-xl md:text-2xl pt-2 pb-8">
+              <span className="underline font-semibold text-xl lg:text-2xl pt-2 pb-8">
                 {cookie.role === "admin" ? (
                   <p>{company.company_name}</p>
                 ) : (
@@ -262,8 +265,7 @@ const EmployeeProfile = () => {
                   </Link>
                 )}
               </span>
-
-              <table className="table-auto md:text-lg lg:text-xl font-bold flex flex-col gap-4">
+              <table className="table-auto lg:text-xl font-bold flex flex-col gap-4">
                 <tbody className="flex flex-col gap-2">
                   <tr className="flex">
                     <td className="w-2/5">Gender</td>
@@ -287,7 +289,7 @@ const EmployeeProfile = () => {
                   </tr>
                 </tbody>
               </table>
-              <p className="md:text-lg lg:text-xl font-bold pt-4 lg:pt-6">
+              <p className="lg:text-xl font-bold pt-4 lg:pt-6">
                 Annual Leaves Available : {data.annual_leave}
               </p>
             </div>
