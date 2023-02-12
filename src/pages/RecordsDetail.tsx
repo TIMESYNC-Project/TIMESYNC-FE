@@ -12,10 +12,10 @@ import { WrappingCard, FlexyCard } from "components/Card";
 import { Modals1, Modals2 } from "components/Modals";
 import { CustomInput } from "components/CustomInput";
 import Layout from "components/Layout";
+import Loader from "components/Loader";
 
 import { DataRecordsType, ProfileType } from "utils/Type";
 import "react-datepicker/dist/react-datepicker.css";
-import Loader from "components/Loader";
 
 const RecordsDetail = () => {
   const [inStartDate, setInStartDate] = useState<string>("");
@@ -63,6 +63,7 @@ const RecordsDetail = () => {
     setDate(tanggal.substring(0, 10));
   }
 
+  //function for admin
   function getName() {
     setLoading(true);
     axios
@@ -79,6 +80,7 @@ const RecordsDetail = () => {
       .finally(() => setLoading(false));
   }
 
+  //function for admin and employee
   function getRecordsEmployee() {
     setLoading(true);
     axios
@@ -244,6 +246,7 @@ const RecordsDetail = () => {
                         type="date"
                         inputSet="border-sky text-black w-44 md:w-full"
                         min={date}
+                        max={addEnd? addEnd : undefined}
                         onChange={(e) => setAddStart(e.target.value)}
                       />
                     </div>
@@ -259,7 +262,7 @@ const RecordsDetail = () => {
                         id="input-date-end"
                         type="date"
                         inputSet="border-sky text-black w-44 md:w-full"
-                        min={addStart}
+                        min={addStart? addStart : date}
                         onChange={(e) => setAddEnd(e.target.value)}
                       />
                     </div>
@@ -427,7 +430,7 @@ const RecordsDetail = () => {
                 htmlFor="my-modal-2"
                 className="w-24 text-sm text-center border-sky bg-sky rounded-xl py-1 text-white font-medium duration-300 hover:cursor-pointer hover:bg-red-600 hover:text-white  active:scale-90"
               >
-                Cancel
+                Close
               </label>
             </div>
           </Modals1>

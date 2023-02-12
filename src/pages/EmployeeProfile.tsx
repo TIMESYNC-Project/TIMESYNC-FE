@@ -8,9 +8,9 @@ import axios from "axios";
 import { WrappingCard } from "components/Card";
 import Button from "components/Button";
 import Layout from "components/Layout";
+import Loader from "components/Loader";
 
 import { ProfileType, CompanyData } from "utils/Type";
-import Loader from "components/Loader";
 
 const EmployeeProfile = () => {
   const [company, setCompany] = useState<CompanyData>({});
@@ -52,7 +52,6 @@ const EmployeeProfile = () => {
         })
         .then((res) => {
           const { data } = res.data;
-          console.log(data);
           setData(data);
         })
         .catch((err) => {})

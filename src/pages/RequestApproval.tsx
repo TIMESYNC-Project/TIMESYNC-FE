@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { IoReturnUpBack } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
 import Swal from "sweetalert2";
 import moment from "moment";
 import axios from "axios";
@@ -9,7 +10,6 @@ import { CardWithLogo, WrappingCard } from "components/Card";
 import { TextArea } from "components/CustomInput";
 import Button from "components/Button";
 import Layout from "components/Layout";
-import { useCookies } from "react-cookie";
 import Loader from "components/Loader";
 
 const RequestApproval = () => {
@@ -29,18 +29,20 @@ const RequestApproval = () => {
   }, []);
 
   useEffect(() => {
-    if (addTitle && addStart && addEnd && addDesc && addImg) {
+    if (addTitle && addStart && addEnd && addDesc) {
       setDisabled(false);
     } else {
       setDisabled(true);
     }
-  }, [addTitle, addStart, addEnd, addDesc, addImg]);
+  }, [addTitle, addStart, addEnd, addDesc]);
 
   function newDate() {
     const tanggal = moment().format();
     setDate(tanggal.substring(0, 10));
+    console.log(date);
   }
 
+  //function for employee
   function reqApproval(e: React.FormEvent<HTMLFormElement>) {
     setLoading(true);
     e.preventDefault();
@@ -57,7 +59,6 @@ const RequestApproval = () => {
         },
       })
       .then((res) => {
-        console.log("yey: ", res);
         const { message } = res.data;
         Swal.fire({
           position: "center",
@@ -69,7 +70,6 @@ const RequestApproval = () => {
         navigate("/approval");
       })
       .catch((err) => {
-        console.log("nay", err);
         const { data } = err.response;
         const { message } = data;
         Swal.fire({
@@ -80,6 +80,7 @@ const RequestApproval = () => {
       })
       .finally(() => setLoading(false));
   }
+
   return (
     <Layout approvalSet="w-full bg-gradient-to-r from-white to-navy hover:text-white">
       {loading ? (
@@ -101,41 +102,51 @@ const RequestApproval = () => {
         >
           <CardWithLogo>
             <form onSubmit={reqApproval}>
-              <select
-                id="select-approval-type"
-                name="approval-type"
-                className="select select-bordered text-xs lg:text-base border-sky"
-                onChange={(e) => setAddTitle(e.target.value)}
-              >
-                <option id="option-approval-type" value="">
-                  Approval Type
-                </option>
-                <option id="option-annual-leave" value="Annual Leave">
-                  Annual Leave
-                </option>
-                <option id="option-on-leave" value="On Leave">
-                  On Leave
-                </option>
-                <option id="option-sick-leave" value="Sick Leave">
-                  Sick Leave
-                </option>
-              </select>
-              <div className="flex my-5 gap-2">
+              <div className="flex my-5 gap-2 items-center">
+                <p className="">Approval: </p>
+                <select
+                  id="select-approval-type"
+                  name="approval-type"
+                  className="select select-bordered text-xs lg:text-base border-sky"
+                  onChange={(e) => setAddTitle(e.target.value)}
+                >
+                  <option id="option-approval-type" value="">
+                    Approval Type
+                  </option>
+                  <option id="option-annual-leave" value="Annual Leave">
+                    Annual Leave
+                  </option>
+                  <option id="option-on-leave" value="On Leave">
+                    On Leave
+                  </option>
+                  <option id="option-sick-leave" value="Sick Leave">
+                    Sick Leave
+                  </option>
+                </select>
+              </div>
+
+              <div className="flex my-5 gap-2 items-center">
+                <p>Date Start: </p>
                 <input
                   id="input-start-date"
                   type="date"
                   min={date}
+                  max={addEnd ? addEnd : undefined}
                   className="input input-bordered border-sky text-xs lg:text-base"
                   onChange={(e) => setAddStart(e.target.value)}
                 />
+              </div>
+              <div className="flex my-5 gap-2 items-center">
+                <p>Date End:</p>
                 <input
                   id="input-end-date"
                   type="date"
-                  min={addStart}
+                  min={addStart? addStart : date}
                   className="input input-bordered border-sky text-xs lg:text-base"
                   onChange={(e) => setAddEnd(e.target.value)}
                 />
               </div>
+
               <TextArea
                 id="input-description"
                 parentSet="my-5"

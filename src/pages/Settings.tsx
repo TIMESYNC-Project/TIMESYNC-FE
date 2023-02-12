@@ -8,14 +8,15 @@ import { CustomInput } from "components/CustomInput";
 import { WrappingCard } from "components/Card";
 import Layout from "components/Layout";
 import Button from "components/Button";
+import Loader from "components/Loader";
 
 import { SettingsType } from "utils/Type";
-import Loader from "components/Loader";
 
 const Settings = () => {
   const [editStartHour, setEditStartHour] = useState<string>("");
   const [editTolerancy, setEdittolerancy] = useState<string>("");
   const [editEndtHour, setEditEndtHour] = useState<string>("");
+  
   const [setting, setSetting] = useState<SettingsType>({});
   const [loading, setLoading] = useState<boolean>(false);
   const [editAnLeave, setAnLeave] = useState<string>("");
@@ -82,6 +83,7 @@ const Settings = () => {
         });
       });
   }
+
   return (
     <Layout settingsSet="w-full bg-gradient-to-r from-white to-navy hover:text-white">
       {loading ? (

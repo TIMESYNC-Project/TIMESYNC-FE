@@ -11,10 +11,10 @@ import { CustomInput } from "components/CustomInput";
 import { WrappingCard } from "components/Card";
 import { FlexyCard } from "components/Card";
 import Layout from "components/Layout";
+import Loader from "components/Loader";
 
 import { EmployeesType, DataRecordsType } from "utils/Type";
 import "react-datepicker/dist/react-datepicker.css";
-import Loader from "components/Loader";
 
 const Records = () => {
   //state datepicker
@@ -22,9 +22,11 @@ const Records = () => {
   const [inEndDate, setInEndDate] = useState<string>("");
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState(null);
+  //state end datepicker
 
   const [employees, setEmployees] = useState<EmployeesType[]>([]);
   const [records, setRecords] = useState<DataRecordsType[]>([]);
+  const [date, setDate] = useState<Date>()
   const [loading, setLoading] = useState<boolean>(false);
   const [search, setSearch] = useState<string>("");
   const [cookie, setCookie] = useCookies();
@@ -42,6 +44,7 @@ const Records = () => {
     getEmployees();
   }, []);
 
+  //function for admin
   function getEmployees() {
     setLoading(true);
     axios
@@ -92,6 +95,7 @@ const Records = () => {
     navigate(`/records/details/${id}`);
   }
 
+  //funcion for employee
   function getRecordsEmployee() {
     setLoading(true);
     axios
@@ -205,6 +209,7 @@ const Records = () => {
                   onChange={onChange}
                   startDate={startDate}
                   endDate={endDate}
+                  maxDate={new Date()}
                   selectsRange
                   className="input input-borderd text-xs lg:text-base border-2 w-32 md:w-48 lg:w-full"
                   id="input-date-range-picker"

@@ -9,9 +9,9 @@ import { CustomInput, TextArea } from "components/CustomInput";
 import { WrappingCard } from "components/Card";
 import Button from "components/Button";
 import Layout from "components/Layout";
+import Loader from "components/Loader";
 
 import { CompanyData } from "utils/Type";
-import Loader from "components/Loader";
 
 const CompanyProfile = () => {
   const [editAddress, setEditAddress] = useState<string>("");
@@ -26,7 +26,6 @@ const CompanyProfile = () => {
   const [data, setData] = useState<CompanyData>({});
   const [cookie, setCookie] = useCookies();
   const admin = cookie.role === "admin";
-  const navigate = useNavigate();
 
   useEffect(() => {
     companyData();

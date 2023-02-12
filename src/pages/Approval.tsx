@@ -8,10 +8,10 @@ import { FlexyCard, WrappingCard } from "components/Card";
 import { Modals1, Modals2 } from "components/Modals";
 import Button from "components/Button";
 import Layout from "components/Layout";
+import Loader from "components/Loader";
 import Logo from "assets/logo.png";
 
 import { ApprovalType } from "utils/Type";
-import Loader from "components/Loader";
 
 const Approval = () => {
   const [approvalStatus, setApprovalStatus] = useState<string>("");
@@ -109,6 +109,7 @@ const Approval = () => {
           showConfirmButton: false,
           timer: 1500,
         });
+        getApprovals()
       })
       .catch((err) => {
         const { data } = err.response;

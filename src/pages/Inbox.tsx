@@ -8,9 +8,9 @@ import axios from "axios";
 import { CustomInput, TextArea } from "components/CustomInput";
 import { FlexyCard, WrappingCard } from "components/Card";
 import Layout from "components/Layout";
+import Loader from "components/Loader";
 
 import { CreateInboxType, InboxIdType } from "utils/Type";
-import Loader from "components/Loader";
 
 const Inbox = () => {
   const [inboxEm, setInboxEm] = useState<CreateInboxType[]>([]);
@@ -33,6 +33,7 @@ const Inbox = () => {
     getInboxEm();
   }, []);
 
+  //function for admin
   function getInbox() {
     setLoading(true);
     axios
@@ -44,22 +45,6 @@ const Inbox = () => {
       .then((res) => {
         const { data } = res.data;
         setInbox(data);
-      })
-      .catch((err) => {})
-      .finally(() => setLoading(false));
-  }
-
-  function getInboxEm() {
-    setLoading(true);
-    axios
-      .get(`inbox`, {
-        headers: {
-          Authorization: `Bearer ${cookie.token}`,
-        },
-      })
-      .then((res) => {
-        const { data } = res.data;
-        setInboxEm(data);
       })
       .catch((err) => {})
       .finally(() => setLoading(false));
@@ -111,6 +96,24 @@ const Inbox = () => {
       .catch((err) => {})
       .finally(() => setLoading(false));
   }
+
+  //function for employee
+  function getInboxEm() {
+    setLoading(true);
+    axios
+      .get(`inbox`, {
+        headers: {
+          Authorization: `Bearer ${cookie.token}`,
+        },
+      })
+      .then((res) => {
+        const { data } = res.data;
+        setInboxEm(data);
+      })
+      .catch((err) => {})
+      .finally(() => setLoading(false));
+  }
+
 
   function onDelete(id: number) {
     Swal.fire({
