@@ -195,13 +195,25 @@
    npm run dev
 ```
 
-### :boy: :girl: Author
+## :boy: :girl: Author
 
-1. [Alif-Muhamad-Hafidz](https://github.com/AlifMuhamadHafidz) (BE)
-2. [Fauzi-Sofyan](https://github.com/fauzilax) (BE)
-3. [Ahmad-Zain-Azharul-Falah](https://github.com/zenzett) (FE)
-4. [Aryo-Yudhanto](https://github.com/aryoyudhanto) (FE)
-5. [Ichlasiana-Amalia](https://github.com/ichlasiana) (QE)
-6. [Febrian-Syahrir-Rizky](https://github.com/rizkysyahrir) (QE)
-7. [Dona-Putra-Por](https://github.com/donaputra) (QE)
-8. [Rico-Rinaldi](https://github.com/RicoRinaldi93) (QE)
+### :robot: Backend Teams
+
+1. Alif Muhamad Hafidz <br> [![GitHub](https://img.shields.io/badge/Alif-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/AlifMuhamadHafidz)
+2. Fauzi Sofyan <br> [![GitHub](https://img.shields.io/badge/Fauzi-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/fauzilax)
+
+### :robot: Frontend Teams
+
+1. Ahmad Zain Azharul Falah <br> [![GitHub](https://img.shields.io/badge/Zain-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/zenzett)
+2. Aryo Yudhanto <br> [![GitHub](https://img.shields.io/badge/Yudha-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/aryoyudhanto)
+
+### :robot: Frontend Teams
+
+1. Ichlasiana Amalia <br>  [![GitHub](https://img.shields.io/badge/Amel-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/ichlasiana)
+2. Febrian Syahrir Rizky <br>  [![GitHub](https://img.shields.io/badge/Febrian-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/rizkysyahrir)
+3. Dona Putra Por  <br> [![GitHub](https://img.shields.io/badge/Dona-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/donaputra)
+4. Rico Rinaldi  <br>  [![GitHub](https://img.shields.io/badge/Rico-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/RicoRinaldi93)
+
+<h5>
+<p align="center">Built with ❤️ by Timesync Team ©️ 2023</p>
+</h5>
