@@ -508,17 +508,17 @@ const Home = () => {
       ) : (
         <WrappingCard judul="Attendance">
           <div className="flex justify-center">
-            <p className="text-5xl md:text-7xl font-bold">{hour}</p>
+            <p className="text-4xl lg:text-7xl font-bold">{hour}</p>
           </div>
           <div className="flex justify-center">
-            <p className="text-base md:text-xl">
+            <p className="text-sm lg:text-xl">
               {hari}, {date}
             </p>
           </div>
           <FlexyCard>
             <div className="flex justify-center items-center w-full">
               <GoLocation size={25} />
-              <p className="mx-2 capitalize text-black text-center">
+              <p className="mx-2 capitalize text-black text-center text-sm lg:text-xl">
                 {location.street ? location.street + ", " + "" : ""}{" "}
                 {location.state ? location.state + ", " + "" : ""}{" "}
                 {location.city ? location.city + ", " + "" : ""}{" "}
@@ -526,22 +526,22 @@ const Home = () => {
                 {location.postal_code ? location.postal_code + "." + "" : ""}
               </p>
             </div>
-            <p className="text-black font-semibold text-center mt-5">
+            <p className="text-black font-semibold text-center mt-5 text-sm lg:text-xl">
               Office Hours
             </p>
-            <p className="text-black text-2xl md:text-3xl font-bold text-center mt-2">
+            <p className="text-black text-2xl lg:text-3xl font-bold text-center mt-2">
               {setting.working_hour_start} - {setting.working_hour_end}
             </p>
             <div className="flex justify-center items-center my-7 gap-4">
               <Button
                 id="btn-clockin"
-                buttonSet="border-2 border-white shadow-md shadow-black rounded-full capitalize font-medium px-3 text-xs md:text-sm hover:bg-navy w-1/6 w-[6rem] md:w-32"
+                buttonSet="border-2 border-white shadow-md shadow-black rounded-full capitalize font-medium py-1 lg:py-2 px-3 text-xs md:text-sm hover:bg-navy w-1/6 w-[6rem] md:w-32"
                 label="Clock In"
                 onClick={() => clockIn()}
               />
               <Button
                 id="btn-clockout"
-                buttonSet="border-2 border-white shadow-md shadow-black rounded-full capitalize font-medium px-3 text-xs md:text-sm hover:bg-navy w-1/6 w-[6rem] md:w-32"
+                buttonSet="border-2 border-white shadow-md shadow-black rounded-full capitalize font-medium py-1 lg:py-2 px-3 text-xs md:text-sm hover:bg-navy w-1/6 w-[6rem] md:w-32"
                 label="Clock out"
                 onClick={() => clockOut()}
               />
@@ -549,19 +549,19 @@ const Home = () => {
             <hr className="xl:mx-7 my-3 border-[1.5px] border-sky" />
             <div className="my-3 xl:mx-7 flex">
               <div className="w-1/2">
-                <p className="text-black text-sm md:text-base text-left font-medium">
+                <p className="text-black text-sm lg:text-base text-left font-medium">
                   Logs today
                 </p>
               </div>
               <div className="w-1/2">
                 <Link id="btn-see-more" to={"/records"}>
-                  <p className="text-black text-sm md:text-base text-right capitalize font-medium">
+                  <p className="text-black text-sm lg:text-base text-right capitalize font-medium">
                     See more..
                   </p>
                 </Link>
               </div>
             </div>
-            <p className="text-center md:text-2xl capitalize my-5 font-bold text-gray-400 animate-pulse">
+            <p className="text-center text-base lg:text-2xl capitalize my-5 font-bold text-gray-400 animate-pulse">
               {eror}
             </p>
             {Object.keys(attendances).length ===
@@ -569,7 +569,7 @@ const Home = () => {
               <FlexyCard>
                 <div className="flex">
                   <div className="w-1/3">
-                    <p className="text-sm md:text-lg text-black font-semibold">
+                    <p className="text-sm lg:text-lg text-black font-semibold">
                       {attendances.clock_in}
                     </p>
                     <p className="text-xs md:text-sm text-black">
@@ -577,12 +577,12 @@ const Home = () => {
                     </p>
                   </div>
                   <div className="w-1/3">
-                    <p className="capitalize text-center text-sm md:text-lg text-black font-semibold">
+                    <p className="capitalize text-center text-sm lg:text-lg text-black font-semibold">
                       clock in
                     </p>
                   </div>
                   <div className="w-1/3">
-                    <p className="capitalize text-right text-sm md:text-lg text-black font-semibold">
+                    <p className="capitalize text-right text-sm lg:text-lg text-black font-semibold">
                       {attendances.attendance}
                     </p>
                   </div>
@@ -594,20 +594,20 @@ const Home = () => {
               <FlexyCard>
                 <div className="flex">
                   <div className="w-1/3">
-                    <p className="text-sm md:text-lg text-black font-semibold">
+                    <p className="text-sm lg:text-lg text-black font-semibold">
                       {attendances.clock_out}
                     </p>
-                    <p className="text-xs md:text-sm text-black">
+                    <p className="text-xs lg:text-sm text-black">
                       {attendances.attendance_date}
                     </p>
                   </div>
                   <div className="w-1/3">
-                    <p className="capitalize text-center text-sm md:text-lg text-black font-semibold">
+                    <p className="capitalize text-center text-sm lg:text-lg text-black font-semibold">
                       clock out
                     </p>
                   </div>
                   <div className="w-1/3">
-                    <p className="capitalize text-right text-sm md:text-lg text-black font-semibold">
+                    <p className="capitalize text-right text-sm lg:text-lg text-black font-semibold">
                       {attendances.attendance}
                     </p>
                   </div>
