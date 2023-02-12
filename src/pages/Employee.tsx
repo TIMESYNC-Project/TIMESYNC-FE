@@ -12,6 +12,7 @@ import { Modals1 } from "components/Modals";
 import Layout from "components/Layout";
 
 import { EmployeesType } from "utils/Type";
+import Loader from "components/Loader";
 
 const Employee = () => {
   const [employeeBirthdate, setEmployeeBirthdate] = useState<string>("");
@@ -55,7 +56,7 @@ const Employee = () => {
 
   useEffect(() => {
     getEmployees();
-  }, [search]);
+  }, []);
 
   useEffect(() => {
     if (
@@ -74,7 +75,16 @@ const Employee = () => {
     }
   }, [name, birth_of_date, email, gender, position, phone, address, password]);
 
+  useEffect(() => {
+    if (file) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
+    }
+  }, [file]);
+
   function getEmployees() {
+    setLoading(true);
     axios
       .get(`employees`, {
         headers: {
@@ -85,7 +95,8 @@ const Employee = () => {
         const { data } = res.data;
         setEmployees(data);
       })
-      .catch((err) => {});
+      .catch((err) => {})
+      .finally(() => setLoading(false));
   }
 
   function getEmployeesId(id: number) {
@@ -182,6 +193,7 @@ const Employee = () => {
   };
 
   function handleImportEmployee(e: React.FormEvent<HTMLFormElement>) {
+    setLoading(true);
     e.preventDefault();
     const body = new FormData();
     body.append("file", file);
@@ -211,10 +223,12 @@ const Employee = () => {
           title: "Oops...",
           text: message,
         });
-      });
+      })
+      .finally(() => setLoading(false));
   }
 
   function handleEditEmployee(e: React.FormEvent<HTMLFormElement>) {
+    setLoading(true);
     e.preventDefault();
     const body = new FormData();
     body.append("name", editName);
@@ -234,14 +248,24 @@ const Employee = () => {
       .then((res) => {
         const { message } = res.data;
         Swal.fire({
-          position: "center",
-          icon: "success",
           title: "Success",
           text: message,
-          showConfirmButton: false,
-          timer: 1500,
+          showCancelButton: false,
+          confirmButtonText: "Ok",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            navigate(0);
+          }
         });
-        navigate(0);
+        // Swal.fire({
+        //   position: "center",
+        //   icon: "success",
+        //   title: "Success",
+        //   text: message,
+        //   showConfirmButton: false,
+        //   timer: 1500,
+        // });
+        // navigate(0);
       })
       .catch((err) => {
         const { data } = err.response;
@@ -251,7 +275,8 @@ const Employee = () => {
           title: "Oops...",
           text: message,
         });
-      });
+      })
+      .finally(() => setLoading(false));
   }
 
   function handleDeleteEmployee(id: number) {
@@ -265,6 +290,7 @@ const Employee = () => {
       cancelButtonText: "No",
     }).then((result) => {
       if (result.isConfirmed) {
+        setLoading(true);
         axios
           .delete(`employees/${id}`, {
             headers: {
@@ -281,174 +307,179 @@ const Employee = () => {
             });
             getEmployees();
           })
-          .catch((err) => {});
+          .catch((err) => {})
+          .finally(() => setLoading(false));
       }
     });
   }
 
   return (
     <Layout employeesSet="w-full bg-gradient-to-r from-white to-navy hover:text-white">
-      <WrappingCard
-        judul="Employees"
-        rightSide={
-          <>
-            <div className="hidden lg:flex gap-4 items-center justify-end">
-              <form
-                className="flex gap-2 item-center"
-                onSubmit={searchEmployees}
-              >
-                <CustomInput
-                  id="input-search"
-                  inputSet="border-sky w-28 md:w-48 xl:w-60"
-                  placeholder="Search"
-                  onChange={(e) => setSearch(e.target.value)}
-                />
-                <button
-                  id="btn-search-submit"
-                  className="text-sky"
-                  type="submit"
+      {loading ? (
+        <Loader />
+      ) : (
+        <WrappingCard
+          judul="Employees"
+          rightSide={
+            <>
+              <div className="hidden lg:flex gap-4 items-center justify-end">
+                <form
+                  className="flex gap-2 item-center"
+                  onSubmit={searchEmployees}
                 >
-                  <BsSearch size={27} />
-                </button>
-              </form>
-              <label
-                id="btn-import-file"
-                htmlFor={`my-modal-1`}
-                className="flex justify-center items-center"
-              >
-                <div className="text-sky hover:cursor-pointer hover:text-green-700">
-                  <AiOutlineFileAdd size={30} />
-                </div>
-              </label>
-              <label
-                id="btn-add-employee"
-                htmlFor={`my-modal-2`}
-                className="flex justify-center items-center"
-              >
-                <div className="text-sky hover:cursor-pointer hover:text-gray-600">
-                  <AiOutlineUserAdd size={30} />
-                </div>
-              </label>
-            </div>
-            <div className="z-40 dropdown dropdown-end lg:hidden">
-              <label id="btn-mobile-menu" tabIndex={0}>
-                <p className="capitalize text-md font-normal duration-300 hover:cursor-pointer active:scale-75">
-                  <BsThreeDots size={27} />
-                </p>
-              </label>
-              <ul
-                tabIndex={0}
-                className="mt-3 py-2 px-4 shadow menu-compact dropdown-content border-2 border-sky bg-white rounded-2xl w-fit"
-              >
-                <li>
-                  <label
-                    id="btn-add-employee-mobile"
-                    htmlFor={`my-modal-2`}
-                    className="flex items-center"
-                  >
-                    <div className="flex items-center gap-2 text-sky hover:cursor-pointer hover:text-gray-600">
-                      <AiOutlineUserAdd size={27} />
-                      <p className="font-medium">Add Employee</p>
-                    </div>
-                  </label>
-                </li>
-                <li>
-                  <label
-                    id="btn-import-file-mobile"
-                    htmlFor={`my-modal-1`}
-                    className="flex items-center"
-                  >
-                    <div className="flex items-center gap-2 text-sky hover:cursor-pointer hover:text-green-700">
-                      <AiOutlineFileAdd size={27} />
-                      <p className="font-medium">Import File</p>
-                    </div>
-                  </label>
-                </li>
-                <li>
-                  <form
-                    className="flex gap-2 item-center"
-                    onSubmit={searchEmployees}
-                  >
-                    <CustomInput
-                      id="input-search-mobile"
-                      inputSet="border-sky w-40"
-                      placeholder="Search"
-                      onChange={(e) => setSearch(e.target.value)}
-                    />
-                    <button
-                      id="btn-search-submit-mobile"
-                      className="text-sky"
-                      type="submit"
-                    >
-                      <BsSearch size={27} />
-                    </button>
-                  </form>
-                </li>
-              </ul>
-            </div>
-          </>
-        }
-      >
-        {employees.map((data) => (
-          <FlexyCard key={data.id}>
-            <div
-              className="flex justify-between items-center"
-              id={`card-employee-${data.id}`}
-            >
-              <div className="flex w-1/2 flex-col md:flex-row md:items-center gap-2 md:gap-4">
-                <img
-                  src={data.profile_picture}
-                  className="w-10 h-10 md:w-16 md:h-16 rounded-full duration-300 hover:cursor-pointer active:scale-95"
-                  id={`btn-img-${data.id}`}
-                  onClick={() => onClickDetail(data.id)}
-                />
-                <div>
-                  <p
-                    className="font-medium xl:text-lg text-navy duration-300 hover:cursor-pointer active:scale-95"
-                    id={`btn-nip-${data.id}`}
-                    onClick={() => onClickDetail(data.id)}
-                  >
-                    {data.nip}
-                  </p>
-                  <p
-                    className="font-bold xl:text-lg text-navy duration-300 hover:cursor-pointer active:scale-95"
-                    id={`btn-name-${data.id}`}
-                    onClick={() => onClickDetail(data.id)}
-                  >
-                    {data.name}
-                  </p>
-                </div>
-              </div>
-              <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4 xl:gap-6">
-                <p
-                  className="text-right font-bold xl:text-lg text-navy duration-300 hover:cursor-pointer active:scale-95"
-                  id={`btn-position-${data.id}`}
-                  onClick={() => onClickDetail(data.id)}
-                >
-                  {data.position}
-                </p>
-                <div className="flex justify-end items-center gap-4">
-                  <label
-                    id={`btn-edit-employee-${data.id}`}
-                    htmlFor={`my-modal-3`}
-                    className="text-sky hover:cursor-pointer hover:text-orange-500"
-                    onClick={() => getEmployeesId(data.id)}
-                  >
-                    <BsPencilSquare size={27} />
-                  </label>
+                  <CustomInput
+                    id="input-search"
+                    inputSet="border-sky w-28 md:w-48 xl:w-60"
+                    placeholder="Search"
+                    onChange={(e) => setSearch(e.target.value)}
+                  />
                   <button
-                    id={`btn-delete-employee-${data.id}`}
-                    className="text-sky hover:cursor-pointer hover:text-red-600"
-                    onClick={() => handleDeleteEmployee(data.id)}
+                    id="btn-search-submit"
+                    className="text-sky"
+                    type="submit"
                   >
-                    <BsTrash size={27} />
+                    <BsSearch size={27} />
                   </button>
+                </form>
+                <label
+                  id="btn-import-file"
+                  htmlFor={`my-modal-1`}
+                  className="flex justify-center items-center"
+                >
+                  <div className="text-sky hover:cursor-pointer hover:text-green-700">
+                    <AiOutlineFileAdd size={30} />
+                  </div>
+                </label>
+                <label
+                  id="btn-add-employee"
+                  htmlFor={`my-modal-2`}
+                  className="flex justify-center items-center"
+                >
+                  <div className="text-sky hover:cursor-pointer hover:text-gray-600">
+                    <AiOutlineUserAdd size={30} />
+                  </div>
+                </label>
+              </div>
+              <div className="z-40 dropdown dropdown-end lg:hidden">
+                <label id="btn-mobile-menu" tabIndex={0}>
+                  <p className="capitalize text-md font-normal duration-300 hover:cursor-pointer active:scale-75">
+                    <BsThreeDots size={27} />
+                  </p>
+                </label>
+                <ul
+                  tabIndex={0}
+                  className="mt-3 py-2 px-4 shadow menu-compact dropdown-content border-2 border-sky bg-white rounded-2xl w-fit"
+                >
+                  <li>
+                    <label
+                      id="btn-add-employee-mobile"
+                      htmlFor={`my-modal-2`}
+                      className="flex items-center"
+                    >
+                      <div className="flex items-center gap-2 text-sky hover:cursor-pointer hover:text-gray-600">
+                        <AiOutlineUserAdd size={27} />
+                        <p className="font-medium">Add Employee</p>
+                      </div>
+                    </label>
+                  </li>
+                  <li>
+                    <label
+                      id="btn-import-file-mobile"
+                      htmlFor={`my-modal-1`}
+                      className="flex items-center"
+                    >
+                      <div className="flex items-center gap-2 text-sky hover:cursor-pointer hover:text-green-700">
+                        <AiOutlineFileAdd size={27} />
+                        <p className="font-medium">Import File</p>
+                      </div>
+                    </label>
+                  </li>
+                  <li>
+                    <form
+                      className="flex gap-2 item-center"
+                      onSubmit={searchEmployees}
+                    >
+                      <CustomInput
+                        id="input-search-mobile"
+                        inputSet="border-sky w-40"
+                        placeholder="Search"
+                        onChange={(e) => setSearch(e.target.value)}
+                      />
+                      <button
+                        id="btn-search-submit-mobile"
+                        className="text-sky"
+                        type="submit"
+                      >
+                        <BsSearch size={27} />
+                      </button>
+                    </form>
+                  </li>
+                </ul>
+              </div>
+            </>
+          }
+        >
+          {employees.map((data) => (
+            <FlexyCard key={data.id}>
+              <div
+                className="flex justify-between items-center"
+                id={`card-employee-${data.id}`}
+              >
+                <div className="flex w-1/2 flex-col md:flex-row md:items-center gap-2 md:gap-4">
+                  <img
+                    src={data.profile_picture}
+                    className="w-10 h-10 md:w-16 md:h-16 rounded-full duration-300 hover:cursor-pointer active:scale-95"
+                    id={`btn-img-${data.id}`}
+                    onClick={() => onClickDetail(data.id)}
+                  />
+                  <div>
+                    <p
+                      className="font-medium xl:text-lg text-navy duration-300 hover:cursor-pointer active:scale-95"
+                      id={`btn-nip-${data.id}`}
+                      onClick={() => onClickDetail(data.id)}
+                    >
+                      {data.nip}
+                    </p>
+                    <p
+                      className="font-bold xl:text-lg text-navy duration-300 hover:cursor-pointer active:scale-95"
+                      id={`btn-name-${data.id}`}
+                      onClick={() => onClickDetail(data.id)}
+                    >
+                      {data.name}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4 xl:gap-6">
+                  <p
+                    className="text-right font-bold xl:text-lg text-navy duration-300 hover:cursor-pointer active:scale-95"
+                    id={`btn-position-${data.id}`}
+                    onClick={() => onClickDetail(data.id)}
+                  >
+                    {data.position}
+                  </p>
+                  <div className="flex justify-end items-center gap-4">
+                    <label
+                      id={`btn-edit-employee-${data.id}`}
+                      htmlFor={`my-modal-3`}
+                      className="text-sky hover:cursor-pointer hover:text-orange-500"
+                      onClick={() => getEmployeesId(data.id)}
+                    >
+                      <BsPencilSquare size={27} />
+                    </label>
+                    <button
+                      id={`btn-delete-employee-${data.id}`}
+                      className="text-sky hover:cursor-pointer hover:text-red-600"
+                      onClick={() => handleDeleteEmployee(data.id)}
+                    >
+                      <BsTrash size={27} />
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          </FlexyCard>
-        ))}
-      </WrappingCard>
+            </FlexyCard>
+          ))}
+        </WrappingCard>
+      )}
 
       {/* Modal edit employee start */}
       <input type="checkbox" id={`my-modal-3`} className="modal-toggle" />
@@ -600,16 +631,17 @@ const Employee = () => {
             </div>
             <div className="modal-action">
               <button
+                disabled={loading}
                 id={`btn-edit-submit-${employeeId}`}
                 type="submit"
-                className="w-24 text-sm text-center border-2 border-sky bg-sky rounded-xl py-1 text-gray-50 font-medium duration-300 hover:cursor-pointer  hover:bg-blue-900  active:scale-90"
+                className="w-24 text-sm text-center border-2 border-sky bg-sky rounded-xl py-1 text-gray-50 font-medium duration-300 hover:cursor-pointer  hover:bg-blue-900  active:scale-90 disabled:bg-gray-300 disabled:text-gray-400 disabled:border-gray-300 disabled:cursor-not-allowed disabled:active:scale-100"
               >
                 Submit
               </button>
               <label
                 id={`btn-edit-cancel-${employeeId}`}
-                htmlFor="my-modal-3"
-                className="w-24 text-sm text-center border-2 border-sky rounded-xl py-1 text-sky font-medium duration-300 hover:cursor-pointer hover:bg-red-600 hover:text-white  active:scale-90"
+                htmlFor={`${loading ? "" : "my-modal-3"}`}
+                className="w-24 text-sm text-center border-2 border-sky rounded-xl py-1 text-sky font-medium duration-300 hover:cursor-pointer hover:bg-red-600 hover:text-white  active:scale-90 disabled:bg-gray-300 disabled:text-gray-400 disabled:border-gray-300 disabled:cursor-not-allowed disabled:active:scale-100"
               >
                 Cancel
               </label>
@@ -640,15 +672,16 @@ const Employee = () => {
           </div>
           <div className="modal-action">
             <button
+              disabled={disabled || loading}
               id="btn-file-submit"
               type="submit"
-              className="w-24 text-sm text-center border-2 border-sky bg-sky rounded-xl py-1 text-gray-50 font-medium duration-300 hover:cursor-pointer  hover:bg-blue-900  active:scale-90"
+              className="w-24 text-sm text-center border-2 border-sky bg-sky rounded-xl py-1 text-gray-50 font-medium duration-300 hover:cursor-pointer  hover:bg-blue-900  active:scale-90 disabled:bg-gray-300 disabled:text-gray-400 disabled:border-gray-300 disabled:cursor-not-allowed disabled:active:scale-100"
             >
               Submit
             </button>
             <label
               id="btn-file-cancel"
-              htmlFor="my-modal-1"
+              htmlFor={`${loading ? "" : "my-modal-1"}`}
               className="w-24 text-sm text-center border-2 border-sky rounded-xl py-1 text-sky font-medium duration-300 hover:cursor-pointer hover:bg-red-600 hover:text-white  active:scale-90"
             >
               Cancel
@@ -830,3 +863,5 @@ const Employee = () => {
 };
 
 export default Employee;
+
+
