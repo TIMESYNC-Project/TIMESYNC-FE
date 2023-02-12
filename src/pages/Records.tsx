@@ -208,7 +208,6 @@ const Records = () => {
                   selectsRange
                   className="input input-borderd text-xs lg:text-base border-2 w-32 md:w-48 lg:w-full"
                   id="input-date-range-picker"
-                  maxDate={new Date()}
                 />
                 <div
                   className="px-2 duration-300 hover:cursor-pointer active:scale-75"
