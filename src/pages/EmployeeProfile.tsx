@@ -160,12 +160,12 @@ const EmployeeProfile = () => {
                   <div className="modal modal-bottom sm:modal-middle">
                     <div className="modal-box border-2 border-sky flex flex-col justify-center text-sky">
                       <form onSubmit={handleEditProfile}>
-                        <p className="mb-5 pb-2 lg:text-xl border-b-2 font-medium">
+                        <p className="mb-5 pb-2 lg:text-xl border-b-2 font-bold text-black">
                           Update Photo
                         </p>
                         <div className="flex justify-center gap-5">
                           <div className="flex flex-col gap-5">
-                            <p className="py-3 w-24 text-sm lg:text-base lg:w-28">
+                            <p className="py-3 w-24 text-sm lg:text-base lg:w-28 text-black">
                             Select Photo:
                           </p>
                           </div>
@@ -211,12 +211,12 @@ const EmployeeProfile = () => {
                   <div className="modal modal-bottom sm:modal-middle">
                     <div className="modal-box border-2 border-sky flex flex-col justify-center text-sky">
                       <form onSubmit={handleEditProfile}>
-                        <p className="mb-5 pb-2 lg:text-xl border-b-2 font-medium">
+                        <p className="mb-5 pb-2 lg:text-xl border-b-2 font-bold text-black">
                           Edit Password
                         </p>
                         <div className="flex justify-center items-center gap-5">
                           <div className="flex flex-col gap-5">
-                            <p className="py-3 w-28 text-sm lg:text-base lg:w-32">
+                            <p className="py-3 w-28 text-sm lg:text-base lg:w-32 text-black">
                             New Password:
                           </p>
                           </div>
