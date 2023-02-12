@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { IoReturnUpBack } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import moment from "moment";
@@ -34,7 +35,7 @@ const RequestApproval = () => {
       setDisabled(true);
     }
   }, [addTitle, addStart, addEnd, addDesc, addImg]);
-  
+
   function newDate() {
     const tanggal = moment().format();
     setDate(tanggal.substring(0, 10));
@@ -90,8 +91,9 @@ const RequestApproval = () => {
             <>
               <Button
                 id="btn-back"
-                buttonSet="border-2 border-white shadow-md shadow-black rounded-full capitalize font-medium gap-2 px-3 text-xs hover:bg-navy w-1/4"
+                buttonSet="border-2 border-white shadow-md shadow-black rounded-full capitalize font-medium gap-1 px-3 py-1 lg:py-2 text-xs hover:bg-navy"
                 label="Back"
+                icon={<IoReturnUpBack size={20} />}
                 onClick={() => navigate(-1)}
               />
             </>
@@ -102,7 +104,7 @@ const RequestApproval = () => {
               <select
                 id="select-approval-type"
                 name="approval-type"
-                className="select select-bordered border-sky w-1/3"
+                className="select select-bordered text-xs lg:text-base border-sky"
                 onChange={(e) => setAddTitle(e.target.value)}
               >
                 <option id="option-approval-type" value="">
@@ -118,39 +120,39 @@ const RequestApproval = () => {
                   Sick Leave
                 </option>
               </select>
-              <div className="flex my-5">
+              <div className="flex my-5 gap-2">
                 <input
                   id="input-start-date"
                   type="date"
                   min={date}
-                  className="input input-bordered border-sky mr-5 w-1/3"
+                  className="input input-bordered border-sky text-xs lg:text-base"
                   onChange={(e) => setAddStart(e.target.value)}
                 />
                 <input
                   id="input-end-date"
                   type="date"
                   min={addStart}
-                  className="input input-bordered border-sky mr-5 w-1/3"
+                  className="input input-bordered border-sky text-xs lg:text-base"
                   onChange={(e) => setAddEnd(e.target.value)}
                 />
               </div>
               <TextArea
                 id="input-description"
                 parentSet="my-5"
-                inputSet="textarea textarea-bordered border-sky h-48"
+                inputSet="textarea textarea-bordered border-sky h-48 text-sm lg:text-base"
                 placeholder="Description"
                 onChange={(e) => setAddDesc(e.target.value)}
               />
               <input
                 id="input-picture"
                 type="file"
-                className="file-input file-input-bordered w-full border-1 border-sky max-w-xs file:bg-sky file:border-none file:capitalize file:text-md text-base disabled:bg-gray-300 disabled:text-gray-400 disabled:border-gray-300 disabled:cursor-not-allowed disabled:active:scale-100"
+                className="file-input file-input-bordered w-full border-1 border-sky max-w-xs file:bg-sky file:border-none file:capitalize file:text-xs text-xs lg:file:text-base lg:text-base file:w-20 lg:file:w-fit disabled:bg-gray-300 disabled:text-gray-400 disabled:border-gray-300 disabled:cursor-not-allowed disabled:active:scale-100"
                 onChange={(e) => setAddImg(e.target.files?.[0])}
               />
               <div className="flex justify-end">
                 <Button
                   id="btn-submit"
-                  buttonSet="border-2 border-white shadow-md shadow-black rounded-full capitalize font-medium gap-2 px-3 text-md hover:bg-navy w-1/4 my-5 disabled:bg-gray-300 disabled:text-gray-400 disabled:border-gray-300 disabled:cursor-not-allowed disabled:active:scale-100"
+                  buttonSet="border-2 border-white shadow-md shadow-black rounded-full capitalize font-medium gap-2 px-3 text-sm tracking-tighter lg:tracking-normal lg:text-base hover:bg-navy my-5 disabled:bg-gray-300 disabled:text-gray-400 disabled:border-gray-300 disabled:cursor-not-allowed disabled:active:scale-100"
                   label="Submit"
                   type="submit"
                   disabled={disabled || loading}

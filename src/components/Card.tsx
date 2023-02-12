@@ -51,12 +51,12 @@ export const FlexyCard: FC<CardProps> = ({ children, parentSet }) => {
 
 export const CardWithLogo: FC<CardProps> = ({ children }) => {
   return (
-    <div className="my-5 m-40">
+    <div className="m-2 lg:my-5 lg:mx-40">
       <div className="box-border w-full bg-white rounded-2xl border-sky border-2 p-5">
         <div className="flex justify-end">
-          <img src={Logo} alt="" width={65} />
+          <img src={Logo} alt="" className="w-12 lg:w-16" />
         </div>
-        <div className="p-5">{children}</div>
+        <div className="lg:p-5">{children}</div>
       </div>
     </div>
   );
