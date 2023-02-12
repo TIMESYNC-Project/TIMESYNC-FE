@@ -242,7 +242,7 @@ const Approval = () => {
             <>
               <Button
                 id="btn-request-approval"
-                buttonSet="border-2 border-white shadow-md shadow-black rounded-full capitalize font-medium gap-2 px-3 text-xs hover:bg-navy w-1/3"
+                buttonSet="border-2 border-white shadow-md shadow-black rounded-full capitalize font-medium gap-2 px-4 py-1 lg:py-2 text-xs hover:bg-navy tracking-tighter lg:tracking-normal"
                 label="Request Approval"
                 onClick={() => navigate("/approval/request")}
               />
@@ -256,24 +256,25 @@ const Approval = () => {
                   htmlFor="my-modal-2"
                   id={`btn-detail-approval-${data.id}`}
                   onClick={() => getApprovalId(data.id)}
+                  className="duration-300 hover:cursor-pointer active:scale-95"
                 >
                   <div
-                    className="flex justify-center items-center w-full"
+                    className="flex justify-between items-center w-full"
                     id={`card-approval-${data.id}`}
                   >
-                    <div className="text-start w-1/3 mx-5">
+                    <div className="flex justify-start text-start w-1/3">
                       <p className="text-black capitalize font-semibold">
                         {new Date(`${data.created_at}`)
                           .toString()
                           .substring(3, 15)}
                       </p>
                     </div>
-                    <div className="text-center w-1/3 mx-5">
+                    <div className="flex justify-center text-center w-1/4">
                       <p className="text-black capitalize font-medium">
                         {data.approval_title}
                       </p>
                     </div>
-                    <div className="text-end w-1/3 mx-5">
+                    <div className="flex justify-end text-end w-1/3">
                       <p
                         className={`${
                           data.approval_status === "rejected"
@@ -295,22 +296,28 @@ const Approval = () => {
 
           <Modals1 no={2} titleModal="Detail Approval">
             <div className="box-border w-full bg-white rounded-2xl border-sky border-2 p-5">
-              <div className="flex">
+              <div className="flex justify-between">
                 <div className="w-1/2 flex items-center">
-                  <p className="text-black font-semibold text-xl">{name}</p>
+                  <p className="text-black font-semibold text-base lg:text-xl">
+                    {name}
+                  </p>
                 </div>
-                <div className="w-1/2 flex justify-end items-center">
-                  <img src={Logo} alt="" width={40} />
+                <div className="w-8 lg:w-12 flex justify-end items-center">
+                  <img src={Logo} alt="" />
                 </div>
               </div>
               <div className="py-5">
-                <p className="text-black font-semibold text-md mb-5">
+                <p className="text-black font-semibold text-sm lg:text-base mb-5">
                   {new Date(`${startDate}`).toString().substring(3, 15)}{" "}
-                  <span className="font-normal">to</span>{" "}
+                  <span className="font-normal mx-1 lg:mx-2">-</span>{" "}
                   {new Date(`${endDate}`).toString().substring(3, 15)}
                 </p>
-                <p className="text-black font-normal text-md">{title}</p>
-                <p className="text-black font-normal text-md my-5">{desc}</p>
+                <p className="text-black font-normal text-sm lg:text-base">
+                  {title}
+                </p>
+                <p className="text-black font-normal text-sm lg:text-base my-5">
+                  {desc}
+                </p>
                 <div className="flex justify-center w-full">
                   <img src={`${image}`} className="w-[50%]" />
                 </div>
