@@ -2,7 +2,9 @@
 
 ## :watch: About Project :world_map:
 
+<p align="center">
 <img align="center" width="200px" height="200px" src="https://github.com/TIMESYNC-Project/TIMESYNC-FE/blob/main/src/assets/logo.png?raw=true" alt="Logo" />
+</p>
 
 <p align="center">This project is an attendace management app that manage time attendance of every employees in a company, get their clock in/out location, and share newsletter for the whole company.</p>
 
@@ -25,6 +27,7 @@
 <details>
 <summary>Dashboard</summary>
 <div>
+
 - Total employees
 - Total presence today
 - Inbox
@@ -36,7 +39,8 @@
 <details>
 <summary>Profile</summary>
 <div>
-- Show Company Profile 
+
+- Show Company Profile
 - Update Company Profile
 </details>
 
@@ -44,9 +48,10 @@
 <details>
 <summary>Employees</summary>
 <div>
+
 - Search employee
 - Show list of employees
-- Show employee's profile 
+- Show employee's profile
 - Create new employees (manual)
 - Create new employees (import from .CSV)
 - Update employees
@@ -57,6 +62,7 @@
 <details>
 <summary>Records</summary>
 <div>
+
 - Search employee
 - Show list of employees
 - Filter records attendances by date range
@@ -68,6 +74,7 @@
 <details>
 <summary>Approvals</summary>
 <div>
+
 - Show all list of approvals
 - Show details approvals
 - Approve or reject approvals
@@ -77,6 +84,7 @@
 <details>
 <summary>Inbox</summary>
 <div>
+
 - Show all list of inbox
 - Show details inbox
 - Create new inbox
@@ -87,6 +95,7 @@
 <details>
 <summary>Settings</summary>
 <div>
+
 - Show settings Timesync app
 - Update office hour (start - end)
 - Update start hour tolerancy
@@ -99,6 +108,7 @@
 <details>
 <summary>Attendance</summary>
 <div>
+
 - Get Location
 - Show office Hours
 - Attendances (Clock In & Clock Out)
@@ -109,6 +119,7 @@
 <details>
 <summary>Profile</summary>
 <div>
+
 - Show employee's profile
 - Update employee's profile picture
 - Update employee's password
@@ -118,6 +129,7 @@
 <details>
 <summary>Records</summary>
 <div>
+
 - Filter records attendances by date range
 - Show list of records
 </details>
@@ -126,6 +138,7 @@
 <details>
 <summary>Approval</summary>
 <div>
+
 - Show own list of approvals
 - Show own details approvals
 - Request approvals
@@ -135,9 +148,9 @@
 <details>
 <summary>Inbox</summary>
 <div>
+
 - Show all and personal list of inbox
 </details>
-
 
 ## :building_construction: Built With
 
