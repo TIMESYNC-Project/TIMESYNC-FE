@@ -7,11 +7,11 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import { Link, useNavigate } from "react-router-dom";
 import { AiOutlineMessage } from "react-icons/ai";
 import { useState, useEffect } from "react";
 import { GoLocation } from "react-icons/go";
 import { useCookies } from "react-cookie";
-import { Link, useNavigate } from "react-router-dom";
 import { Bar } from "react-chartjs-2";
 import Swal from "sweetalert2";
 import moment from "moment";
@@ -299,7 +299,7 @@ const Home = () => {
           showConfirmButton: false,
           timer: 1500,
         });
-        navigate(0)
+        navigate(0);
       })
       .catch((err) => {
         const { data } = err.response;
@@ -309,7 +309,7 @@ const Home = () => {
           title: "Oops...",
           text: message,
         });
-      })
+      });
   }
 
   function clockOut() {
@@ -335,7 +335,7 @@ const Home = () => {
           showConfirmButton: false,
           timer: 1500,
         });
-        navigate(0)
+        navigate(0);
       })
       .catch((err) => {
         const { data } = err.response;
@@ -345,7 +345,7 @@ const Home = () => {
           title: "Oops...",
           text: message,
         });
-      })
+      });
   }
 
   function presencesToday() {
@@ -363,7 +363,7 @@ const Home = () => {
         const { data } = err.response;
         const { message } = data;
         setEror(message);
-      })
+      });
   }
 
   return (

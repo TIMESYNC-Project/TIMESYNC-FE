@@ -1,7 +1,3 @@
-import React, { FC, LabelHTMLAttributes } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useCookies } from "react-cookie";
-import Swal from "sweetalert2";
 import {
   TbLogout,
   TbHome,
@@ -12,6 +8,10 @@ import {
   TbMail,
   TbSettings,
 } from "react-icons/tb";
+import React, { FC, LabelHTMLAttributes } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
+import Swal from "sweetalert2";
 
 import Logo from "assets/logo-yellow.png";
 import Sidebar from "components/Sidebar";
