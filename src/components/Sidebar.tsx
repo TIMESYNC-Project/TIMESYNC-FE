@@ -1,7 +1,3 @@
-import { Link, useNavigate } from "react-router-dom";
-import { FC, LabelHTMLAttributes } from "react";
-import { useCookies } from "react-cookie";
-import Swal from "sweetalert2";
 import {
   TbLogout,
   TbHome,
@@ -12,6 +8,10 @@ import {
   TbMail,
   TbSettings,
 } from "react-icons/tb";
+import { Link, useNavigate } from "react-router-dom";
+import { FC, LabelHTMLAttributes } from "react";
+import { useCookies } from "react-cookie";
+import Swal from "sweetalert2";
 
 interface SidebarProps extends LabelHTMLAttributes<HTMLParagraphElement> {
   homeSet?: string;
