@@ -13,7 +13,13 @@ import Records from "pages/Records";
 import Inbox from "pages/Inbox";
 import Home from "pages/Home";
 
-axios.defaults.baseURL = "https://shirayuki.site/";
+// axios.defaults.baseURL = "https://shirayuki.site/";
+
+axios.defaults.baseURL =
+  "https://virtserver.swaggerhub.com/fauzilax/TIMESYNC/1.0.0";
+
+// axios.defaults.baseURL =
+//   "https://virtserver.swaggerhub.com/ALIFMUHAMADHAFIDZ23/TimeSync/1.0.0";
 
 const router = createBrowserRouter([
   {
