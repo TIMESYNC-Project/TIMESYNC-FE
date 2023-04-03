@@ -2,15 +2,15 @@ import { useNavigate, useParams } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { BiAddToQueue } from "react-icons/bi";
 import { useCookies } from "react-cookie";
-import DatePicker from "react-datepicker";
 import { BsSearch } from "react-icons/bs";
+import DatePicker from "react-datepicker";
 import Swal from "sweetalert2";
 import moment from "moment";
 import axios from "axios";
 
 import { WrappingCard, FlexyCard } from "components/Card";
-import { Modals1, Modals2 } from "components/Modals";
 import { CustomInput } from "components/CustomInput";
+import { Modals1 } from "components/Modals";
 import Layout from "components/Layout";
 import Loader from "components/Loader";
 
@@ -246,7 +246,7 @@ const RecordsDetail = () => {
                         type="date"
                         inputSet="border-sky text-black w-44 md:w-full"
                         min={date}
-                        max={addEnd? addEnd : undefined}
+                        max={addEnd ? addEnd : undefined}
                         onChange={(e) => setAddStart(e.target.value)}
                       />
                     </div>
@@ -262,7 +262,7 @@ const RecordsDetail = () => {
                         id="input-date-end"
                         type="date"
                         inputSet="border-sky text-black w-44 md:w-full"
-                        min={addStart? addStart : date}
+                        min={addStart ? addStart : date}
                         onChange={(e) => setAddEnd(e.target.value)}
                       />
                     </div>

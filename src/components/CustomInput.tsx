@@ -30,6 +30,7 @@ export const CustomInput: FC<PropsInput> = ({
     </>
   );
 };
+
 export const TextArea: FC<PropsTextArea> = ({
   parentSet,
   label,
@@ -41,7 +42,7 @@ export const TextArea: FC<PropsTextArea> = ({
     <>
       <label className={`${labelSet}`}>{label}</label>
       <textarea
-        className={`textarea textarea-bordered w-full resize-none bg-white ${inputSet}`}
+        className={`textarea textarea-bordered w-full resize-none h-40 bg-white ${inputSet}`}
         {...props}
       ></textarea>
     </>

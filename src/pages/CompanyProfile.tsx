@@ -1,7 +1,7 @@
-import { Link, useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { IoReturnUpBack } from "react-icons/io5";
 import { useCookies } from "react-cookie";
+import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "axios";
 
@@ -74,7 +74,7 @@ const CompanyProfile = () => {
           showConfirmButton: false,
           timer: 1500,
         });
-        companyData()
+        companyData();
       })
       .catch((err) => {
         console.log(err);
@@ -194,6 +194,7 @@ const CompanyProfile = () => {
                           <CustomInput
                             id="input-picture"
                             type="file"
+                            accept="image/png, image/jpeg"
                             className="file-input file-input-bordered w-full border-2 border-sky max-w-xs text-black file:bg-sky file:text-xs md:file:text-sm file:border-0"
                             onChange={(e) =>
                               setEditPicture(e.target.files?.[0])

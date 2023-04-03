@@ -1,6 +1,6 @@
 import { BsPlusSquare, BsTrash } from "react-icons/bs";
-import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
 import Swal from "sweetalert2";
 import axios from "axios";
@@ -113,7 +113,6 @@ const Inbox = () => {
       .catch((err) => {})
       .finally(() => setLoading(false));
   }
-
 
   function onDelete(id: number) {
     Swal.fire({
